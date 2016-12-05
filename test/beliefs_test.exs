@@ -33,16 +33,16 @@ defmodule BeliefsTest do
   ]
 
   test "It can unify a beleif" do
-    assert Unifier.contains(@b, {:omar, :strong}) == {:ok, {:omar, :strong}}
+    assert Unifier.unify(@b, {:omar, :strong}) == [[], :cant_unify, :cant_unify, :cant_unify]
   end
 
   test "It returns not_found if not found" do
-    assert Unifier.contains(@b, {:omar1, :strong}) == :not_found
+    assert Unifier.unify(@b, {:omar1, :strong}) == [:cant_unify, :cant_unify, :cant_unify, :cant_unify]
   end
 
   test "it returns error when wrong params" do
-    assert Unifier.contains(@b, :omar) == :error
-    assert Unifier.contains(:aaa, {:omar}) == :error
+    assert Unifier.unify(@b, :omar) == :cant_unify
+    assert Unifier.unify(:aaa, {:omar}) == :cant_unify
   end
 
   test "it cant unify tuples of different length" do
@@ -156,7 +156,7 @@ defmodule BeliefsTest do
 
   test "test it cleans out the wrong results" do
     r = {:car, :cost, :Y}
-    res = Unifier.unify(@b2, r) |> Unifier.get_matching
+    res = Unifier.unify(@b2, r) |> Unifier.remove_ununified
     assert res == [[Y: :"1000"]]
   end
 
@@ -218,6 +218,12 @@ defmodule BeliefsTest do
     tests = [{:X, :cost, :Y}, {:money, :Y}, {:X, :color, :Z}]
     res = Unifier.unify_list(@bcosts, tests)
     assert res == [[X: :car, Y: :"1000", Z: :red]]
+  end
+
+  test "it binds three combinations and returns cant_unify if wrong" do
+    tests = [{:X, :cost, :Y}, {:money, :Y}, {:X, :color, :blue}]
+    res = Unifier.unify_list(@bcosts, tests)
+    assert res == :cant_unify
   end
 
   test "it binds variables to tests" do

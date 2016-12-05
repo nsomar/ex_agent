@@ -1,18 +1,5 @@
  defmodule Unifier do
 
-  def contains(beleifs, beleif) when is_list(beleifs) and is_tuple(beleif) do
-   equals(beleifs, beleif)
-  end
-
-  def contains(_, _) do
-    :error
-  end
-
-  defp equals([], _), do: :not_found
-
-  defp equals([head| _], beleif) when head == beleif, do: {:ok, beleif}
-  defp equals([_| rest], beleif), do: equals(rest, beleif)
-
   def unify_list(beleifs, tests) do
     unify_list(beleifs, tests, [[]])
   end
@@ -36,7 +23,7 @@
   end
 
   def unify_beleifs_with_test_and_bindings(beleifs, test, [[]]) do
-    unify(beleifs, test) |> get_matching |> check_for_unification
+    unify(beleifs, test) |> remove_ununified
   end
 
   def unify_beleifs_with_test_and_bindings(beleifs, test, bindings) do
@@ -46,7 +33,7 @@
 
       multiple_bind_variables(test, bindings)
       |> Enum.map(fn {binding, bound_test} ->
-        res = unify(beleifs, bound_test) |> get_matching |> check_for_unification
+        res = unify(beleifs, bound_test) |> remove_ununified
         {binding, res}
       end)
       |> Enum.filter(fn {_, result} ->
@@ -54,18 +41,15 @@
         result != :cant_unify
       end)
       |> Enum.map(fn {binding, result} ->
-        IO.inspect "Trying to merge #{inspect(result)} into #{inspect(binding)}"
-        Enum.map(result, fn x ->
-          binding ++ x
-        end) |> List.flatten
+        # IO.inspect "Trying to merge #{inspect(result)} into #{inspect(binding)}"
+        Enum.map(result, fn x -> binding ++ x end) |> List.flatten
       end)
     else
 
       unify_beleifs_with_test_and_bindings(beleifs, test, [[]])
       |> add_binding_to_bindings(bindings)
     end
-    |> get_matching
-    |> check_for_unification
+    |> remove_ununified
   end
 
   def add_binding_to_bindings(:cant_unify, _), do: :cant_unify
@@ -105,6 +89,8 @@
      unify(Tuple.to_list(left), Tuple.to_list(right), [])
    end
 
+   def unify(_, _), do: :cant_unify
+
    def unify(left, right, _)
    when is_list(left) and is_list(right) and
         length(left) != length(right) do
@@ -126,12 +112,8 @@
      binding
    end
 
-   def clean(list_unification_result) when is_list(list_unification_result) do
-     Enum.map(list_unification_result, &get_matching/1)
-   end
-
-   def get_matching(unification_result) when is_list(unification_result) do
-     unification_result |> Enum.filter(&( &1 != :cant_unify ))
+   def remove_ununified(unification_result) when is_list(unification_result) do
+     unification_result |> Enum.filter(&( &1 != :cant_unify )) |> check_for_unification
    end
 
    def check_for_unification([]), do: :cant_unify
