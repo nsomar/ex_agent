@@ -35,6 +35,6 @@ defmodule EXAgent do
   end
 
   def beliefs do
-    
+
   end
 end
