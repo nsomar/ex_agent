@@ -1,0 +1,2546 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"st",
+				"state"
+			],
+			[
+				"initi",
+				"initial_beliefs"
+			],
+			[
+				"parse",
+				"parse_beliefs\t(belief_utils.ex)"
+			],
+			[
+				"def",
+				"defpro\tdefprotocol"
+			],
+			[
+				"Belie",
+				"BeliefUtils\t(belief_utils.ex)"
+			],
+			[
+				"defmo",
+				"defmod\tdefmodule"
+			],
+			[
+				"defmod",
+				"defmod\tdefmodule"
+			],
+			[
+				"get",
+				"get_beliefs\t(belief_base.ex)"
+			],
+			[
+				"add",
+				"add_belief\t(belief_base_test.exs)"
+			],
+			[
+				"funcar",
+				"func_arg_count"
+			],
+			[
+				"number",
+				"number_of_variables\t(parsing_utils.ex)"
+			],
+			[
+				"beli",
+				"beliefs"
+			],
+			[
+				"Gen",
+				"GenServer\tGenServer"
+			],
+			[
+				"belie",
+				"beliefs"
+			],
+			[
+				"bel",
+				"belief"
+			],
+			[
+				"remo",
+				"remove_belief\t(belief_base_test.exs)"
+			],
+			[
+				"cant",
+				"cant_unify"
+			],
+			[
+				"font",
+				"font-size"
+			],
+			[
+				"paddin",
+				"padding"
+			],
+			[
+				"inlin",
+				"inline-block"
+			],
+			[
+				"pod-",
+				"pod-test"
+			],
+			[
+				"start",
+				"start\tstart/1"
+			],
+			[
+				"release",
+				"release_build.sh\t(release_build.sh)"
+			],
+			[
+				"check",
+				"check_build"
+			],
+			[
+				"two",
+				"twobrothers"
+			],
+			[
+				"Gene",
+				"Generation"
+			],
+			[
+				"Additional",
+				"AdditionalCategories"
+			],
+			[
+				"init",
+				"initWithStyle"
+			],
+			[
+				"Ti",
+				"Time24"
+			],
+			[
+				"pray",
+				"prayer"
+			],
+			[
+				"tune",
+				"tune_times"
+			],
+			[
+				"Time",
+				"Time12\t(prayer_times_test.exs)"
+			],
+			[
+				"Time12",
+				"Time12NoSuffix"
+			],
+			[
+				"put",
+				"puts\tputs/0"
+			],
+			[
+				"flo",
+				"float_to_m_h"
+			],
+			[
+				"min",
+				"minutes"
+			],
+			[
+				"fix",
+				"fixHour"
+			],
+			[
+				"p",
+				"prayer"
+			],
+			[
+				"fa",
+				"fajir"
+			],
+			[
+				"sun",
+				"sunset"
+			],
+			[
+				"praye",
+				"prayers"
+			],
+			[
+				"time",
+				"times"
+			],
+			[
+				"night",
+				"night_time"
+			],
+			[
+				"faj",
+				"fajir_adj"
+			],
+			[
+				"faji",
+				"fajir_adj"
+			],
+			[
+				"ad",
+				"adjust_latitude\t(prayer_times.ex)"
+			],
+			[
+				"lat",
+				"latitude"
+			],
+			[
+				"fajir",
+				"fajir_night_portion"
+			],
+			[
+				"nig",
+				"night_portion"
+			],
+			[
+				"config",
+				"configure\tconfigure/1"
+			],
+			[
+				"ni",
+				"night_time\t(prayer_times.ex)"
+			],
+			[
+				"pra",
+				"prayers"
+			],
+			[
+				"prayer",
+				"prayer"
+			],
+			[
+				"duh",
+				"duhr_adjustment"
+			],
+			[
+				"val",
+				"values\tvalues/1"
+			],
+			[
+				"set",
+				"set_time_zone\t(prayer_times.ex)"
+			],
+			[
+				"la",
+				"latitude"
+			],
+			[
+				"As",
+				"AsrJuristic"
+			],
+			[
+				"de",
+				"declination"
+			],
+			[
+				"fix_",
+				"fix_hour"
+			],
+			[
+				"degree",
+				"degree_to_radians"
+			],
+			[
+				"a_Dat",
+				"a_date"
+			],
+			[
+				"to_",
+				"to_timestamp"
+			],
+			[
+				"defs",
+				"defstruct\tdefstruct/1"
+			],
+			[
+				"fl",
+				"floor\tfloor/1"
+			],
+			[
+				"Ex",
+				"ExUnit"
+			],
+			[
+				"K",
+				"KV"
+			],
+			[
+				"backgr",
+				"background-color"
+			],
+			[
+				"sw",
+				"swiftline"
+			],
+			[
+				"spli",
+				"split\t(Readme.md)"
+			],
+			[
+				"vari",
+				"variable"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "lib/agent.ex",
+			"settings":
+			{
+				"buffer_size": 1188,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "lib/parsing_util.ex",
+			"settings":
+			{
+				"buffer_size": 405,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"contents": "{\n  // See https://go.microsoft.com/fwlink/?LinkId=733558\n  // for the documentation about the tasks.json format\n  \"version\": \"0.1.0\",\n  \"command\": \"/usr/local/bin/mix test\",\n  \"isShellCommand\": true,\n  \"args\": [],\n  \"showOutput\": \"always\"\n}",
+			"file": ".vscode/tasks.json",
+			"file_size": 324,
+			"file_write_time": 131263788090000000,
+			"settings":
+			{
+				"buffer_size": 241,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "exagent.sublime-project",
+			"settings":
+			{
+				"buffer_size": 90,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "lib/belief_base.ex",
+			"settings":
+			{
+				"buffer_size": 2326,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "lib/mock_agent.ex",
+			"settings":
+			{
+				"buffer_size": 0,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "lib/rule.ex",
+			"settings":
+			{
+				"buffer_size": 274,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "test/mock_agent_test.exs",
+			"settings":
+			{
+				"buffer_size": 881,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "test/belief_utils_test.exs",
+			"settings":
+			{
+				"buffer_size": 723,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "test/belief_base_test.exs",
+			"settings":
+			{
+				"buffer_size": 3050,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+		[
+			[
+				[
+					"Packages/Ruby/Ruby.sublime-build",
+					""
+				],
+				[
+					"Packages/SublimeREPL/sublimerepl_build_system_hack.sublime-build",
+					""
+				],
+				[
+					"Packages/User/python3.sublime-build",
+					""
+				],
+				[
+					"Packages/User/ruby bundle.sublime-build",
+					""
+				],
+				[
+					"Packages/User/ruby path.sublime-build",
+					""
+				]
+			],
+			[
+				"Packages/Ruby/Ruby.sublime-build",
+				""
+			]
+		]
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 400.0,
+		"last_filter": "rena",
+		"selected_items":
+		[
+			[
+				"rena",
+				"File: Rename"
+			],
+			[
+				"rename",
+				"File: Rename"
+			],
+			[
+				"renam",
+				"File: Rename"
+			],
+			[
+				"close all",
+				"File: Close All"
+			],
+			[
+				"descr",
+				"Origami: Destroy Current Pane"
+			],
+			[
+				"origami des",
+				"Origami: Destroy Current Pane"
+			],
+			[
+				"destro",
+				"Origami: Destroy Current Pane"
+			],
+			[
+				"origamic",
+				"Origami: Destroy Current Pane"
+			],
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"remove",
+				"Package Control: Remove Package"
+			],
+			[
+				"list",
+				"Package Control: List Packages"
+			],
+			[
+				"browsepac",
+				"Preferences: Browse Packages"
+			],
+			[
+				"packaginstal",
+				"Package Control: Install Package"
+			],
+			[
+				"reindent",
+				"Indentation: Reindent Lines"
+			],
+			[
+				"indent",
+				"Indentation: Reindent Lines"
+			],
+			[
+				"fold all",
+				"Code Folding: Unfold All"
+			],
+			[
+				"terminal",
+				"Terminal: Open"
+			],
+			[
+				"preivew",
+				"Markdown Preview: Preview in Browser"
+			],
+			[
+				"markdown",
+				"Set Syntax: Markdown"
+			],
+			[
+				"tasks",
+				"Set Syntax: Tasks"
+			],
+			[
+				"todone",
+				"Set Syntax: ToDone"
+			],
+			[
+				"todo",
+				"Set Syntax: Todo.txt"
+			],
+			[
+				"ruby",
+				"Set Syntax: Ruby"
+			],
+			[
+				"eli",
+				"Set Syntax: Elixir"
+			],
+			[
+				"ren",
+				"File: Rename"
+			],
+			[
+				"dele",
+				"File: Delete"
+			],
+			[
+				"erlang",
+				"Set Syntax: Erlang"
+			],
+			[
+				"coloselector",
+				"ColorSchemeSelector: Select Color Scheme"
+			],
+			[
+				"insta",
+				"Package Control: Install Package"
+			],
+			[
+				"colorshceme",
+				"Color Scheme Editor: Edit current color scheme"
+			],
+			[
+				"insallpa",
+				"Package Control: Install Package"
+			],
+			[
+				"packageinsta",
+				"Package Control: Install Package"
+			],
+			[
+				"latex",
+				"LaTeXing: Open PDF"
+			],
+			[
+				"newfil",
+				"File: New File Relative to Current View"
+			],
+			[
+				"new folder",
+				"File: New Folder Relative to Current View"
+			],
+			[
+				"preview",
+				"Markdown Preview: Preview in Browser"
+			],
+			[
+				"scss",
+				"Set Syntax: CSS"
+			],
+			[
+				"dup",
+				"File: Duplicate"
+			],
+			[
+				"du",
+				"File: Duplicate"
+			],
+			[
+				"d",
+				"File: Duplicate"
+			],
+			[
+				"plain",
+				"Set Syntax: Plain Text"
+			],
+			[
+				"prevew",
+				"Markdown Preview: Preview in Browser"
+			],
+			[
+				"ya",
+				"Set Syntax: YAML"
+			],
+			[
+				"prev",
+				"Plugin Development: Profile Events"
+			],
+			[
+				"reve",
+				"File: Reveal"
+			],
+			[
+				"link",
+				"MarkdownEditing: New Inline Link"
+			],
+			[
+				"revea",
+				"File: Reveal"
+			],
+			[
+				"setsobj",
+				"Set Syntax: Objective-C"
+			],
+			[
+				"re",
+				"File: Rename"
+			],
+			[
+				"elixi",
+				"Set Syntax: Elixir"
+			],
+			[
+				"refactorrenam",
+				"Refactor: Rename a field"
+			],
+			[
+				"elix",
+				"Set Syntax: Elixir"
+			],
+			[
+				"build output",
+				"Build output stays at same position"
+			],
+			[
+				"packagecontroins",
+				"Package Control: Install Package"
+			],
+			[
+				"removepa",
+				"Package Control: Remove Package"
+			],
+			[
+				"elixir",
+				"Set Syntax: Elixir"
+			],
+			[
+				"disa",
+				"Package Control: Disable Package"
+			],
+			[
+				"disable",
+				"Package Control: Disable Package"
+			],
+			[
+				"packages",
+				"Package Control: List Packages"
+			],
+			[
+				"setsruby",
+				"Set Syntax: Ruby"
+			],
+			[
+				"setselixi",
+				"Set Syntax: Elixir"
+			],
+			[
+				"space",
+				"Snippet: case"
+			],
+			[
+				"cancel",
+				"Build: Cancel"
+			],
+			[
+				"browsepa",
+				"Preferences: Browse Packages"
+			],
+			[
+				"listpa",
+				"Package Control: List Packages"
+			],
+			[
+				"install p",
+				"Package Control: Install Package"
+			],
+			[
+				"packange insta",
+				"Package Control: Advanced Install Package"
+			]
+		],
+		"width": 556.0
+	},
+	"console":
+	{
+		"height": 144.0,
+		"history":
+		[
+			"s",
+			"cl",
+			"clear",
+			"cleaa",
+			"ls",
+			"clear()",
+			"clear",
+			"sublime.log_commands(True)",
+			"import urllib.request,os,hashlib; h = '2915d1851351e5ee549c20394736b442' + '8bc59f460fa1548d1514676163dafc88'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://packagecontrol.io/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by)"
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/Users/oabdelhafith/Documents/Latex/Dissertation/Code/exagent"
+	],
+	"file_history":
+	[
+		"/Users/oabdelhafith/Documents/Latex/Dissertation/Code/exagent/exagent.sublime-workspace",
+		"/Users/oabdelhafith/Documents/Latex/Dissertation/Code/exagent/lib/belief_utils.ex",
+		"/Users/oabdelhafith/Documents/Latex/Dissertation/Code/exagent/lib/context.ex",
+		"/Users/oabdelhafith/Documents/Latex/Dissertation/Code/exagent/lib/agent_state.ex",
+		"/Users/oabdelhafith/Documents/Latex/Dissertation/Code/exagent/lib/belief_base.ex",
+		"/Users/oabdelhafith/Documents/Latex/Dissertation/Code/exagent/test/event_test.exs",
+		"/Users/oabdelhafith/Documents/Latex/Dissertation/Code/exagent/lib/event.ex",
+		"/Users/oabdelhafith/Documents/Latex/Dissertation/Code/exagent/lib/parsing_utils.ex",
+		"/Users/oabdelhafith/Documents/Latex/Dissertation/Code/exagent/lib/belief_util.ex",
+		"/Users/oabdelhafith/Documents/Latex/Dissertation/Code/exagent/mix.exs",
+		"/Users/oabdelhafith/Documents/Latex/Dissertation/Code/exagent/lib/agent.ex",
+		"/Users/oabdelhafith/Documents/Latex/Dissertation/Code/exagent/exagent.iml",
+		"/Users/oabdelhafith/Documents/Latex/Dissertation/Code/exagent/lib/exagent.ex",
+		"/Users/oabdelhafith/Documents/Latex/Dissertation/Code/exagent/test/belief_base_test.exs",
+		"/Users/oabdelhafith/Documents/Latex/Dissertation/Code/exagent/lib/unifier.ex",
+		"/Users/oabdelhafith/Documents/Latex/Dissertation/Code/exagent/test/unifier_test.exs",
+		"/Users/oabdelhafith/Library/Application Support/Sublime Text 3/Packages/User/Default (OSX).sublime-keymap",
+		"/Users/oabdelhafith/Library/Application Support/Sublime Text 3/Packages/Origami/Default (OSX).sublime-keymap",
+		"/Users/oabdelhafith/Documents/Latex/Dissertation/Code/exagent/test/parsing_utils_tests.exs",
+		"/Users/oabdelhafith/Documents/Latex/Dissertation/Code/exagent/test/exagent_test.exs",
+		"/Users/oabdelhafith/Documents/Latex/Dissertation/Code/exagent/lib/beliefs.ex",
+		"/Users/oabdelhafith/Documents/Latex/Dissertation/Code/exagent/test/beliefs_test.exs",
+		"/Users/oabdelhafith/Documents/Elixir/Projects/wysiwyg/web/static/js/main_bundle.js",
+		"/Users/oabdelhafith/Documents/Zendesk/iOS/zendesk_connect_sdk_ios/.gitignore",
+		"/Users/oabdelhafith/Documents/Zendesk/iOS/zendesk_connect_sdk_ios/archive.xcarchive/Products/Applications/ConnectSampleApp.app/embedded.mobileprovision",
+		"/Users/oabdelhafith/Documents/Zendesk/iOS/zendesk_connect_sdk_ios/scripts/certs/Connect-Profile.mobileprovision",
+		"/private/var/folders/st/w93_6q8542xf7nd4t16m9v980000gp/T/com.agilebits.Attachments.noindex/626EAABFA6385CB3B959F4D16994B81D/5FFE6181892C416EB2BD13AB22492815/github-recovery-codes (1).txt",
+		"/Users/oabdelhafith/Downloads/zendesk_log.txt",
+		"/Users/oabdelhafith/Downloads/Validation Flow.svg",
+		"/Users/oabdelhafith/Downloads/realm-swift-0.98.0/LICENSE.txt",
+		"/Users/oabdelhafith/Documents/Zendesk/iOS/zendesk_chat_sdk_ios/scripts/travis/profile/In_House_Chat_Sample.mobileprovision",
+		"/Users/oabdelhafith/Downloads/code.txt",
+		"/Users/oabdelhafith/Dropbox/Mackup/Library/Application Support/Sublime Text 3/Packages/User/Package Control.cache/01524fae79697630d0454ba3fabd9414",
+		"/Users/oabdelhafith/Downloads/subtitle.txt",
+		"/Users/oabdelhafith/Downloads/VirtualBox Code.txt",
+		"/Users/oabdelhafith/Documents/Docs/CV/resume.json",
+		"/Users/oabdelhafith/Documents/Misc/homebrew-tap/Casks/CodeImager.rb",
+		"/Users/oabdelhafith/Downloads/highlight/main.css",
+		"/Users/oabdelhafith/Downloads/highlight/index.html",
+		"/Users/oabdelhafith/Documents/Personal/Mac/CodeImager/Prism/test.html",
+		"/Users/oabdelhafith/Documents/Personal/Swift/SPM/Swiftline/Package.swift",
+		"/Users/oabdelhafith/Documents/Personal/Swift/SPM/Swiftline/Tests/Swiftline/ENVTests.swift",
+		"/Users/oabdelhafith/Documents/Personal/Swift/SPM/Swiftline/Tests/ENVTests.swift",
+		"/Users/oabdelhafith/Documents/Personal/Swift/Vapor/projects/facebook-bot/Packages/Vapor-0.9.2/Sources/Development/main.swift",
+		"/Users/oabdelhafith/Documents/Personal/Swift/Vapor/projects/facebook-bot/Packages/Vapor-0.9.2/Sources/Performance/main.swift",
+		"/Users/oabdelhafith/Documents/Personal/Swift/Vapor/projects/facebook-bot/Packages/Vapor-0.9.2/Sources/libc/libc.swift",
+		"/Users/oabdelhafith/Documents/Personal/Swift/Vapor/projects/facebook-bot/Packages/String-0.7.2/Package.swift",
+		"/Users/oabdelhafith/Documents/Personal/Swift/Vapor/projects/facebook-bot/Packages/vapor/Package.swift",
+		"/Users/oabdelhafith/Documents/eclipse3/taxi-mas/.gitignore",
+		"/Users/oabdelhafith/Documents/Zendesk/iOS/zendesk_chat_sdk_ios/.gitignore",
+		"/Users/oabdelhafith/Documents/Zendesk/iOS/zendesk_chat_sdk_ios/scripts/release/check_build.sh",
+		"/Users/oabdelhafith/Documents/Zendesk/iOS/zendesk_chat_sdk_ios/scripts/release/copy_pod_public.sh",
+		"/Users/oabdelhafith/Documents/Zendesk/iOS/zendesk_chat_sdk_ios/scripts/release/copy_pod_files.sh",
+		"/Users/oabdelhafith/Documents/Zendesk/iOS/zendesk_chat_sdk_ios/scripts/release/git_scripts.sh",
+		"/Users/oabdelhafith/Documents/Zendesk/iOS/zendesk_chat_sdk_ios/scripts/release/release_build.sh",
+		"/Users/oabdelhafith/Documents/Zendesk/iOS/zendesk_chat_sdk_ios/scripts/release/push_public.sh",
+		"/Users/oabdelhafith/Documents/Zendesk/iOS/zendesk_chat_sdk_ios/scripts/release/copy_files.sh",
+		"/Users/oabdelhafith/Documents/Zendesk/iOS/zendesk_chat_sdk_ios/scripts/release/check_params.sh",
+		"/Users/oabdelhafith/Documents/Zendesk/iOS/zendesk_chat_sdk_ios/Pod/README.md",
+		"/Users/oabdelhafith/Documents/Zendesk/iOS/zendesk_chat_sdk_ios/scripts/release/update_version.sh",
+		"/Users/oabdelhafith/Documents/Zendesk/Scratch/TEsting2asd/Podfile",
+		"/Users/oabdelhafith/Documents/Zendesk/iOS/zendesk_sdk_chat_ios/ZDCChat.podspec",
+		"/Users/oabdelhafith/Documents/Zendesk/iOS/zendesk_chat_sdk_ios/ZDChat/ReleaseFiles/ZDCChat.podspec",
+		"/Users/oabdelhafith/Documents/Zendesk/iOS/zendesk_chat_sdk_ios/Makefile",
+		"/Users/oabdelhafith/Documents/Personal/TestVapor/App/main.swift",
+		"/Users/oabdelhafith/Documents/Personal/TestVapor/Packages/Vapor-0.9.0/Sources/Vapor/Core/Application.swift",
+		"/Users/oabdelhafith/Documents/Personal/TestVapor/Packages/Vapor-0.9.0/Sources/Vapor/Core/Abort.swift",
+		"/Users/oabdelhafith/Documents/Personal/TestVapor/Packages/Vapor-0.9.0/Sources/libc/libc.swift",
+		"/Users/oabdelhafith/Documents/Elixir/test_web/config/config.exs",
+		"/Users/oabdelhafith/Documents/Personal/TestVapor/a.txt",
+		"/Users/oabdelhafith/Documents/Personal/TestVapor/a",
+		"/Users/oabdelhafith/Documents/Elixir/test_web/rel/test_web/releases/0.0.1/sys.config",
+		"/Users/oabdelhafith/Documents/Elixir/test_web/config/prod.secret.exs",
+		"/Users/oabdelhafith/Documents/Elixir/test_web/config/test.exs",
+		"/Users/oabdelhafith/Documents/Elixir/test_web/config/prod.exs.",
+		"/Users/oabdelhafith/Documents/Elixir/test_web/priv/static/manifest.json",
+		"/Users/oabdelhafith/Documents/Elixir/teset_app/lib/teset_app.ex",
+		"/Users/oabdelhafith/Documents/Misc/slackin-docker/docker-compose.yml",
+		"/Users/oabdelhafith/Documents/Misc/slackin-docker/startslackin",
+		"/Users/oabdelhafith/Documents/Misc/slackin-docker/Dockerfile",
+		"/Users/oabdelhafith/Documents/Zendesk/iOS/zendesk_chat_sdk_ios/release_build.sh",
+		"/etc/resolv.conf",
+		"/Users/oabdelhafith/.zsh.after/after.zsh",
+		"/Users/oabdelhafith/Documents/temp/file",
+		"/Users/oabdelhafith/Documents/temp/requests.gor",
+		"/Users/oabdelhafith/Documents/Zendesk/ZendevianCup/doppler/lazlo/Gemfile",
+		"/Users/oabdelhafith/Documents/Zendesk/ZendevianCup/doppler/lazlo/test.db",
+		"/Users/oabdelhafith/Documents/Zendesk/ZendevianCup/doppler/lazlo/index.rb",
+		"/Users/oabdelhafith/Documents/Zendesk/ZendevianCup/doppler/test/controllers/pull_request_controller_test.exs",
+		"/Users/oabdelhafith/Documents/Zendesk/ZendevianCup/doppler/test/controllers/callback_controller_test.exs",
+		"/Users/oabdelhafith/Documents/Zendesk/ZendevianCup/doppler/test/models/github_issues.json",
+		"/Users/oabdelhafith/Documents/Zendesk/ZendevianCup/doppler/test/models/github_comments_tests.exs",
+		"/Users/oabdelhafith/Library/Application Support/Sublime Text 3/Packages/User/Preferences.sublime-settings",
+		"/Users/oabdelhafith/Documents/Java/chat_js_sdk/chat_js_sdk/build.gradle",
+		"/Users/oabdelhafith/Documents/Java/chat_js_sdk/chat_js_sdk/settings.gradle",
+		"/Users/oabdelhafith/Documents/Java/chat_js_sdk/.gitignore",
+		"/Users/oabdelhafith/Library/Application Support/Sublime Text 3/Packages/User/SublimeLinter/Solarized (Dark) (SL).tmTheme",
+		"/Users/oabdelhafith/Documents/Zendesk/Misc/electron-quick-start/main.js",
+		"/Users/oabdelhafith/Documents/Zendesk/Misc/electron-quick-start/scripts/main.js",
+		"/Users/oabdelhafith/Documents/Misc/Bitbar/git-repo-stars.1h.js",
+		"/tmp/github-repo-stars.txt",
+		"/Users/oabdelhafith/Documents/Zendesk/Misc/electron-quick-start/Franz2-darwin-x64/LICENSES.chromium.html",
+		"/Users/oabdelhafith/Documents/Zendesk/Misc/electron-quick-start/scripts/menu.js",
+		"/Users/oabdelhafith/Documents/Zendesk/Misc/electron-quick-start/scripts/service/flowdock.js",
+		"/Users/oabdelhafith/Documents/Zendesk/iOS/zendesk_sdk_documentation/Dockerfile",
+		"/Users/oabdelhafith/Documents/Zendesk/iOS/zendesk_sdk_documentation/Makefile",
+		"/Users/oabdelhafith/Documents/Zendesk/iOS/zendesk_sdk_documentation/Readme.md",
+		"/Users/oabdelhafith/Documents/Zendesk/iOS/zendesk_chat_sdk_ios/README.md",
+		"/Users/oabdelhafith/Documents/Zendesk/iOS/zendesk_sdk_documentation/iOS/yaspeller_report.json",
+		"/Users/oabdelhafith/Documents/Zendesk/iOS/zendesk_mobile_ios_sdk/docs/gettingstarted.md",
+		"/Users/oabdelhafith/Documents/Zendesk/iOS/zendesk_mobile_ios_sdk/docs/authentication.md",
+		"/Users/oabdelhafith/Documents/Zendesk/iOS/zendesk_mobile_ios_sdk/docs/Unity3D_plugin.md",
+		"/Users/oabdelhafith/Desktop/Comparative/.texpadtmp/main.log",
+		"/Users/oabdelhafith/Desktop/zendesk vs microsoft/db.json",
+		"/Users/oabdelhafith/Desktop/zendesk vs microsoft/Untitled.tex",
+		"/Users/oabdelhafith/.zshrc",
+		"/Users/oabdelhafith/Code/zendesk/zendesk/config/zuora.yml.example",
+		"/Users/oabdelhafith/Code/zendesk/zendesk/config/zuora.yml",
+		"/Users/oabdelhafith/Code/zendesk/zendesk/config/redis.yml.example",
+		"/Users/oabdelhafith/Code/zendesk/zendesk/config/redis.yml",
+		"/Users/oabdelhafith/Code/zendesk/zendesk/Gemfile",
+		"/Users/oabdelhafith/Code/zendesk/zendesk/app/views/mobile/sdk/apps/_android_code_snippet.html.erb",
+		"/Users/oabdelhafith/Code/zendesk/zendesk/app/views/mobile/sdk/apps/_ios_code_snippet.html.erb",
+		"/Users/oabdelhafith/Code/zendesk/zendesk/config/statsd.yml.example",
+		"/Users/oabdelhafith/Code/zendesk/zendesk/config/statsd.yml",
+		"/Users/oabdelhafith/Code/zendesk/zendesk/config/gooddata.yml.example",
+		"/Users/oabdelhafith/Code/zendesk/zendesk/config/gooddata.yml",
+		"/Users/oabdelhafith/Code/zendesk/zendesk/config/networks.yml.example"
+	],
+	"find":
+	{
+		"height": 38.0
+	},
+	"find_in_files":
+	{
+		"height": 106.0,
+		"where_history":
+		[
+			"",
+			"/Users/oabdelhafith/Documents/Personal/Swift/Vapor/projects/facebook-bot",
+			"",
+			"-*/node_modules/*,-*menu.js",
+			"-*/node_modules/* -*menu.js",
+			"-*/node_modules/*",
+			"",
+			"<current file>"
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"BeliefUtil",
+			"belief_base",
+			"inspe",
+			"belief_base",
+			"get_beliefs",
+			"prepare_list_for_return",
+			"unify_list",
+			"binding_contains_var",
+			"test_contains_binding",
+			"var?",
+			"inspec",
+			"test_beliefs",
+			"    res = BeliefBase.test_belief([{:car, {:color, :red}}, {:is, {:cool}}], {:mobile, {:X, :Y}})\n    assert res == :cant_unify",
+			"beleifs",
+			"to_str",
+			"atom_to_binary",
+			":\"",
+			"bind_variables",
+			"unify_beleifs_with_test_and_bindings",
+			"unify_list",
+			"is_var",
+			"def is_",
+			"is_",
+			"matching_beleifs",
+			"statement",
+			"merge_bindings",
+			"io.ins",
+			"multiple_bind_variables",
+			"test_contains_binding",
+			"bcosts",
+			"bwithmoney",
+			"unify_beleifs_with_test_and_bindings",
+			"@b2",
+			"xcodebuild -workspace ZendeskSDK.xcworkspace -scheme \"ZendeskSDK Tests\" -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 6s,OS=9.0' test | xcpretty -r junit -o build/TEST_UNIT.xml; test ${PIPESTATUS[0]} -eq 0",
+			"people_ipm_rate_limiting_disabled",
+			"people",
+			":ipm_",
+			"0.1.1.5.0 0.1.1.5.1 9.9.9.9 v0.1.1.4 v0.1.1.5 v0.1.1.6 v0.1.1.7",
+			"\\n",
+			"team",
+			"rteam",
+			"token",
+			"http://sci-hub.bz/10.1109/MC.2004.231",
+			"Release",
+			"Fonts",
+			"<code",
+			"echo \"Running pod cheks\"",
+			"BUILD_DIR",
+			"RELEASE_DIRECTORY",
+			"ZDCChat.framework/ZDCChat",
+			"ZDCChatAPI.framework/ZDCChatAPI",
+			"/Users/oabdelhafith/Documents/Zendesk/iOS/zendesk_chat_sdk_ios/ZDChat/../build/Release-iphonesimulator",
+			"lipo -create /Users/oabdelhafith/Documents/Zendesk/iOS/zendesk_chat_sdk_ios/ZDChat/../build/Release-iphoneos/",
+			"chat",
+			"bitcode",
+			".m",
+			"internal",
+			"ZDCChat",
+			"#else",
+			"public",
+			"Public",
+			"App",
+			"libc",
+			"\"libc\"",
+			"clone",
+			"Package",
+			"package.swift",
+			"git clone",
+			"swift",
+			"grep",
+			"P",
+			"grep",
+			"docker",
+			"docekr",
+			"pod-create",
+			"build",
+			"check-build",
+			"RELEASE_FILES_DIR",
+			"BUILD_PRODUCTS_DIR",
+			"BRANCH",
+			"BASE_DIR",
+			"RELEASE_BRANCH",
+			"BRANCH",
+			"SDK_VERSION",
+			"PUBLIC_DIRECTORY",
+			"SCRIPT_DIRECTORY",
+			"$",
+			"git",
+			"cp",
+			"rm",
+			"sed",
+			"check_version_build",
+			"check_build",
+			"d",
+			"release_dry",
+			"check_version_public",
+			"check-version-public",
+			"check_version_public",
+			"check_version",
+			"build_fat",
+			"source",
+			"source_files",
+			"public_header_files",
+			"SWIFT_BUILD_CONFIGURATION",
+			"UserController",
+			"UserCon",
+			"server: true",
+			"url",
+			"xcode",
+			"font",
+			"font_",
+			"font",
+			"hack",
+			"font",
+			"mario/",
+			"background",
+			"theme",
+			"scheme",
+			"color",
+			"theme",
+			"sortOn",
+			"if",
+			"loadurl",
+			"url",
+			"shell",
+			"alter",
+			"shell",
+			"external"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			" ",
+			"\\\""
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 3,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "lib/agent.ex",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1188,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								346,
+								346
+							]
+						],
+						"settings":
+						{
+							"bracket_highlighter.busy": false,
+							"bracket_highlighter.locations":
+							{
+								"close":
+								{
+									"1":
+									[
+										395,
+										398
+									]
+								},
+								"icon":
+								{
+									"1":
+									[
+										"Packages/BracketHighlighter/icons/dot.png",
+										"brackethighlighter.default"
+									]
+								},
+								"open":
+								{
+									"1":
+									[
+										344,
+										346
+									]
+								},
+								"unmatched":
+								{
+								}
+							},
+							"bracket_highlighter.regions":
+							[
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_curly_content",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_round_content",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_single_quote_content",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_unmatched_content",
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
+								"bh_c_define_content",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_angle_content",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_tag_content",
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_regex_content",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_square_content"
+							],
+							"syntax": "Packages/Elixir/Syntaxes/Elixir.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 128.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "lib/parsing_util.ex",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 405,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								10,
+								20
+							]
+						],
+						"settings":
+						{
+							"bracket_highlighter.busy": false,
+							"bracket_highlighter.locations":
+							{
+								"close":
+								{
+								},
+								"icon":
+								{
+								},
+								"open":
+								{
+								},
+								"unmatched":
+								{
+								}
+							},
+							"bracket_highlighter.regions":
+							[
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_curly_content",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_round_content",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_single_quote_content",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_unmatched_content",
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
+								"bh_c_define_content",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_angle_content",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_tag_content",
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_regex_content",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_square_content"
+							],
+							"syntax": "Packages/Elixir/Syntaxes/Elixir.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": ".vscode/tasks.json",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 241,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								239,
+								239
+							]
+						],
+						"settings":
+						{
+							"auto_complete": true,
+							"bracket_highlighter.busy": false,
+							"bracket_highlighter.locations":
+							{
+								"close":
+								{
+									"1":
+									[
+										238,
+										239
+									]
+								},
+								"icon":
+								{
+									"1":
+									[
+										"Packages/BracketHighlighter/icons/double_quote.png",
+										"brackethighlighter.default"
+									]
+								},
+								"open":
+								{
+									"1":
+									[
+										231,
+										232
+									]
+								},
+								"unmatched":
+								{
+								}
+							},
+							"bracket_highlighter.regions":
+							[
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_curly_content",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_round_content",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_single_quote_content",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_unmatched_content",
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
+								"bh_c_define_content",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_angle_content",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_tag_content",
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_regex_content",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_square_content"
+							],
+							"syntax": "Packages/JavaScript/JSON.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "exagent.sublime-project",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 90,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								90,
+								90
+							]
+						],
+						"settings":
+						{
+							"auto_complete": true,
+							"bracket_highlighter.busy": false,
+							"bracket_highlighter.locations":
+							{
+								"close":
+								{
+									"1":
+									[
+										88,
+										89
+									]
+								},
+								"icon":
+								{
+									"1":
+									[
+										"Packages/BracketHighlighter/icons/curly_bracket.png",
+										"brackethighlighter.default"
+									]
+								},
+								"open":
+								{
+									"1":
+									[
+										0,
+										1
+									]
+								},
+								"unmatched":
+								{
+								}
+							},
+							"bracket_highlighter.regions":
+							[
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_curly_content",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_round_content",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_single_quote_content",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_unmatched_content",
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
+								"bh_c_define_content",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_angle_content",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_tag_content",
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_regex_content",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_square_content"
+							],
+							"syntax": "Packages/JavaScript/JSON.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "lib/belief_base.ex",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2326,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								797,
+								797
+							]
+						],
+						"settings":
+						{
+							"bracket_highlighter.busy": false,
+							"bracket_highlighter.locations":
+							{
+								"close":
+								{
+									"1":
+									[
+										847,
+										850
+									]
+								},
+								"icon":
+								{
+									"1":
+									[
+										"Packages/BracketHighlighter/icons/dot.png",
+										"brackethighlighter.default"
+									]
+								},
+								"open":
+								{
+									"1":
+									[
+										795,
+										797
+									]
+								},
+								"unmatched":
+								{
+								}
+							},
+							"bracket_highlighter.regions":
+							[
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_curly_content",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_round_content",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_single_quote_content",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_unmatched_content",
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
+								"bh_c_define_content",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_angle_content",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_tag_content",
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_regex_content",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_square_content"
+							],
+							"syntax": "Packages/Elixir/Syntaxes/Elixir.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 75.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 5,
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "lib/mock_agent.ex",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 0,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"bracket_highlighter.busy": false,
+							"bracket_highlighter.locations":
+							{
+								"close":
+								{
+								},
+								"icon":
+								{
+								},
+								"open":
+								{
+								},
+								"unmatched":
+								{
+								}
+							},
+							"bracket_highlighter.regions":
+							[
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_curly_content",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_round_content",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_single_quote_content",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_unmatched_content",
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
+								"bh_c_define_content",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_angle_content",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_tag_content",
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_regex_content",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_square_content"
+							],
+							"open_with_edit": true,
+							"syntax": "Packages/Elixir/Syntaxes/Elixir.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 7,
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "lib/rule.ex",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 274,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								181,
+								185
+							]
+						],
+						"settings":
+						{
+							"bracket_highlighter.busy": false,
+							"bracket_highlighter.locations":
+							{
+								"close":
+								{
+									"1":
+									[
+										202,
+										203
+									]
+								},
+								"icon":
+								{
+									"1":
+									[
+										"Packages/BracketHighlighter/icons/curly_bracket.png",
+										"brackethighlighter.default"
+									]
+								},
+								"open":
+								{
+									"1":
+									[
+										185,
+										186
+									]
+								},
+								"unmatched":
+								{
+								}
+							},
+							"bracket_highlighter.regions":
+							[
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_curly_content",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_round_content",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_single_quote_content",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_unmatched_content",
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
+								"bh_c_define_content",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_angle_content",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_tag_content",
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_regex_content",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_square_content"
+							],
+							"syntax": "Packages/Elixir/Syntaxes/Elixir.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 9,
+					"type": "text"
+				}
+			]
+		},
+		{
+			"selected": 0,
+			"sheets":
+			[
+				{
+					"buffer": 7,
+					"file": "test/mock_agent_test.exs",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 881,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								172,
+								172
+							]
+						],
+						"settings":
+						{
+							"bracket_highlighter.busy": false,
+							"bracket_highlighter.locations":
+							{
+								"close":
+								{
+									"1":
+									[
+										171,
+										172
+									]
+								},
+								"icon":
+								{
+									"1":
+									[
+										"Packages/BracketHighlighter/icons/round_bracket.png",
+										"brackethighlighter.default"
+									]
+								},
+								"open":
+								{
+									"1":
+									[
+										159,
+										160
+									]
+								},
+								"unmatched":
+								{
+								}
+							},
+							"bracket_highlighter.regions":
+							[
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_curly_content",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_round_content",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_single_quote_content",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_unmatched_content",
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
+								"bh_c_define_content",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_angle_content",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_tag_content",
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_regex_content",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_square_content"
+							],
+							"open_with_edit": true,
+							"syntax": "Packages/Elixir/Syntaxes/Elixir.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 8,
+					"file": "test/belief_utils_test.exs",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 723,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								493,
+								712
+							]
+						],
+						"settings":
+						{
+							"bracket_highlighter.busy": false,
+							"bracket_highlighter.locations":
+							{
+								"close":
+								{
+									"1":
+									[
+										715,
+										718
+									]
+								},
+								"icon":
+								{
+									"1":
+									[
+										"Packages/BracketHighlighter/icons/dot.png",
+										"brackethighlighter.default"
+									]
+								},
+								"open":
+								{
+									"1":
+									[
+										264,
+										266
+									]
+								},
+								"unmatched":
+								{
+								}
+							},
+							"bracket_highlighter.regions":
+							[
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_curly_content",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_round_content",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_single_quote_content",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_unmatched_content",
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
+								"bh_c_define_content",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_angle_content",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_tag_content",
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_regex_content",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_square_content"
+							],
+							"history_list_is_closing": true,
+							"open_with_edit": true,
+							"syntax": "Packages/Elixir/Syntaxes/Elixir.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 6,
+					"type": "text"
+				},
+				{
+					"buffer": 9,
+					"file": "test/belief_base_test.exs",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 3050,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2900,
+								2900
+							]
+						],
+						"settings":
+						{
+							"bracket_highlighter.busy": false,
+							"bracket_highlighter.locations":
+							{
+								"close":
+								{
+									"1":
+									[
+										2916,
+										2919
+									]
+								},
+								"icon":
+								{
+									"1":
+									[
+										"Packages/BracketHighlighter/icons/dot.png",
+										"brackethighlighter.default"
+									]
+								},
+								"open":
+								{
+									"1":
+									[
+										2893,
+										2895
+									]
+								},
+								"unmatched":
+								{
+								}
+							},
+							"bracket_highlighter.regions":
+							[
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_curly_content",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_round_content",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_single_quote_content",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_unmatched_content",
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
+								"bh_c_define_content",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_angle_content",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_tag_content",
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_regex_content",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_square_content"
+							],
+							"history_list_is_closing": true,
+							"syntax": "Packages/Elixir/Syntaxes/Elixir.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 890.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 8,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 27.0
+	},
+	"input":
+	{
+		"height": 37.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			],
+			[
+				1,
+				0,
+				2,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			0.5,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.exec":
+	{
+		"height": 246.0
+	},
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "Packages/Elixir/elixir-mix-test.sublime-build",
+	"project": "exagent.sublime-project",
+	"replace":
+	{
+		"height": 50.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"beliefut",
+				"lib/belief_util.ex"
+			],
+			[
+				"beleif",
+				"lib/belief_base.ex"
+			],
+			[
+				"mock",
+				"lib/mock_agent.ex"
+			],
+			[
+				"belte",
+				"test/belief_base_test.exs"
+			],
+			[
+				"eventtest",
+				"test/event_test.exs"
+			],
+			[
+				"beleifbte",
+				"test/belief_base_test.exs"
+			],
+			[
+				"beli",
+				"lib/belief_base.ex"
+			],
+			[
+				"agenttes",
+				"test/exagent_test.exs"
+			],
+			[
+				"exa",
+				"lib/exagent.ex"
+			],
+			[
+				"parsing",
+				"lib/parsing_utils.ex"
+			],
+			[
+				"unifie",
+				"lib/unifier.ex"
+			],
+			[
+				"belief",
+				"lib/belief_base.ex"
+			],
+			[
+				"parsi",
+				"lib/parsing_utils.ex"
+			],
+			[
+				"unif",
+				"test/unifier_test.exs"
+			],
+			[
+				"exage",
+				"lib/exagent.ex"
+			],
+			[
+				"capabil",
+				"app/models/account/capabilities.rb"
+			],
+			[
+				"build",
+				"scripts/release/check_build.sh"
+			],
+			[
+				"copy_pod_public",
+				"scripts/release/copy_pod_public.sh"
+			],
+			[
+				"copy_pod_files",
+				"scripts/release/copy_pod_files.sh"
+			],
+			[
+				"push",
+				"scripts/release/push_public.sh"
+			],
+			[
+				"git_scripts",
+				"scripts/release/git_scripts.sh"
+			],
+			[
+				"push_public",
+				"scripts/release/push_public.sh"
+			],
+			[
+				"update_version",
+				"scripts/release/update_version.sh"
+			],
+			[
+				"copy_files",
+				"scripts/release/copy_files.sh"
+			],
+			[
+				"release_build",
+				"scripts/release/release_build.sh"
+			],
+			[
+				"check",
+				"scripts/release/check_params.sh"
+			],
+			[
+				"copyf",
+				"scripts/release/copy_files.sh"
+			],
+			[
+				"releases",
+				"scripts/release/release_build.sh"
+			],
+			[
+				"checkpara",
+				"scripts/release/check_params.sh"
+			],
+			[
+				"mix",
+				"mix.exs"
+			],
+			[
+				"flowdoc",
+				"scripts/service/flowdock.js"
+			],
+			[
+				"main.",
+				"main.js"
+			],
+			[
+				"json",
+				"yaspeller_report.json"
+			],
+			[
+				"migr",
+				"migration.md"
+			],
+			[
+				"get",
+				"gettingstarted.md"
+			],
+			[
+				"authe",
+				"authentication.md"
+			],
+			[
+				"unity",
+				"Unity3D_plugin.md"
+			],
+			[
+				"mobilesdkla",
+				"test/fixtures/mobile_sdk_apps.yml"
+			],
+			[
+				"onboarding.css.scss",
+				"app/assets/stylesheets/views/mobile_sdk/onboarding.css.scss"
+			],
+			[
+				"_andr",
+				"app/views/mobile/sdk/apps/_android_code_snippet.html.erb"
+			],
+			[
+				"zour",
+				"config/zuora.yml.example"
+			],
+			[
+				"redis.y",
+				"config/redis.yml.example"
+			],
+			[
+				"_ios",
+				"app/views/mobile/sdk/apps/_ios_code_snippet.html.erb"
+			],
+			[
+				"redis_clusters.yml",
+				"config/redis_clusters.yml.example"
+			],
+			[
+				"networ",
+				"config/networks.yml.example"
+			],
+			[
+				"config/gooddata.yml",
+				"config/gooddata.yml.example"
+			],
+			[
+				"rubyve",
+				".ruby-version"
+			],
+			[
+				".rb",
+				".ruby-env"
+			],
+			[
+				"gemfile",
+				"Gemfile"
+			],
+			[
+				"app/views/mobile/sdk/apps/_iosc",
+				"app/views/mobile/sdk/apps/_ios_code_snippet.html.erb"
+			],
+			[
+				"app/views/mobile/sdk/apps/_an",
+				"app/views/mobile/sdk/apps/_android_code_snippet.html.erb"
+			],
+			[
+				"cus",
+				"customization.md"
+			],
+			[
+				"release",
+				"release_notes.md"
+			],
+			[
+				"migration",
+				"migration.md"
+			],
+			[
+				"latit",
+				"lib/latitude_adjustment.ex"
+			],
+			[
+				"lat",
+				"lib/latitude_adjustment.ex"
+			],
+			[
+				"mode",
+				"lib/prayer_times_modes.ex"
+			],
+			[
+				"he",
+				"lib/hello.ex"
+			],
+			[
+				"templa",
+				"layouts/partials/template.css"
+			],
+			[
+				"head.",
+				"themes/landing-page-mine/layouts/partials/head.html"
+			],
+			[
+				"run.",
+				"config/run.yml"
+			],
+			[
+				"bun",
+				"config/bunyip.yml"
+			],
+			[
+				"zdi",
+				"dockmaster/zdi.sh"
+			],
+			[
+				"setup_dockerhost",
+				"bin/setup_dockerhost"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 500.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"",
+				"~/Documents/Elixir/hello_phoenix/markdowner.sublime-workspace"
+			]
+		],
+		"width": 380.0
+	},
+	"select_symbol":
+	{
+		"height": 400.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 400.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 286.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

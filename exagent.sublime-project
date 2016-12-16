@@ -1,0 +1,18 @@
+{
+	"folders":
+	[
+		{
+			"path": ".",
+      "folder_exclude_patterns": ["_build"],
+      "file_exclude_patterns": ["*.sublime-workspace"]
+		}
+	],
+  "build_systems":
+  [
+      {
+          "name": "mix",
+          "working_dir": "${project_path}",
+          "shell_cmd": "mix test"
+      }
+  ]
+}

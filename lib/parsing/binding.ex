@@ -1,0 +1,3 @@
+defmodule Binding do
+
+end

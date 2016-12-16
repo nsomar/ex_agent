@@ -1,4 +1,4 @@
-defmodule BeliefsTest do
+defmodule UnifierTest do
   use ExUnit.Case
 
   doctest Unifier
@@ -254,36 +254,36 @@ defmodule BeliefsTest do
 
     test "test it unifies when the function passes" do
       tests = [{:car, {:cost, :X}}, {:car, {:color, :red}}]
-      res = Unifier.unify_list(@b2, tests, fn unification-> unification[:X] > 100 end)
+      res = Unifier.unify_list(@b2, tests, fn x -> x > 100 end)
       assert res == [[X: 1000]]
     end
 
     test "test it unifies when the function passes with multiple results" do
       tests = [{:cost, {:X, :Y}}, {:money, {:Y}}, {:color, {:X, :Z}}]
-      res = Unifier.unify_list(@bcosts, tests, fn r ->
-        r[:X] == :car && r[:Z] == :red
+      res = Unifier.unify_list(@bcosts, tests, fn x, _, z ->
+        x == :car && z == :red
       end)
       assert res == [[X: :car, Y: 1000, Z: :red]]
     end
 
     test "test it unifies when the function passes with multiple results 2" do
       tests = [{:cost, {:X, :Y}}, {:color, {:X, :Z}}]
-      res = Unifier.unify_list(@bcosts, tests, fn r ->
-        r[:X] == :iphone && r[:Z] == :black
+      res = Unifier.unify_list(@bcosts, tests, fn x, _, z ->
+        x == :iphone && z == :black
       end)
       assert res == [[X: :iphone, Y: 500, Z: :black]]
     end
 
     test "test it does not unifie when the function fails" do
       tests = [{:car, {:cost, :X}}, {:car, {:color, :red}}]
-      res = Unifier.unify_list(@b2, tests, fn unification-> unification[:X] > 10000 end)
+      res = Unifier.unify_list(@b2, tests, fn x-> x > 10000 end)
       assert res == :cant_unify
     end
 
     test "test it does not unifie when the function does not find arguments" do
       tests = [{:car, {:cost, :X}}, {:car, {:color, :red}}]
-      res = Unifier.unify_list(@b2, tests, fn unification->
-        Keyword.get(unification, :W, 0) > 10000
+      res = Unifier.unify_list(@b2, tests, fn x->
+        x > 10000
       end)
       assert res == :cant_unify
     end

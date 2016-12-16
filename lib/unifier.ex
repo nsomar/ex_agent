@@ -45,7 +45,13 @@ defmodule Unifier do
   # Filter a list of binding by passing them through a filter
   defp prepare_list_for_return(list, nil), do: list
   defp prepare_list_for_return(list, func) do
-    case Enum.filter(list, func) do
+    func_arg_count = ParsingUtils.func_arity(func)
+
+    res = Enum.filter(list, fn item ->
+      params = item |> Enum.map(fn {_, bound} -> bound end)
+      apply_params_to_func(func, func_arg_count, params)
+    end)
+    case res do
       [] -> :cant_unify
       res -> res
     end
@@ -64,7 +70,7 @@ defmodule Unifier do
   def unify(list, {term, statement})
    when is_list(list) do
 
-    BeliefUtil.get_statements_matching_term(list, term)
+    ParsingUtils.get_statements_matching_term(list, term)
     |> Enum.map(fn bel ->
       unify(bel, statement)
     end)
@@ -87,7 +93,7 @@ defmodule Unifier do
      cond do
        hr == hl ->
          unify(tl, tr, binding)
-       var?(hr) ->
+       ParsingUtils.var?(hr) ->
          unify(tl, tr, binding ++ [{hr, hl}])
        true ->
          :cant_unify
@@ -106,7 +112,7 @@ defmodule Unifier do
   def unify_beleifs_with_test_and_bindings(beleifs, test, bindings) do
     [h| _] = bindings
 
-    if test_contains_binding(test, h) do
+    if ParsingUtils.test_contains_binding(test, h) do
       multiple_bind_variables(test, bindings)
       |> Enum.map(fn {binding, bound_test} ->
         # IO.inspect bound_test
@@ -181,7 +187,7 @@ defmodule Unifier do
     Tuple.to_list(statement)
     |> Enum.map(fn x ->
      cond do
-       var?(x) and binding_contains_var(binding, x) -> binding[x]
+       ParsingUtils.var?(x) and ParsingUtils.binding_contains_var?(binding, x) -> binding[x]
        true -> x
      end
    end)
@@ -190,34 +196,10 @@ defmodule Unifier do
     {term, res}
   end
 
-  # Check if test contains any variable in the binding
-  # Takes first: {:money, {:Y}}
-  # second: [Y: :"1234"]
-  # returns true
-  def test_contains_binding({_, test}, binding) do
-    Tuple.to_list(test)
-    |> Enum.any?(fn item ->
-      cond do
-        var?(item) and binding_contains_var(binding, item) -> true
-        true -> false
-      end
-    end)
-  end
-
-  # Check if an atom is a variable
-  defp var?(atom) when not is_atom(atom), do: false
-  defp var?(atom) do
-    char = String.at(Atom.to_string(atom), 0)
-    equal_case = String.upcase(char) == char
-    not_int = :error == Integer.parse(char)
-    not_int and equal_case
-  end
-
-  # Check if binding contains a varialbe
-  # Takes first: [Y: :"1234"]
-  # second: :Y
-  # returns true
-  defp binding_contains_var(binding, variable),
-    do: binding[variable] != nil
+  # Apply a set of params to a func if the airty match
+  defp apply_params_to_func(func, airty, params) when length(params) == airty,
+    do: apply(func, params)
+  defp apply_params_to_func(_, _, _),
+    do: false
 
  end
