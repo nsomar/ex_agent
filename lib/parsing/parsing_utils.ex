@@ -53,15 +53,4 @@ defmodule ParsingUtils do
   def get_beleif_statement({_, statement}), do: statement
   def get_beleif_statement(_), do: :no_term
 
-  def parse_beliefs([do: statements]) do
-    do_parse_belief(statements)
-  end
-
-  defp do_parse_belief({:__block__, _, beliefs}) when is_list(beliefs) do
-    Enum.map(beliefs, &do_parse_belief/1)
-  end
-
-  defp do_parse_belief({belief, _, params} = statements) when is_tuple(statements) do
-   {belief, List.to_tuple(params)}
-  end
 end

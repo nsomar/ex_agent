@@ -1,3 +1,0 @@
-defmodule Binding do
-
-end

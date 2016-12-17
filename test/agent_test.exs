@@ -3,13 +3,13 @@ defmodule ExagentTest do
   doctest EXAgent
 
   test "can get the beleif base" do
-    {:ok, agent} = EXAgent.create()
+    agent = EXAgent.create()
     val = EXAgent.belief_base(agent)
     assert val != nil
   end
 
   test "can get the beleifs from belief base" do
-    {:ok, agent} = EXAgent.create()
+    agent = EXAgent.create()
     bb = EXAgent.belief_base(agent)
     BeliefBase.add_belief(bb, {:abcd})
 

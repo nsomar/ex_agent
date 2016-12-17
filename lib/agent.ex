@@ -10,16 +10,19 @@ defmodule EXAgent do
     end
   end
 
-  defmacro initial_beliefs(funcs) do
-    res = ParsingUtils.parse_beliefs(funcs)
+  defmacro initialize(funcs) do
+    beliefs = funcs |> Parsing.Macro.parse_beliefs |> Macro.escape
+    goals = funcs |> Parsing.Macro.parse_beliefs |> Macro.escape
     quote do
-      def initial_beliefs, do: unquote(res)
+      def initial_beliefs, do: unquote(beliefs)
+      def initial_goals, do: unquote(goals)
     end
   end
 
-  defmacro agent_name(name) do
+  defmacro on(trigger, context, function) do
+    IO.inspect {context}
     quote do
-      Process.whereis(__MODULE__) |> IO.inspect
+      1
     end
   end
 
