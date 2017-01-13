@@ -2,12 +2,19 @@ defmodule MacroParsingTest do
   use ExUnit.Case
 
   test "it can parse 1 belief base from macro" do
+    # do: man(:omar)
     bb = [do: {:man, [line: 10], [:omar]}]
 
     assert Parsing.Macro.parse_beliefs(bb) == [{:man, {:omar}}]
   end
 
   test "it can parse multiple beliefs base from macro" do
+    # .... do
+    #   cost(:car, 1000)
+    #   cost(:iphone, 1000)
+    #   ...
+    # end
+
     bb = [do: {:__block__, [],
   [{:cost, [line: 5], [:car, 10000]}, {:cost, [line: 6], [:iphone, 500]},
    {:color, [line: 7], [:car, :red]}, {:color, [line: 8], [:iphone, :black]},
@@ -24,16 +31,29 @@ defmodule MacroParsingTest do
   end
 
   test "can parse goals and beliefs when goals have no parameters" do
+    # .... do
+    #   cost(:car, 1000)
+    #   !buy()
+    #   ...
+    # end
+
     bb = [do:
     {:__block__, [],[
       {:money, [], 'o'},
       {:!, [context: Elixir, import: Kernel], [{:buy, [], Elixir}]}
     ]}]
+
     assert Parsing.Macro.parse_beliefs(bb) == [{:money, {111}}]
     assert Parsing.Macro.parse_goals(bb) == [{:buy, []}]
   end
 
   test "can parse goals and beliefs when goals have empty parameters" do
+    # .... do
+    #   cost(:car, 1000)
+    #   !buy()
+    #   ...
+    # end
+
     bb = [do:
     {:__block__, [],[
       {:money, [], 'o'},
@@ -44,6 +64,12 @@ defmodule MacroParsingTest do
   end
 
   test "can parse goals and beliefs when goals have parameters" do
+    # .... do
+    #   cost(:car, 1000)
+    #   !buy(:car, 1)
+    #   ...
+    # end
+
     bb = [do:
     {:__block__, [],[
       {:money, [], 'o'},
@@ -54,6 +80,11 @@ defmodule MacroParsingTest do
   end
 
   test "can get the added_belief trigger type" do
+    # rule (+cost(:car, X)) do
+    #   cost(:car, 1000)
+    #   !buy(:car, 1)
+    # end
+
     trigger = {{:+, [line: 85],
     [{:cost, [line: 85], [:car, {:__aliases__, [counter: 0, line: 85], [:X]}]}]}}
     assert Parsing.Macro.parse_trigger(trigger) |> elem(0) ==
@@ -61,6 +92,11 @@ defmodule MacroParsingTest do
   end
 
   test "can get the added_goal trigger type" do
+    # rule (+!cost(:car, X)) do
+    #   cost(:car, 1000)
+    #   !buy(:car, 1)
+    # end
+
     trigger = {{:+, [line: 86],
   [{:!, [line: 86],
     [{:cost, [line: 86], [{:__aliases__, [counter: 0, line: 86], [:X]}]}]}]}}
@@ -70,6 +106,11 @@ defmodule MacroParsingTest do
   end
 
   test "can get the removed_belief trigger type" do
+    # rule (-cost(:car, X)) do
+    #   cost(:car, 1000)
+    #   !buy(:car, 1)
+    # end
+
     trigger = {{:-, [line: 85],
     [{:cost, [line: 85], [:car, {:__aliases__, [counter: 0, line: 85], [:X]}]}]}}
     assert Parsing.Macro.parse_trigger(trigger) |> elem(0) ==
@@ -77,6 +118,11 @@ defmodule MacroParsingTest do
   end
 
   test "can get the removed_goal trigger type" do
+    # rule (-!cost(:car, X)) do
+    #   cost(:car, 1000)
+    #   !buy(:car, 1)
+    # end
+
     trigger = {{:-, [line: 85],
   [{:!, [line: 85],
     [{:cost, [line: 85],
@@ -87,6 +133,11 @@ defmodule MacroParsingTest do
   end
 
   test "can get the added_belief trigger event" do
+    # rule (+cost(:car, X)) do
+    #   cost(:car, 1000)
+    #   !buy(:car, 1)
+    # end
+
     trigger = {{:+, [line: 85],
     [{:cost, [line: 85], [:car, {:__aliases__, [counter: 0, line: 85], [:X]}]}]}}
     assert Parsing.Macro.parse_trigger(trigger) |> elem(1) ==
@@ -94,6 +145,11 @@ defmodule MacroParsingTest do
   end
 
   test "can get the added_goal trigger event" do
+    # rule (+cost(:car, X)) do
+    #   cost(:car, 1000)
+    #   !buy(:car, 1)
+    # end
+
     trigger = {{:+, [line: 85], [{:!, [line: 85], [{:cost, [line: 85], [:car, 100]}]}]}}
 
     assert Parsing.Macro.parse_trigger(trigger) |> elem(1) ==
@@ -101,6 +157,8 @@ defmodule MacroParsingTest do
   end
 
   test "can get the added_goal trigger event 2" do
+    # as above
+
     trigger = {{:+, [line: 86],
   [{:!, [line: 86],
     [{:cost, [line: 86], [{:__aliases__, [counter: 0, line: 86], [:X]}]}]}]}}
@@ -110,6 +168,12 @@ defmodule MacroParsingTest do
   end
 
   test "can parse the rule with single context" do
+
+    # rule (-cost(2)), (nice(X) && ugly(Y) && cute(X))  do
+    #   cost(:car, 1000)
+    #   !buy(:car, 1)
+    # end
+
     context = {{:nice, [line: 86],
   [{:__aliases__, [counter: 0, line: 86], [:X]},
    {:__aliases__, [counter: 0, line: 86], [:Z]}]}}
@@ -119,6 +183,10 @@ defmodule MacroParsingTest do
   end
 
   test "can parse the rule context without tailing functions" do
+    # rule (-cost(2)), (nice(X) && ugly(Y) && cute(X))  do
+    #   cost(:car, 1000)
+    #   !buy(:car, 1)
+    # end
     context = {{:&&, [line: 86],
   [{:money, [line: 86], [{:__aliases__, [counter: 0, line: 86], [:Y]}]},
    {:nice, [line: 86],
@@ -130,6 +198,11 @@ defmodule MacroParsingTest do
   end
 
   test "can parse the rule context with 3 contextes" do
+    # rule (-cost(2)), (nice(X) && ugly(Y) && cute(X))  do
+    #   cost(:car, 1000)
+    #   !buy(:car, 1)
+    # end
+    #
     context = {{:&&, [line: 86],
   [{:&&, [line: 86],
     [{:money, [line: 86], [{:__aliases__, [counter: 0, line: 86], [:Z]}]},
@@ -141,6 +214,13 @@ defmodule MacroParsingTest do
   end
 
   test "can parse the rule context with tailing functions" do
+    # rule (-cost(2)), (money(Z) && nice(Y) && cute(X))  do
+    #   cost(:car, 1000)
+    #   !buy(:car, 1)
+    # end
+    #
+    # ctx money(Z) && nice(Y) && fn x,y -> x > y en
+
     context = {{:&&, [line: 86],
   [{:&&, [line: 86],
     [{:money, [line: 86], [{:__aliases__, [counter: 0, line: 86], [:Z]}]},
