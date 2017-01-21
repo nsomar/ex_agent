@@ -1,5 +1,13 @@
 defmodule Rule do
-  defstruct [:event, :context, :body]
+  defstruct [:head, :body]
+
+  def create(head, body) do
+    %Rule {
+      head: RuleHead.create(head),
+      body: RuleBody.parse(body)
+    }
+  end
+
 end
 
 defmodule PlanRules do

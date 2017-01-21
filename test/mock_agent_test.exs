@@ -83,7 +83,7 @@ defmodule MockAgentTest do
         !buy_stuff
       end
 
-      on(+!cost(X, Y), money(Z) && nice(X) && not want_to_buy(X) &&
+      on(+cost(X, Y), money(Z) && nice(X) && not want_to_buy(X) &&
          fn x, y, z -> x == y end) do
 
       end

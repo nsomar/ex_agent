@@ -1,4 +1,33 @@
-defmodule Parsing.Macro do
+defmodule RuleBody do
+
+  defstruct [:instructions]
+
+  def parse([do: statements]) do
+    do_parse(statements)
+  end
+
+  defp do_parse({:__block__, _, statements}) do
+    Enum.map(statements, &do_parse_item/1)
+  end
+
+  defp do_parse(statements) when is_tuple(statements) do
+   [do_parse_item(statements)]
+  end
+
+  defp do_parse_item({:!, _, [goal]} = statements) when is_tuple(statements) do
+    case goal do
+      {name, _, Elixir} -> {:goal, {name, []}}
+      {name, _, params} -> {:goal, {name, params}}
+      true -> :not_a_goal
+    end
+  end
+
+  defp do_parse_item({statement, _, params} = statements) when is_tuple(statements) do
+    {:belief, {statement, List.to_tuple(params)}}
+  end
+
+
+  # To delete
 
   def parse_beliefs([do: statements]) do
     statements |> do_parse_beliefs |> remove_non_beliefs
@@ -52,56 +81,10 @@ defmodule Parsing.Macro do
     end
   end
 
-  # Parse rule trigger
-  # -------------------
-  #
-  def parse_trigger(trigger) do
-    do_parse_trigger(trigger)
-  end
-
-  defp do_parse_trigger({{:+, _, [{:!, _, [event]}]}}),
-    do: {TriggerType.added_goal, parse_event_test(event)}
-
-  defp do_parse_trigger({{:+, _, [event]}}),
-    do: {TriggerType.added_belief, parse_event_test(event)}
-
-  defp do_parse_trigger({{:-, _, [{:!, _, [event]}]}}),
-    do: {TriggerType.removed_goal, parse_event_test(event)}
-
-  defp do_parse_trigger({{:-, _, [event]}}),
-    do: {TriggerType.removed_belief, parse_event_test(event)}
-
-  defp parse_event_parameter({:__aliases__, _, [param]}), do: param
-  defp parse_event_parameter(param), do: param
-
-  # Parse rule context
-  # -------------------
-  #
-  def parse_rule_context(context) do
-    do_parse_rule_context(context)
-  end
-
-  defp do_parse_rule_context({tests}) do
-    [parse_event_test(tests)] |> List.flatten
-  end
-
-  def parse_event_test({:&&, _, tests}) do
-    Enum.map(tests, &parse_event_test/1)
-  end
-
-  def parse_event_test({belief, _, params}) do
-    # IO.inspect {belief, params}
-    tuple =
-      params
-      |> Enum.map(&parse_event_parameter/1)
-      |> List.to_tuple
-    {belief, tuple}
-  end
-
+  # Utils
   defp remove_non_beliefs(beliefs),
     do: Enum.filter(beliefs, fn x -> x != :not_a_belief end)
 
   defp remove_non_goals(goals),
     do: Enum.filter(goals, fn x -> x != :not_a_goal end)
-
 end

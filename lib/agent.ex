@@ -11,16 +11,24 @@ defmodule EXAgent do
   end
 
   defmacro initialize(funcs) do
-    beliefs = funcs |> Parsing.Macro.parse_beliefs |> Macro.escape
-    goals = funcs |> Parsing.Macro.parse_beliefs |> Macro.escape
+    beliefs = funcs |> RuleBody.parse_beliefs |> Macro.escape
+    goals = funcs |> RuleBody.parse_beliefs |> Macro.escape
     quote do
       def initial_beliefs, do: unquote(beliefs)
       def initial_goals, do: unquote(goals)
     end
   end
 
+  # on(+cost(X, Y), money(Z) && nice(X) && not want_to_buy(X) &&
+  #        fn x, y, z -> x == y end) do
   defmacro on(trigger, context, function) do
-    IO.inspect {context}
+    quote do
+      1
+    end
+  end
+
+  # rule (+!buy(X)) when money(Z) && cost(X, C) && test Z > X && test Z == X do
+  defmacro rule(rule_head, body) do
     quote do
       1
     end
