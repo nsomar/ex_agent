@@ -14,18 +14,24 @@ defmodule RuleBody do
    [do_parse_item(statements)]
   end
 
-  defp do_parse_item({:!, _, [goal]} = statements) when is_tuple(statements) do
-    case goal do
-      {name, _, Elixir} -> {:goal, {name, []}}
-      {name, _, params} -> {:goal, {name, params}}
-      true -> :not_a_goal
-    end
+  defp do_parse_item({:!, _, _} = statements) when is_tuple(statements) do
+    AchieveGoal.parse(statements)
   end
 
-  defp do_parse_item({statement, _, params} = statements) when is_tuple(statements) do
-    {:belief, {statement, List.to_tuple(params)}}
+  defp do_parse_item({:+, _, _} = statements) when is_tuple(statements) do
+    AddBelief.parse(statements)
   end
 
+  defp do_parse_item({:-, _, _} = statements) when is_tuple(statements) do
+    RemoveBelief.parse(statements)
+  end
+
+  defp parse_params(params) do
+    Enum.map(params, &parse_param/1)
+  end
+
+  defp parse_param({:__aliases__, _, [param]}), do: param
+  defp parse_param(param), do: param
 
   # To delete
 

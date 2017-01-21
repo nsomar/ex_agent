@@ -1,9 +1,10 @@
 defmodule Rule do
   defstruct [:head, :body]
 
-  def create(head, body) do
+  def parse(head, body) do
+    body |> IO.inspect
     %Rule {
-      head: RuleHead.create(head),
+      head: RuleHead.parse(head),
       body: RuleBody.parse(body)
     }
   end

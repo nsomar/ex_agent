@@ -24,7 +24,7 @@ defmodule RuleTest do
              [{:__aliases__, [counter: 0, line: 24], [:Z]},
               {:__aliases__, [counter: 0, line: 24], [:Y]}]}]}]}]}
 
-    assert Rule.create(head, body) ==
+    assert Rule.parse(head, body) ==
     %Rule{
       body: [
         belief: {:money, {111}},

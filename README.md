@@ -18,3 +18,36 @@ If [available in Hex](https://hex.pm/docs/publish), the package can be installed
           [applications: [:exagent]]
         end
 
+## Structure
+
+```
+rule (+!buy(X)) when cost(X, Y) && money(Z) && test Z >= Y do
+end
+```
+
+Rule:
+    - Head
+    - Body
+
+Rule Head:
+    - Rule Event
+    - Rule Context
+
+Rule Trigger:
+    - Event Type (Added / Removed Goal / Beliefs)
+    - Trigger Context. The context that triggered the event
+
+Rule Context:
+    - Tests
+    - Context Function
+
+RuleBody:
+  - Instructions
+
+Instructions:
+- Add belief ✔︎
+- Remove Belief ✔︎
+- Query Belief 
+- Achieve Goal ✔︎
+- Internal Action
+- Send message
