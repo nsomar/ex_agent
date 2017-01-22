@@ -60,3 +60,49 @@ Instructions:
 agent           -> (initial_beliefs, initial_goals)* plans
 initial_beliefs -> beleifs rules
 
+
+### Plan Rule Example
+
+```
+[
+  %Rule{
+    body: [
+      %InternalAction{a: {:print, {"I am really happy man!!!"}}}
+    ],
+    head: %RuleHead{
+      context: 
+        %RuleContext{contexts: [], function: nil},
+      trigger: 
+        %RuleTrigger{event: :added_belief, trigger: {:owns, {:X}}}
+    }
+  },
+  %Rule{
+    body: [
+      %AddBelief{b: {:owns, {:X}}}, 
+      %QueryBelief{b: {:happy, {:N}}},
+      %InternalAction{a: {:print, {:X}}}
+    ],
+    head: %RuleHead{
+      context: 
+        %RuleContext{
+          contexts: [
+            cost: {:X, :Y}, 
+            money: {:Z}
+          ],
+          function: 
+            %ContextFunction{
+              ast: 
+                {:>=, [],
+                [{:__aliases__, [], [:Z]}, {:__aliases__, [], [:Y]}]},
+              number_of_params: 2, 
+              params: [:Z, :Y]}
+        },
+      trigger: 
+        %RuleTrigger{
+          event: :added_goal, 
+          trigger: {:buy, {:X}}
+        }
+    }
+  }
+]
+```
