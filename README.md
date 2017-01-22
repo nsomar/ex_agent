@@ -49,5 +49,14 @@ Instructions:
 - Remove Belief ✔︎
 - Query Belief ︎✔︎
 - Achieve Goal ✔︎
-- Internal Action
-- Send message
+- Internal Action ✔︎
+- Send message ✔︎
+
+## Runtime
+
+
+## BNF Grammar
+
+agent           -> (initial_beliefs, initial_goals)* plans
+initial_beliefs -> beleifs rules
+

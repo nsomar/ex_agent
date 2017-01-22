@@ -18,9 +18,12 @@ defmodule EndToEndTest do
         &print("I am really happy man!!!")
       end
 
+      start
     end
 
-    Test1.plan_rules |> IO.inspect
+    events = Test1.plan_rules |> Enum.map(fn item -> item.head.trigger.event end)
+    assert Test1.plan_rules |> Enum.count == 2
+    assert events == [:added_belief, :added_goal]
   end
 
 end

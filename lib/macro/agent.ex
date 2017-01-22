@@ -5,20 +5,30 @@ defmodule EXAgent do
     quote do
 
       import unquote(__MODULE__)
-      @server EXAgent.create(__MODULE__)
 
-      def agent, do: @server
-      def belief_base, do: EXAgent.belief_base(@server)
-      def plan_rules, do: EXAgent.plan_rules(@server)
-      def a, do: EXAgent.a(@server)
+      @initial []
+      @started false
+      @after_compile __MODULE__
+      Module.register_attribute __MODULE__, :rules,
+      accumulate: true, persist: false
+
+      def create(name), do: EXAgent.create(:"#{__MODULE__}.#{name}")
+      def belief_base(ag), do: EXAgent.belief_base(ag)
+      def plan_rules(ag), do: EXAgent.plan_rules(ag)
+
+      defmacro __after_compile__(_, _) do
+        quote do
+          unless @started do
+            CompilerHelpers.print_aget_not_started_message(__MODULE__)
+          end
+        end
+      end
     end
   end
 
   defmacro initialize(funcs) do
-    initial = funcs |> RuleBody.parse |> Macro.escape
-
-    quote do
-      def initial, do: unquote(initial)
+    quote bind_quoted: [funcs: funcs |> Macro.escape] do
+      @initial funcs |> RuleBody.parse
     end
   end
 
@@ -34,17 +44,21 @@ defmodule EXAgent do
   defmacro rule(head, body) do
     r = Rule.parse(head, body) |> Macro.escape
 
+    quote bind_quoted: [r: r] do
+      @rules r
+    end
+  end
+
+  defmacro start do
     quote do
-      EXAgent.add_plan_rule(@server, unquote(r))
+      @started true
+      def initial, do: @initial
+      def plan_rules, do: @rules
     end
   end
 
   def handle_call(:belief_base, _from, %{beliefs: beliefs} = state) do
     {:reply, beliefs, state}
-  end
-
-  def handle_call(:a, _from, state) do
-    {:reply, state, state}
   end
 
   def handle_call(:plan_rules, _from, %{plan_rules: plan_rules} = state) do
@@ -56,24 +70,9 @@ defmodule EXAgent do
     {:reply, new_plans, Map.put(state, :plan_rules, new_plans)}
   end
 
-  def create do
-    create(__MODULE__)
-  end
-
-  def create(name, beliefs_from_macro) when is_atom(name) do
-    agent = EXAgent.create(name)
-    belief_base = EXAgent.belief_base(agent)
-
-    # Start doing stuff in the initial
-
-    agent
-  end
-
   def create(name) when is_atom(name) do
     {:ok, bb} = BeliefBase.create([])
     state = %EXAgentState{beliefs: bb, plan_rules: []}
-    IO.inspect("ssss #{inspect(state)}")
-    IO.inspect("name #{name}")
     GenServer.start_link(__MODULE__, state, name: name) |> elem(1)
   end
 
@@ -87,10 +86,6 @@ defmodule EXAgent do
 
   def plan_rules(agent) do
     GenServer.call(agent, :plan_rules)
-  end
-
-  def a(agent) do
-    GenServer.call(agent, :a)
   end
 
 end
