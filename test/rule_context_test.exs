@@ -1,6 +1,21 @@
 defmodule RuleContextTest do
   use ExUnit.Case
 
+  test "can parse the rule with no context" do
+
+    # rule (+!buy(X))
+
+    context =
+      {:+, [line: 19],
+ [{:!, [line: 19],
+   [{:buy, [line: 19], [{:__aliases__, [counter: 0, line: 19], [:X]}]}]}]}
+
+    assert RuleContext.parse(context) ==
+    %RuleContext{contexts: [], function: nil}
+    assert RuleTrigger.parse(context) ==
+    %RuleTrigger{event: :added_goal, trigger: {:buy, {:X}}}
+  end
+
   test "can parse the rule with single context" do
 
     # rule (+!buy(X)) when is_nice(X)

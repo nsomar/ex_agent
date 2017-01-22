@@ -29,6 +29,10 @@ defmodule RuleContext do
     |> Enum.map(&convert_to_model/1)
   end
 
+  defp do_parse_rule_context(_) do
+    []
+  end
+
   # Convert to model
   def convert_to_model({:test, test}), do: ContextFunction.create(test)
   def convert_to_model(item), do: item

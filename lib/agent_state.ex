@@ -1,3 +1,3 @@
 defmodule EXAgentState do
-  defstruct [:beliefs]
+  defstruct [:beliefs, :plan_rules]
 end

@@ -6,6 +6,10 @@ defmodule RuleBody do
     do_parse(statements)
   end
 
+  defp do_parse(nil) do
+    []
+  end
+
   defp do_parse({:__block__, _, statements}) do
     Enum.map(statements, &do_parse_item/1)
   end
@@ -26,12 +30,14 @@ defmodule RuleBody do
     RemoveBelief.parse(statements)
   end
 
-  defp parse_params(params) do
-    Enum.map(params, &parse_param/1)
+  defp do_parse_item({:query, _, _} = statements) when is_tuple(statements) do
+    QueryBelief.parse(statements)
   end
 
-  defp parse_param({:__aliases__, _, [param]}), do: param
-  defp parse_param(param), do: param
+  defp do_parse_item({:&, _, _} = statements) when is_tuple(statements) do
+    InternalAction.parse(statements)
+  end
+
 
   # To delete
 

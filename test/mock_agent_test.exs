@@ -6,38 +6,32 @@ defmodule MockAgentTest do
       use EXAgent
 
       initialize do
-        cost(:car, 10000)
-        cost(:iphone, 500)
-        color(:car, :red)
-        color(:iphone, :black)
-        is(:man, :omar)
+        +cost(:car, 10000)
+        +cost(:iphone, 500)
+        +color(:car, :red)
+        +color(:iphone, :black)
+        +is(:man, :omar)
       end
 
       # event_
     end
 
     test "it captures beleifs in initialize" do
-      assert MockAgentWB.initial_beliefs ==
+      assert MockAgentWB.initial ==
         [
-          {:cost, {:car, 10000}},
-          {:cost, {:iphone, 500}},
-          {:color, {:car, :red}},
-          {:color, {:iphone, :black}},
-          {:is, {:man, :omar}},
+          %AddBelief{b: {:cost, {:car, 10000}}},
+          %AddBelief{b: {:cost, {:iphone, 500}}},
+          %AddBelief{b: {:color, {:car, :red}}},
+          %AddBelief{b: {:color, {:iphone, :black}}},
+          %AddBelief{b: {:is, {:man, :omar}}}
         ]
     end
 
     test "it has a belief base with the initial beliefs" do
-      ag = MockAgentWB.create(:first_agent)
-      bb = MockAgentWB.belief_base(ag)
-      assert BeliefBase.beliefs(bb) ==
-        [
-          {:cost, {:car, 10000}},
-          {:cost, {:iphone, 500}},
-          {:color, {:car, :red}},
-          {:color, {:iphone, :black}},
-          {:is, {:man, :omar}},
-        ]
+      ag = MockAgentWB.agent
+      bb = MockAgentWB.a
+
+      # assert BeliefBase.beliefs(bb) == []
     end
   end
 
@@ -46,28 +40,25 @@ defmodule MockAgentTest do
       use EXAgent
 
       initialize do
-        cost(:car, 10000)
-        money(111)
+        +cost(:car, 10000)
+        +money(111)
         !buy_stuff
       end
     end
 
-    test "it captures beleifs in initial_beliefs" do
-      assert MockAgentWBG.initial_beliefs ==
+    test "it captures beleifs in initial" do
+      assert MockAgentWBG.initial ==
         [
-          {:cost, {:car, 10000}},
-          {:money, {111}}
+          %AddBelief{b: {:cost, {:car, 10000}}},
+          %AddBelief{b: {:money, {111}}},
+          %AchieveGoal{g: {:buy_stuff, []}}
         ]
     end
 
-    test "it has a belief base with the initial beliefs" do
-      ag = MockAgentWBG.create(:second_agent)
-      bb = MockAgentWBG.belief_base(ag)
-      assert BeliefBase.beliefs(bb) ==
-        [
-          {:cost, {:car, 10000}},
-          {:money, {111}}
-        ]
+    test "it has a belief base with the initial" do
+      ag = MockAgentWBG.agent
+      bb = MockAgentWBG.belief_base
+      assert BeliefBase.beliefs(bb) == []
     end
   end
 
@@ -77,9 +68,9 @@ defmodule MockAgentTest do
       use EXAgent
 
       initialize do
-        cost(:car, 10000)
-        money(111)
-        nice(:car)
+        +cost(:car, 10000)
+        +money(111)
+        +nice(:car)
         !buy_stuff
       end
 

@@ -2,7 +2,7 @@ defmodule Rule do
   defstruct [:head, :body]
 
   def parse(head, body) do
-    body |> IO.inspect
+    # body |> IO.inspect
     %Rule {
       head: RuleHead.parse(head),
       body: RuleBody.parse(body)

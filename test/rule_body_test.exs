@@ -18,12 +18,34 @@ defmodule RuleBodyTest do
   end
 
   test "it can parse removing a belief" do
-    # has_car(X)
+    # -has_car(X)
 
     bb = [do: {:-, [line: 14],
   [{:has_car, [line: 14], [{:__aliases__, [counter: 0, line: 14], [:X]}]}]}]
 
     assert RuleBody.parse(bb) == [%RemoveBelief{b: {:has_car, {:X}}}]
+  end
+
+  test "it can parse querying a belief" do
+    # query(has_car(X))
+
+    bb = [do: {:query, [line: 14],
+  [{:money, [line: 14], [{:__aliases__, [counter: 0, line: 14], [:X]}]}]}]
+
+    assert RuleBody.parse(bb) == [%QueryBelief{b: {:money, {:X}}}]
+  end
+
+  test "it can parse internal actions" do
+    # &print(X)
+    # &send(X)
+
+    bb = [do: {:__block__, [],
+  [{:&, [line: 14],
+    [{:print, [line: 14], [{:__aliases__, [counter: 0, line: 14], [:X]}]}]},
+   {:&, [line: 15],
+    [{:send, [line: 15], [{:__aliases__, [counter: 0, line: 15], [:X]}]}]}]}]
+
+    assert RuleBody.parse(bb) == [%InternalAction{a: {:print, {:X}}}, %InternalAction{a: {:send, {:X}}}]
   end
 
   test "it can parse multiple beliefs base from macro" do

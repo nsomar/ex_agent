@@ -47,7 +47,7 @@ RuleBody:
 Instructions:
 - Add belief ✔︎
 - Remove Belief ✔︎
-- Query Belief 
+- Query Belief ︎✔︎
 - Achieve Goal ✔︎
 - Internal Action
 - Send message
