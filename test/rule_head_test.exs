@@ -19,7 +19,7 @@ defmodule RuleHeadTest do
               {:__aliases__, [counter: 0, line: 24], [:Y]}]}]}]}]}
 
     rh = RuleHead.parse(rule)
-    assert rh.trigger == %RuleTrigger{event: :added_goal, trigger: {:buy, {:X}}}
+    assert rh.trigger == %RuleTrigger{event_type: :added_goal, content: {:buy, {:X}}}
     assert rh.context == %RuleContext{contexts: [cost: {:X, :Y}, money: {:Z}],
             function: %ContextFunction{ast: {:>=, [],
               [{:__aliases__, [], [:Z]}, {:__aliases__, [], [:Y]}]},

@@ -1,6 +1,7 @@
 defmodule RuleBody do
 
   defstruct [:instructions]
+  @type t :: %RuleBody{instructions: tuple}
 
   def parse([do: statements]) do
     do_parse(statements)

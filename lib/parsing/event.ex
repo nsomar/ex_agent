@@ -8,6 +8,7 @@ end
 
 defmodule Event do
   defstruct [:event_type, :content]
+  @type t :: %Event{event_type: atom, content: tuple}
 
   def added_belief(belief),
     do: %Event{event_type: :added_belief, content: belief}

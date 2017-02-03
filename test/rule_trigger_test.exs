@@ -10,7 +10,7 @@ defmodule RuleTriggerTest do
     trigger = {:+, [line: 24],
   [{:cost, [line: 24], [:car, {:__aliases__, [counter: 0, line: 24], [:X]}]}]}
 
-    assert RuleTrigger.parse(trigger).event ==
+    assert RuleTrigger.parse(trigger).event_type ==
     TriggerType.added_belief
   end
 
@@ -24,7 +24,7 @@ defmodule RuleTriggerTest do
   [{:!, [line: 86],
     [{:cost, [line: 86], [{:__aliases__, [counter: 0, line: 86], [:X]}]}]}]}
 
-    assert RuleTrigger.parse(trigger).event ==
+    assert RuleTrigger.parse(trigger).event_type ==
     TriggerType.added_goal
   end
 
@@ -36,7 +36,7 @@ defmodule RuleTriggerTest do
 
     trigger = {:-, [line: 85],
     [{:cost, [line: 85], [:car, {:__aliases__, [counter: 0, line: 85], [:X]}]}]}
-    assert RuleTrigger.parse(trigger).event ==
+    assert RuleTrigger.parse(trigger).event_type ==
     TriggerType.removed_belief
   end
 
@@ -51,7 +51,7 @@ defmodule RuleTriggerTest do
     [{:cost, [line: 85],
       [:car, {:__aliases__, [counter: 0, line: 85], [:X]}]}]}]}
 
-    assert RuleTrigger.parse(trigger).event ==
+    assert RuleTrigger.parse(trigger).event_type ==
     TriggerType.removed_goal
   end
 
@@ -63,7 +63,7 @@ defmodule RuleTriggerTest do
 
     trigger = {:+, [line: 85],
     [{:cost, [line: 85], [:car, {:__aliases__, [counter: 0, line: 85], [:X]}]}]}
-    assert RuleTrigger.parse(trigger).trigger ==
+    assert RuleTrigger.parse(trigger).content ==
     {:cost, {:car, :X}}
   end
 
@@ -75,7 +75,7 @@ defmodule RuleTriggerTest do
 
     trigger = {:+, [line: 85], [{:!, [line: 85], [{:cost, [line: 85], [:car, 100]}]}]}
 
-    assert RuleTrigger.parse(trigger).trigger ==
+    assert RuleTrigger.parse(trigger).content ==
     {:cost, {:car, 100}}
   end
 
@@ -86,7 +86,7 @@ defmodule RuleTriggerTest do
   [{:!, [line: 86],
     [{:cost, [line: 86], [{:__aliases__, [counter: 0, line: 86], [:X]}]}]}]}
 
-    assert RuleTrigger.parse(trigger).trigger ==
+    assert RuleTrigger.parse(trigger).content ==
     {:cost, {:X}}
   end
 

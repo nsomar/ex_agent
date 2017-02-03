@@ -21,9 +21,9 @@ defmodule EndToEndTest do
       start
     end
 
-    events = Test1.plan_rules |> Enum.map(fn item -> item.head.trigger.event end)
+    events = Test1.plan_rules |> Enum.map(fn item -> item.head.trigger.event_type end)
     assert Test1.plan_rules |> Enum.count == 2
-    assert events == [:added_belief, :added_goal]
+    assert events == [:added_goal, :added_belief]
   end
 
 end

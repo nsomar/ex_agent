@@ -56,7 +56,7 @@ defmodule RuleTest do
             {:==, [], [{:__aliases__, [], [:Z]}, {:__aliases__, [], [:X]}]}]},
           number_of_params: 2, params: [:Z, :X]}},
         trigger:
-        %RuleTrigger{event: :added_goal, trigger: {:buy, {:X}}}}}
+        %RuleTrigger{event_type: :added_goal, content: {:buy, {:X}}}}}
   end
 
 end

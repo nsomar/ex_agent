@@ -95,6 +95,20 @@ defmodule UnifierTest do
       assert res == :cant_unify
     end
 
+    test "unifies beliefs that match" do
+      l = {:is, {:omar, :red}}
+      r = {:is, {:omar, :red}}
+      res = Unifier.unify(l, r)
+      assert res  == []
+    end
+
+    test "unifies beliefs that match with variable" do
+      l = {:is, {:omar, :red}}
+      r = {:is, {:omar, X}}
+      res = Unifier.unify(l, r)
+      assert res  == [{X, :red}]
+    end
+
     test "returns cant unify for beleifs that cant unify" do
       r = {:is, {:omar, :red}}
 

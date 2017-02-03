@@ -13,7 +13,7 @@ defmodule RuleContextTest do
     assert RuleContext.parse(context) ==
     %RuleContext{contexts: [], function: nil}
     assert RuleTrigger.parse(context) ==
-    %RuleTrigger{event: :added_goal, trigger: {:buy, {:X}}}
+    %RuleTrigger{event_type: :added_goal, content: {:buy, {:X}}}
   end
 
   test "can parse the rule with single context" do
@@ -34,7 +34,7 @@ defmodule RuleContextTest do
     assert RuleContext.parse(context) ==
     %RuleContext{contexts: [is_nice: {:X}], function: nil}
     assert RuleTrigger.parse(context) ==
-    %RuleTrigger{event: :added_goal, trigger: {:buy, {:X}}}
+    %RuleTrigger{event_type: :added_goal, content: {:buy, {:X}}}
   end
 
   test "can parse the rule context without tailing functions" do
@@ -58,7 +58,7 @@ defmodule RuleContextTest do
     assert RuleContext.parse(context) ==
     %RuleContext{contexts: [money: {:Y}, nice: {:X, :Z}], function: nil}
     assert RuleTrigger.parse(context) ==
-    %RuleTrigger{event: :added_goal, trigger: {:buy, {:X}}}
+    %RuleTrigger{event_type: :added_goal, content: {:buy, {:X}}}
   end
 
   test "can parse the rule context with 3 contextes" do
@@ -87,7 +87,7 @@ defmodule RuleContextTest do
              want_to_buy: {:X}], function: nil}
 
     assert RuleTrigger.parse(context) ==
-    %RuleTrigger{event: :added_goal, trigger: {:buy, {:X}}}
+    %RuleTrigger{event_type: :added_goal, content: {:buy, {:X}}}
   end
 
   test "can parse the rule context with single case test" do

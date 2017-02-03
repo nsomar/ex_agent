@@ -1,5 +1,6 @@
 defmodule Rule do
   defstruct [:head, :body]
+  @type t :: %Rule{head: RuleHead.t, body: RuleBody.t}
 
   def parse(head, body) do
     # body |> IO.inspect

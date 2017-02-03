@@ -1,6 +1,7 @@
 defmodule RuleContext do
 
   defstruct [:contexts, :function]
+  @type t :: %RuleContext{contexts: tuple, function: (any -> any)}
 
   def parse(rule) do
     parsed = do_parse_rule_context(rule)

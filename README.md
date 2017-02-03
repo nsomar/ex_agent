@@ -106,3 +106,14 @@ initial_beliefs -> beleifs rules
   }
 ]
 ```
+
+
+Agent:
+  Initial:
+    goal, beliefs
+  PlanRules
+    trigger, context, body
+    body: goal, belief
+
+Each step:
+  

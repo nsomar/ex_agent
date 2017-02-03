@@ -9,6 +9,7 @@ defmodule EXAgent do
       @initial []
       @started false
       @after_compile __MODULE__
+
       Module.register_attribute __MODULE__, :rules,
       accumulate: true, persist: false
 
@@ -53,7 +54,7 @@ defmodule EXAgent do
     quote do
       @started true
       def initial, do: @initial
-      def plan_rules, do: @rules
+      def plan_rules, do: @rules |> Enum.reverse
     end
   end
 

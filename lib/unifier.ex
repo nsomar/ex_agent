@@ -23,8 +23,22 @@ defmodule Unifier do
     do_unify_list(beleifs, tests, [[]]) |> prepare_list_for_return(func)
   end
 
+  @doc """
+  Same as the above method, but starts with non empty binding
+  """
+  def unify_list_with_binding(beleifs, tests, func, prior_bindings) do
+    do_unify_list(beleifs, tests, prior_bindings) |> prepare_list_for_return(func)
+  end
+
   def unify_list(beleifs, tests) do
     do_unify_list(beleifs, tests, [[]]) |> prepare_list_for_return(nil)
+  end
+
+  @doc """
+  Same as the above method, but starts with non empty binding
+  """
+  def unify_list_with_binding(beleifs, tests, prior_bindings) do
+    do_unify_list(beleifs, tests, prior_bindings) |> prepare_list_for_return(nil)
   end
 
   defp do_unify_list(_, _, :cant_unify), do: :cant_unify
@@ -74,8 +88,25 @@ defmodule Unifier do
     |> Enum.map(fn bel ->
       unify(bel, statement)
     end)
-   end
+  end
 
+  @doc """
+  Unifies two beleifs and returns the binding
+
+     iex>Unifier.unify({:car, {:color, :red}, {:car, {:color, X})
+     []
+  """
+  def unify({left_term, left_statement}, {right_term, right_statement})
+  when is_tuple(left_statement) and is_tuple(right_statement) and left_term == right_term do
+   unify(left_statement, right_statement)
+  end
+
+   @doc """
+   Unifies belief statements
+
+      iex>Unifier.unify({:color, :red}, {:color, :red})
+      []
+   """
    def unify(left, right)
    when is_tuple(left) and is_tuple(right) do
     unify(Tuple.to_list(left), Tuple.to_list(right), [])
@@ -83,13 +114,14 @@ defmodule Unifier do
 
    def unify(_, _), do: :cant_unify
 
+
    def unify(left, right, _)
    when is_list(left) and is_list(right) and
         length(left) != length(right) do
      :cant_unify
    end
 
-   def unify([hl| tl], [hr| tr], binding)do
+   def unify([hl| tl], [hr| tr], binding) do
      cond do
        hr == hl ->
          unify(tl, tr, binding)
@@ -115,7 +147,6 @@ defmodule Unifier do
     if ParsingUtils.test_contains_binding(test, h) do
       multiple_bind_variables(test, bindings)
       |> Enum.map(fn {binding, bound_test} ->
-        # IO.inspect bound_test
         res = unify(beleifs, bound_test) |> remove_ununified
         {binding, res}
       end)
