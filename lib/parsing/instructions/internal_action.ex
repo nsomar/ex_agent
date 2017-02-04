@@ -3,7 +3,7 @@ defmodule InternalAction do
 
   def parse({:&, _, [{name, _, params}]} = statements) when is_tuple(statements) do
     %InternalAction{
-      a: {name, params |> CommonInstructionParser.parse_params |> List.to_tuple }
+      a: {name, params |> CommonInstructionParser.parse_params |> List.to_tuple}
     }
   end
 

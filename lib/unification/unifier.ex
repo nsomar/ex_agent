@@ -34,14 +34,14 @@ defmodule Unifier do
   Same as the above method, but starts with non empty binding
   """
   def unify_list_with_binding(beleifs, tests, func, prior_bindings) do
-    do_unify_list(beleifs, tests, prior_bindings) |> prepare_list_for_return(func)
+    beleifs |> do_unify_list(tests, prior_bindings) |> prepare_list_for_return(func)
   end
 
   @doc """
   Same as the above method, but starts with non empty binding
   """
   def unify_list_with_binding(beleifs, tests, prior_bindings) do
-    do_unify_list(beleifs, tests, prior_bindings) |> prepare_list_for_return(nil)
+    beleifs |> do_unify_list(tests, prior_bindings) |> prepare_list_for_return(nil)
   end
 
   defp do_unify_list(_, _, :cant_unify), do: :cant_unify
@@ -140,7 +140,8 @@ defmodule Unifier do
 
   # Unify a list of beliefs with a test and prior binding
   def unify_beleifs_with_test_and_bindings(beleifs, test, [[]]) do
-    unify(beleifs, test)
+    beleifs
+    |> unify(test)
     |> remove_ununified
     |> adjust_result_for_unification(test)
   end
@@ -149,12 +150,14 @@ defmodule Unifier do
     [h| _] = bindings
 
     if ParsingUtils.test_contains_binding(belief, h) do
-      multiple_bind_variables(belief, bindings)
+      belief
+      |> multiple_bind_variables(bindings)
       |> Enum.map(fn {binding, bound_test} ->
-
         new_test = ContextBelief.create(bound_test, should_pass)
 
-        res = unify(beleifs, new_test)
+        res =
+        beleifs
+        |> unify(new_test)
         |> remove_ununified
         |> adjust_result_for_unification(new_test)
 
@@ -166,7 +169,7 @@ defmodule Unifier do
           {_, :cant_unify} ->
             :cant_unify
           {binding, result} ->
-            Enum.map(result, fn x -> binding ++ x end) |> List.flatten
+            result |> Enum.map(fn x -> binding ++ x end) |> List.flatten
       end)
     else
       beleifs
@@ -199,7 +202,9 @@ defmodule Unifier do
   """
   def add_binding_to_bindings(:cant_unify, _), do: []
   def add_binding_to_bindings(new_bindings, bindings) do
-    Enum.map(bindings, fn binding ->
+
+    bindings
+    |> Enum.map(fn binding ->
       # IO.inspect "Mergings"
       # IO.inspect "binding #{inspect(binding)}"
       # IO.inspect "new binding #{inspect(new_bindings)}"
@@ -212,7 +217,7 @@ defmodule Unifier do
 
   def remove_ununified(:cant_unify), do: []
   def remove_ununified(unification_result) when is_list(unification_result),
-    do: unification_result |> Enum.filter(&( &1 != :cant_unify )) |> check_for_unification
+    do: unification_result |> Enum.filter(&(&1 != :cant_unify)) |> check_for_unification
 
   def check_for_unification([]), do: :cant_unify
   def check_for_unification(unification_result), do: unification_result

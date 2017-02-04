@@ -31,7 +31,8 @@ defmodule Exagent.Mixfile do
   defp deps do
     [
       {:dialyxir, "~> 0.4", only: [:dev], runtime: false},
-      {:excoveralls, "~> 0.5", only: :test}
+      {:excoveralls, "~> 0.5", only: :test},
+      {:credo, "~> 0.5", only: [:dev, :test]}
     ]
   end
 end

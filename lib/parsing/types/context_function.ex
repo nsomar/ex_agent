@@ -40,7 +40,7 @@ defmodule ContextFunction do
     if ParsingUtils.var?(param), do: acc ++ param, else: acc
   end
 
-  defp do_get_params({ _, _, params}, acc) do
+  defp do_get_params({_, _, params}, acc) do
     params |> Enum.map(fn param ->
       do_get_params(param, acc)
     end)
@@ -79,7 +79,8 @@ defmodule ContextFunction do
   end
 
   defp do_perform(function, params, :ok) do
-    prepare_ast(function, params)
+    function
+    |> prepare_ast(params)
     |> Code.eval_quoted
     |> elem(0)
   end

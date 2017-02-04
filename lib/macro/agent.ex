@@ -62,12 +62,12 @@ defmodule EXAgent do
     {:reply, beliefs, state}
   end
 
-  def handle_call(:plan_rules, _from, %{plan_rules: plan_rules} = state) do
-    {:reply, plan_rules, state}
+  def handle_call(:plan_rules, _from, %{plan_rules: rules} = state) do
+    {:reply, rules, state}
   end
 
-  def handle_call({:add_plan, new_plan}, _from, %{plan_rules: plan_rules} = state) do
-    new_plans = plan_rules ++ [new_plan]
+  def handle_call({:add_plan, new_plan}, _from, %{plan_rules: rules} = state) do
+    new_plans = rules ++ [new_plan]
     {:reply, new_plans, Map.put(state, :plan_rules, new_plans)}
   end
 
