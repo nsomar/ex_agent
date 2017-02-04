@@ -1,12 +1,15 @@
 defmodule RuleContext do
 
   defstruct [:contexts, :function]
-  @type t :: %RuleContext{contexts: tuple, function: (any -> any)}
+  @type t :: %RuleContext{contexts: [ContextBelief.t], function: (any -> any)}
 
   def parse(rule) do
     parsed = do_parse_rule_context(rule)
-    # IO.inspect parsed
-    contexts = Enum.filter(parsed, fn item -> !function?(item) end)
+
+    contexts =
+      parsed
+      |> Enum.filter(fn item -> !function?(item) end)
+
     functions = Enum.filter(parsed, fn item -> function?(item) end)
 
     %RuleContext{
@@ -35,8 +38,8 @@ defmodule RuleContext do
   end
 
   # Convert to model
-  def convert_to_model({:test, test}), do: ContextFunction.create(test)
-  def convert_to_model(item), do: item
+  def convert_to_model({{:test, test}, _}), do: ContextFunction.create(test)
+  def convert_to_model({item, should_pass}), do: ContextBelief.create(item, should_pass)
 
   defp function?(%ContextFunction{}), do: true
   defp function?(_), do: false

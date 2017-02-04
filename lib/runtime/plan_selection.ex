@@ -1,4 +1,4 @@
-defmodule RelevantPlan do
+defmodule PlanSelection do
 
   @spec relavent_plans([Rule.t], Event.t) :: [Rule.t]
   def relavent_plans(rules, event) do
@@ -13,12 +13,23 @@ defmodule RelevantPlan do
     rules_and_unifications
     |> Enum.map(fn {rule, bindings} ->
       tests = rule.head.context.contexts
-      function = rule.head.context.function
+
       unificaiton_result = Unifier.unify_list_with_binding(beleifs, tests, [bindings])
-      {rule, unificaiton_result} |> IO.inspect
+      passes_function = matches_function?(unificaiton_result, rule.head.context.function)
+      {rule, unificaiton_result, passes_function}
     end)
-    |> remove_ununified
+    |> Enum.filter(fn {_, _, passes} -> passes end)
+    |> Enum.map(fn {rule, result, _} -> {rule, result} end)
   end
+
+  defp matches_function?([_], nil),
+   do: true
+
+  defp matches_function?([bindings], function),
+   do: ContextFunction.perform(function, bindings)
+
+  defp matches_function?(_, _),
+   do: false
 
   @spec is_same_event_type(Rule.t, Event.t) :: boolean
   defp is_same_event_type(rule, event) do
@@ -31,7 +42,7 @@ defmodule RelevantPlan do
   defp can_unify(rule, event) do
     plan_content = rule.head.trigger.content
     event_content = event.content
-    {rule, Unifier.unify(event_content, plan_content)}
+    {rule, Unifier.unify_tuples(event_content, plan_content)}
   end
 
   defp remove_ununified(rules_and_unifications) do

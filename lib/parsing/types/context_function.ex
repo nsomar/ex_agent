@@ -37,7 +37,7 @@ defmodule ContextFunction do
   end
 
   defp do_get_params(param, acc) when is_atom(param) do
-    acc ++ param
+    if ParsingUtils.var?(param), do: acc ++ param, else: acc
   end
 
   defp do_get_params({ _, _, params}, acc) do
@@ -61,7 +61,6 @@ defmodule ContextFunction do
   end
 
   def do_prepare_ast({op, _, params}, params_values) when is_list(params) do
-    abcdef = {op, [], []}
     prepared_params =
     params |> Enum.map(fn param ->
       do_prepare_ast(param, params_values)
@@ -75,8 +74,18 @@ defmodule ContextFunction do
 
   # Performing
   def perform(function, params) do
-    ast = prepare_ast(function, params)
-    Code.eval_quoted(ast) |> elem(0)
+    match = check_all_params_present(function, params)
+    do_perform(function, params, match)
+  end
+
+  defp do_perform(function, params, :ok) do
+    prepare_ast(function, params)
+    |> Code.eval_quoted
+    |> elem(0)
+  end
+
+  defp do_perform(_, _, _) do
+    false
   end
 
   # Check params
@@ -84,23 +93,18 @@ defmodule ContextFunction do
     fp = function.params
     unique_params = params |> Enum.map(&elem(&1, 0)) |> Enum.uniq
 
-    with true <- Enum.count(fp) == Enum.count(unique_params),
-      true <- compare_params(fp, unique_params) do
-        :ok
+    if compare_params(fp, unique_params) do
+      :ok
     else
-      _ -> {:error, "wrong params passed"}
+      {:error, "wrong params passed"}
     end
   end
 
   defp compare_params(p1, p2) do
-    sp1 = Enum.sort(p1)
-    sp2 = Enum.sort(p2)
+    sp1 = Enum.into(p1, %MapSet{})
+    sp2 = Enum.into(p2, %MapSet{})
 
-    compared = Enum.zip(sp1, sp2) |> Enum.filter(fn item ->
-      elem(item, 0) == elem(item, 1)
-    end)
-
-    Enum.count(compared) == Enum.count(sp1)
+    MapSet.subset?(sp1, sp2)
   end
 end
 

@@ -1,29 +1,46 @@
 defmodule ContextFunctionTest do
   use ExUnit.Case
 
-  test "it can get the function params list for single statment" do
-    # rule (+!buy(X)) when cost(X, Y) && money(Z) && test Z >= Y
+  describe "Parameters" do
 
-    t =
-      {:&&, [line: 34],
-        [{:>=, [line: 34],
-          [{:__aliases__, [counter: 0, line: 34], [:Z]},
-           {:__aliases__, [counter: 0, line: 34], [:Y]}]},
-         {:==, [line: 34], [{:__aliases__, [counter: 0, line: 34], [:Z]}, 2]}]}
-    assert ContextFunction.get_params(t) == [:Z, :Y]
-  end
+    test "it can get the function params list for single statment" do
+      # rule (+!buy(X)) when cost(X, Y) && money(Z) && test Z >= Y
 
-  test "it can get the function params list for multiple statment" do
-    # rule (+!buy(X)) when cost(X, Y) && money(Z) && test Z >= Y && W == 2
+      t =
+        {:&&, [line: 34],
+          [{:>=, [line: 34],
+            [{:__aliases__, [counter: 0, line: 34], [:Z]},
+             {:__aliases__, [counter: 0, line: 34], [:Y]}]},
+           {:==, [line: 34], [{:__aliases__, [counter: 0, line: 34], [:Z]}, 2]}]}
+      assert ContextFunction.get_params(t) == [:Z, :Y]
+    end
 
-    t =
-      {:&&, [line: 34],
-            [{:>=, [line: 34],
-              [{:__aliases__, [counter: 0, line: 34], [:Z]},
-               {:__aliases__, [counter: 0, line: 34], [:Y]}]},
-             {:==, [line: 34],
-              [{:__aliases__, [counter: 0, line: 34], [:W]}, 2]}]}
-    assert ContextFunction.get_params(t) == [:Z, :Y, :W]
+    test "it can get the function params list for multiple statment" do
+      # rule (+!buy(X)) when cost(X, Y) && money(Z) && test Z >= Y && W == 2
+
+      t =
+        {:&&, [line: 34],
+              [{:>=, [line: 34],
+                [{:__aliases__, [counter: 0, line: 34], [:Z]},
+                 {:__aliases__, [counter: 0, line: 34], [:Y]}]},
+               {:==, [line: 34],
+                [{:__aliases__, [counter: 0, line: 34], [:W]}, 2]}]}
+      assert ContextFunction.get_params(t) == [:Z, :Y, :W]
+    end
+
+    test "it can get the function params list for multiple statment with atoms" do
+      # rule (+!buy(X)) when cost(X, Y) && money(Z) && test Z >= Y && W == 2
+
+      t =
+        {:&&, [line: 34],
+              [{:>=, [line: 34],
+                [{:__aliases__, [counter: 0, line: 34], [:Z]},
+                 {:__aliases__, [counter: 0, line: 34], [:Y]}]},
+               {:==, [line: 34],
+                [{:__aliases__, [counter: 0, line: 34], [:red]}, 2]}]}
+      assert ContextFunction.get_params(t) == [:Z, :Y]
+    end
+
   end
 
   test "it creats correct struct" do
@@ -68,28 +85,44 @@ defmodule ContextFunctionTest do
     assert cf.ast == {:&&, [], [{:>, [], [{:__aliases__, [], [:Z]}, {:__aliases__, [], [:X]}]}, {:==, [], [{:__aliases__, [], [:Z]}, {:__aliases__, [], [:W]}]}]}
   end
 
-  test "it can check params are correct" do
-    cf = %ContextFunction{ast: {:&&, [line: 34],
-                 [{:>=, [line: 34],
-                   [{:__aliases__, [counter: 0, line: 34], [:Z]},
-                    {:__aliases__, [counter: 0, line: 34], [:Y]}]},
-                  {:==, [line: 34],
-                   [{:__aliases__, [counter: 0, line: 34], [:Z]}, 2]}]},
-               number_of_params: 2, params: [:Z, :Y]}
+  describe "Parameter checking" do
 
-    assert ContextFunction.check_all_params_present(cf, [Y: 20, Z: 30]) == :ok
-  end
+    test "it can check params are correct" do
+      cf = %ContextFunction{ast: {:&&, [line: 34],
+                   [{:>=, [line: 34],
+                     [{:__aliases__, [counter: 0, line: 34], [:Z]},
+                      {:__aliases__, [counter: 0, line: 34], [:Y]}]},
+                    {:==, [line: 34],
+                     [{:__aliases__, [counter: 0, line: 34], [:Z]}, 2]}]},
+                 number_of_params: 2, params: [:Z, :Y]}
 
-  test "it can check params are incorrect" do
-    cf = %ContextFunction{ast: {:&&, [line: 34],
-                 [{:>=, [line: 34],
-                   [{:__aliases__, [counter: 0, line: 34], [:Z]},
-                    {:__aliases__, [counter: 0, line: 34], [:Y]}]},
-                  {:==, [line: 34],
-                   [{:__aliases__, [counter: 0, line: 34], [:Z]}, 2]}]},
-               number_of_params: 2, params: [:Z, :Y]}
+      assert ContextFunction.check_all_params_present(cf, [Y: 20, Z: 30]) == :ok
+    end
 
-    assert ContextFunction.check_all_params_present(cf, [Y: 20, Z1: 30]) != :ok
+    test "it can check params are correct even if extra params are given" do
+      cf = %ContextFunction{ast: {:&&, [line: 34],
+                   [{:>=, [line: 34],
+                     [{:__aliases__, [counter: 0, line: 34], [:Z]},
+                      {:__aliases__, [counter: 0, line: 34], [:Y]}]},
+                    {:==, [line: 34],
+                     [{:__aliases__, [counter: 0, line: 34], [:Z]}, 2]}]},
+                 number_of_params: 2, params: [:Z, :Y]}
+
+      assert ContextFunction.check_all_params_present(cf, [Y: 20, Z: 30, W: 20]) == :ok
+    end
+
+    test "it can check params are incorrect" do
+      cf = %ContextFunction{ast: {:&&, [line: 34],
+                   [{:>=, [line: 34],
+                     [{:__aliases__, [counter: 0, line: 34], [:Z]},
+                      {:__aliases__, [counter: 0, line: 34], [:Y]}]},
+                    {:==, [line: 34],
+                     [{:__aliases__, [counter: 0, line: 34], [:Z]}, 2]}]},
+                 number_of_params: 2, params: [:Z, :Y]}
+
+      assert ContextFunction.check_all_params_present(cf, [Y: 20, Z1: 30]) != :ok
+    end
+
   end
 
   test "it prepares ast" do
@@ -106,19 +139,52 @@ defmodule ContextFunctionTest do
     assert ContextFunction.prepare_ast(cf, [Y: 20, Z: 30]) == {:&&, [], [{:>=, [], [30, 20]}, {:==, [], [30, 2]}]}
   end
 
-  test "it prepares performs method" do
-    # Z >= Y && Z == 2
+  describe "Performing" do
 
-    cf = %ContextFunction{ast: {:&&, [line: 34],
-                 [{:>=, [line: 34],
-                   [{:__aliases__, [counter: 0, line: 34], [:Z]},
-                    {:__aliases__, [counter: 0, line: 34], [:Y]}]},
-                  {:==, [line: 34],
-                   [{:__aliases__, [counter: 0, line: 34], [:Z]}, 2]}]},
-               number_of_params: 2, params: [:Z, :Y]}
+    test "it prepares performs method" do
+      # Z >= Y && Z == 2
 
-    assert ContextFunction.perform(cf, [Y: 1, Z: 2]) == true
+      cf = %ContextFunction{ast: {:&&, [line: 34],
+                   [{:>=, [line: 34],
+                     [{:__aliases__, [counter: 0, line: 34], [:Z]},
+                      {:__aliases__, [counter: 0, line: 34], [:Y]}]},
+                    {:==, [line: 34],
+                     [{:__aliases__, [counter: 0, line: 34], [:Z]}, 2]}]},
+                 number_of_params: 2, params: [:Z, :Y]}
+
+      assert ContextFunction.perform(cf, [Y: 1, Z: 2]) == true
+    end
+
+    test "it cant perform if params dont match" do
+      # Z >= Y && Z == 2
+
+      cf = %ContextFunction{ast: {:&&, [line: 34],
+                   [{:>=, [line: 34],
+                     [{:__aliases__, [counter: 0, line: 34], [:Z]},
+                      {:__aliases__, [counter: 0, line: 34], [:Y]}]},
+                    {:==, [line: 34],
+                     [{:__aliases__, [counter: 0, line: 34], [:Z]}, 2]}]},
+                 number_of_params: 2, params: [:Z, :Y]}
+
+      assert ContextFunction.perform(cf, [Y: 1, W: 2]) == false
+    end
+
+    test "it performs if extra params are given" do
+      # Z >= Y && Z == 2
+
+      cf = %ContextFunction{ast: {:&&, [line: 34],
+                   [{:>=, [line: 34],
+                     [{:__aliases__, [counter: 0, line: 34], [:Z]},
+                      {:__aliases__, [counter: 0, line: 34], [:Y]}]},
+                    {:==, [line: 34],
+                     [{:__aliases__, [counter: 0, line: 34], [:Z]}, 2]}]},
+                 number_of_params: 2, params: [:Z, :Y]}
+
+      assert ContextFunction.perform(cf, [Y: 1, Z: 2, W: 2]) == true
+    end
+
   end
+
 end
 
 

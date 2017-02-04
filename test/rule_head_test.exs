@@ -20,8 +20,12 @@ defmodule RuleHeadTest do
 
     rh = RuleHead.parse(rule)
     assert rh.trigger == %RuleTrigger{event_type: :added_goal, content: {:buy, {:X}}}
-    assert rh.context == %RuleContext{contexts: [cost: {:X, :Y}, money: {:Z}],
-            function: %ContextFunction{ast: {:>=, [],
+    assert rh.context == %RuleContext{
+      contexts: [
+        %ContextBelief{belief: {:cost, {:X, :Y}}, should_pass: true},
+        %ContextBelief{belief: {:money, {:Z}}, should_pass: true}
+      ],
+      function: %ContextFunction{ast: {:>=, [],
               [{:__aliases__, [], [:Z]}, {:__aliases__, [], [:Y]}]},
              number_of_params: 2, params: [:Z, :Y]}}
   end

@@ -10,13 +10,13 @@ defmodule Unifier do
 
   ## Examples
 
-      iex>Unifier.unify_list([{:car, {:color, :red}}], [{:car, {:color, :red}}])
+      iex>Unifier.unify_list([{:car, {:color, :red}}], [ContextBelief.create({:car, {:color, :red}}, true)])
       [[]]
 
-      iex>Unifier.unify_list([{:car, {:color, :red}}], [{:car, {:speed, :fast}}])
+      iex>Unifier.unify_list([{:car, {:color, :red}}], [ContextBelief.create({:car, {:speed, :fast}}, true)])
       :cant_unify
 
-      iex>Unifier.unify_list([{:car, {:color, :red}}], [{:car, {:X, :Y}}])
+      iex>Unifier.unify_list([{:car, {:color, :red}}], [ContextBelief.create({:car, {:X, :Y}}, true)])
       [[X: :color, Y: :red]]
   """
   def unify_list(beleifs, tests, func) do
@@ -24,14 +24,17 @@ defmodule Unifier do
   end
 
   @doc """
+  Same as the above method, but without func
+  """
+  def unify_list(beleifs, tests) do
+    do_unify_list(beleifs, tests, [[]]) |> prepare_list_for_return(nil)
+  end
+
+  @doc """
   Same as the above method, but starts with non empty binding
   """
   def unify_list_with_binding(beleifs, tests, func, prior_bindings) do
     do_unify_list(beleifs, tests, prior_bindings) |> prepare_list_for_return(func)
-  end
-
-  def unify_list(beleifs, tests) do
-    do_unify_list(beleifs, tests, [[]]) |> prepare_list_for_return(nil)
   end
 
   @doc """
@@ -57,6 +60,7 @@ defmodule Unifier do
   end
 
   # Filter a list of binding by passing them through a filter
+  defp prepare_list_for_return(:cant_unify, _), do: :cant_unify
   defp prepare_list_for_return(list, nil), do: list
   defp prepare_list_for_return(list, func) do
     func_arg_count = ParsingUtils.func_arity(func)
@@ -75,97 +79,114 @@ defmodule Unifier do
   Unifes a list of beleifs with a single test
 
   ## Example
-      iex>Unifier.unify([{:car, {:color, :red}}], {:car, {:color, :red}})
+      iex>Unifier.unify([{:car, {:color, :red}}], ContextBelief.create({:car, {:color, :red}}, true))
       [[]]
 
-      iex>Unifier.unify([{:car, {:color, :red}}], {:car, {:color, :red1}})
+      iex>Unifier.unify([{:car, {:color, :red}}], ContextBelief.create({:car, {:color, :red1}}, true))
       [:cant_unify]
   """
-  def unify(list, {term, statement})
+  def unify(list, %ContextBelief{belief: {term, statement}})
    when is_list(list) do
-
     ParsingUtils.get_statements_matching_term(list, term)
-    |> Enum.map(fn bel ->
-      unify(bel, statement)
-    end)
+    |> Enum.map(fn bel -> unify_tuples(bel, statement) end)
   end
 
   @doc """
   Unifies two beleifs and returns the binding
 
-     iex>Unifier.unify({:car, {:color, :red}, {:car, {:color, X})
+     iex>Unifier.unify_tuples({:car, {:color, :red}, {:car, {:color, X})
      []
   """
-  def unify({left_term, left_statement}, {right_term, right_statement})
+  def unify_tuples({left_term, left_statement}, {right_term, right_statement})
   when is_tuple(left_statement) and is_tuple(right_statement) and left_term == right_term do
-   unify(left_statement, right_statement)
+   unify_tuples(left_statement, right_statement)
   end
 
    @doc """
    Unifies belief statements
 
-      iex>Unifier.unify({:color, :red}, {:color, :red})
+      iex>Unifier.unify_tuples({:color, :red}, {:color, :red})
       []
    """
-   def unify(left, right)
+   def unify_tuples(left, right)
    when is_tuple(left) and is_tuple(right) do
-    unify(Tuple.to_list(left), Tuple.to_list(right), [])
+    unify_with_binding(Tuple.to_list(left), Tuple.to_list(right), [])
    end
 
-   def unify(_, _), do: :cant_unify
+   def unify_tuples(_, _), do: :cant_unify
 
 
-   def unify(left, right, _)
+   # Unify with binding
+   defp unify_with_binding(left, right, _)
    when is_list(left) and is_list(right) and
         length(left) != length(right) do
      :cant_unify
    end
 
-   def unify([hl| tl], [hr| tr], binding) do
+   defp unify_with_binding([hl| tl], [hr| tr], binding) do
      cond do
        hr == hl ->
-         unify(tl, tr, binding)
+         unify_with_binding(tl, tr, binding)
        ParsingUtils.var?(hr) ->
-         unify(tl, tr, binding ++ [{hr, hl}])
+         unify_with_binding(tl, tr, binding ++ [{hr, hl}])
        true ->
          :cant_unify
      end
    end
 
-  def unify([], [], binding) do
+  defp unify_with_binding([], [], binding) do
     binding
   end
 
   # Unify a list of beliefs with a test and prior binding
   def unify_beleifs_with_test_and_bindings(beleifs, test, [[]]) do
-    unify(beleifs, test) |> remove_ununified
+    unify(beleifs, test)
+    |> remove_ununified
+    |> adjust_result_for_unification(test)
   end
 
-  def unify_beleifs_with_test_and_bindings(beleifs, test, bindings) do
+  def unify_beleifs_with_test_and_bindings(beleifs, %{belief: belief, should_pass: should_pass}, bindings) do
     [h| _] = bindings
 
-    if ParsingUtils.test_contains_binding(test, h) do
-      multiple_bind_variables(test, bindings)
+    if ParsingUtils.test_contains_binding(belief, h) do
+      multiple_bind_variables(belief, bindings)
       |> Enum.map(fn {binding, bound_test} ->
-        res = unify(beleifs, bound_test) |> remove_ununified
+
+        new_test = ContextBelief.create(bound_test, should_pass)
+
+        res = unify(beleifs, new_test)
+        |> remove_ununified
+        |> adjust_result_for_unification(new_test)
+
+        # {new_test, res, adjusted} |> IO.inspect
         {binding, res}
       end)
-      |> Enum.filter(fn {_, result} ->
-        # IO.inspect "Trying to remove #{inspect(result)}"
-        result != :cant_unify
-      end)
-      |> Enum.map(fn {binding, result} ->
-        # IO.inspect "Trying to merge #{inspect(result)} into #{inspect(binding)}"
-        Enum.map(result, fn x -> binding ++ x end) |> List.flatten
+      |> Enum.map(
+        fn
+          {_, :cant_unify} ->
+            :cant_unify
+          {binding, result} ->
+            Enum.map(result, fn x -> binding ++ x end) |> List.flatten
       end)
     else
-
-      unify_beleifs_with_test_and_bindings(beleifs, test, [[]])
+      beleifs
+      |> unify_beleifs_with_test_and_bindings(ContextBelief.create(belief, should_pass), [[]])
       |> add_binding_to_bindings(bindings)
     end
     |> remove_ununified
   end
 
+  defp adjust_result_for_unification(unification, %{should_pass: should_pass})
+    when should_pass == true,
+    do: unification
+
+  defp adjust_result_for_unification(:cant_unify, %{should_pass: should_pass})
+    when should_pass == false,
+    do: [[]]
+
+  defp adjust_result_for_unification(_, %{should_pass: should_pass})
+    when should_pass == false,
+    do: :cant_unify
 
   @doc """
   Add a new binding to the list of prior bindings
@@ -176,6 +197,7 @@ defmodule Unifier do
       iex> Unifier.add_binding_to_bindings([[X: :"1000"]], [[]])
       [[X: :"1000"]]
   """
+  def add_binding_to_bindings(:cant_unify, _), do: []
   def add_binding_to_bindings(new_bindings, bindings) do
     Enum.map(bindings, fn binding ->
       # IO.inspect "Mergings"
@@ -187,11 +209,8 @@ defmodule Unifier do
       |> List.flatten
     end)
   end
-  # def add_binding_to_bindings(:cant_unify, _), do: :cant_unify
-  # def add_binding_to_bindings([[]], bindings), do: bindings
-  # def add_binding_to_bindings(new_binding, [[]]), do: new_binding
-  # def add_binding_to_bindings(l, r) when l == r, do: l
 
+  def remove_ununified(:cant_unify), do: []
   def remove_ununified(unification_result) when is_list(unification_result),
     do: unification_result |> Enum.filter(&( &1 != :cant_unify )) |> check_for_unification
 
@@ -201,7 +220,7 @@ defmodule Unifier do
   # Binds multiple variables in a test
   # Takes first: {:money, {:Y, :X}}
   # second: [Y: :"1234", X: "123"]
-  # returns {:money, {:"1234", "123"}}
+  # returns {[Y: :"1234", X: "123"], {:money, {:"1234", "123"}}}
   def multiple_bind_variables(test, [[]]), do: [test]
   def multiple_bind_variables(test, bindings) do
     bindings |> Enum.map(fn binding ->

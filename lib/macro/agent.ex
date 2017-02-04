@@ -35,7 +35,7 @@ defmodule EXAgent do
 
   # on(+cost(X, Y), money(Z) && nice(X) && not want_to_buy(X) &&
   #        fn x, y, z -> x == y end) do
-  defmacro on(trigger, context, function) do
+  defmacro on(_, _, _) do
     quote do
       1
     end

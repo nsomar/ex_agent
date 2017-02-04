@@ -31,8 +31,12 @@ defmodule RuleContextTest do
        [{:!, [line: 24],
          [{:buy, [line: 24], [{:__aliases__, [counter: 0, line: 24], [:X]}]}]}]}
 
+    ctxs = [
+      ContextBelief.create({:is_nice, {:X}}, true),
+    ]
+
     assert RuleContext.parse(context) ==
-    %RuleContext{contexts: [is_nice: {:X}], function: nil}
+    %RuleContext{contexts: ctxs, function: nil}
     assert RuleTrigger.parse(context) ==
     %RuleTrigger{event_type: :added_goal, content: {:buy, {:X}}}
   end
@@ -55,8 +59,13 @@ defmodule RuleContextTest do
        [{:!, [line: 24],
          [{:buy, [line: 24], [{:__aliases__, [counter: 0, line: 24], [:X]}]}]}]}
 
+    ctxs = [
+      ContextBelief.create({:money, {:Y}}, true),
+      ContextBelief.create({:nice, {:X, :Z}}, true),
+    ]
+
     assert RuleContext.parse(context) ==
-    %RuleContext{contexts: [money: {:Y}, nice: {:X, :Z}], function: nil}
+    %RuleContext{contexts: ctxs, function: nil}
     assert RuleTrigger.parse(context) ==
     %RuleTrigger{event_type: :added_goal, content: {:buy, {:X}}}
   end
@@ -82,9 +91,14 @@ defmodule RuleContextTest do
        [{:!, [line: 24],
          [{:buy, [line: 24], [{:__aliases__, [counter: 0, line: 24], [:X]}]}]}]}
 
+    ctxs = [
+      ContextBelief.create({:money, {:Y}}, true),
+      ContextBelief.create({:nice, {:X, :Z}}, true),
+      ContextBelief.create({:want_to_buy, {:X}}, true),
+    ]
+
     assert RuleContext.parse(context) ==
-    %RuleContext{contexts: [money: {:Y}, nice: {:X, :Z},
-             want_to_buy: {:X}], function: nil}
+    %RuleContext{contexts: ctxs, function: nil}
 
     assert RuleTrigger.parse(context) ==
     %RuleTrigger{event_type: :added_goal, content: {:buy, {:X}}}
@@ -94,23 +108,24 @@ defmodule RuleContextTest do
     # rule (+!buy(X)) when money(Z) && cost(X, C) && test Z > X
 
     context =
-      {:when, [line: 24],
-       [{:+, [line: 24],
-         [{:!, [line: 24],
-           [{:buy, [line: 24], [{:__aliases__, [counter: 0, line: 24], [:X]}]}]}]},
-        {:&&, [line: 24],
-         [{:&&, [line: 24],
-           [{:cost, [line: 24],
-             [{:__aliases__, [counter: 0, line: 24], [:X]},
-              {:__aliases__, [counter: 0, line: 24], [:Y]}]},
-            {:money, [line: 24], [{:__aliases__, [counter: 0, line: 24], [:Z]}]}]},
-          {:test, [line: 24],
-           [{:>=, [line: 24],
-             [{:__aliases__, [counter: 0, line: 24], [:Z]},
-              {:__aliases__, [counter: 0, line: 24], [:Y]}]}]}]}]}
+      {:when, [line: 11],
+       [{:+, [line: 11],
+         [{:!, [line: 11],
+           [{:buy, [line: 11], [{:__aliases__, [counter: 0, line: 11], [:X]}]}]}]},
+        {:&&, [line: 11],
+         [{:&&, [line: 11],
+           [{:money, [line: 11], [{:__aliases__, [counter: 0, line: 11], [:Z]}]},
+            {:cost, [line: 11],
+             [{:__aliases__, [counter: 0, line: 11], [:X]},
+              {:__aliases__, [counter: 0, line: 11], [:C]}]}]},
+          {:test, [line: 11],
+           [{:>, [line: 11],
+             [{:__aliases__, [counter: 0, line: 11], [:Z]},
+              {:__aliases__, [counter: 0, line: 11], [:X]}]}]}]}]}
 
-    rc = RuleContext.parse(context)
-    assert rc.contexts == [{:cost, {:X, :Y}}, {:money, {:Z}}]
-    assert rc.function.params == [:Z, :Y]
+    rh = RuleHead.parse(context)
+    assert rh.context.contexts ==
+    [%ContextBelief{belief: {:money, {:Z}}, should_pass: true}, %ContextBelief{belief: {:cost, {:X, :C}}, should_pass: true}]
+    assert rh.context.function.params == [:Z, :X]
   end
 end

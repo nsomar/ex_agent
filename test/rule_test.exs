@@ -50,7 +50,10 @@ defmodule RuleTest do
       ],
        head: %RuleHead{context:
        %RuleContext{
-          contexts: [money: {:Z}, cost: {:X, :C}],
+          contexts: [
+            %ContextBelief{belief: {:money, {:Z}}, should_pass: true},
+            %ContextBelief{belief: {:cost, {:X, :C}}, should_pass: true}
+          ],
           function: %ContextFunction{ast: {:&&, [],
            [{:>, [], [{:__aliases__, [], [:Z]}, {:__aliases__, [], [:X]}]},
             {:==, [], [{:__aliases__, [], [:Z]}, {:__aliases__, [], [:X]}]}]},

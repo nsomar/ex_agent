@@ -8,7 +8,7 @@ defmodule EndToEndTest do
       initialize do
       end
 
-      rule (+!buy(X)) when cost(X, Y) && money(Z) && test Z >= Y do
+      rule (+!buy(X)) when cost(X, Y) && !money(Z) && something(true) && test Z >= Y do
         +owns(X)
         query(happy(N))
         &print(X)
@@ -22,7 +22,13 @@ defmodule EndToEndTest do
     end
 
     events = Test1.plan_rules |> Enum.map(fn item -> item.head.trigger.event_type end)
+    should_pass = Test1.plan_rules
+    |> Enum.map(fn item -> item.head.context.contexts end)
+    |> List.flatten
+    |> Enum.map(fn item -> item.should_pass end)
+
     assert Test1.plan_rules |> Enum.count == 2
+    assert should_pass == [true, false, true]
     assert events == [:added_goal, :added_belief]
   end
 

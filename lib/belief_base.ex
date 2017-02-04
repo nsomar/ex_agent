@@ -69,14 +69,14 @@ defmodule BeliefBase do
     do: Enum.filter(beliefs, fn b -> b != belief end)
 
   defp do_test_belief(beliefs, test) when is_list(beliefs) and is_tuple(test),
-    do: Unifier.unify(beliefs, test) |> prepare_return
+    do: Unifier.unify(beliefs, test |> ContextBelief.from_belief) |> prepare_return
 
   defp do_test_beliefs(beliefs, tests, fun) when is_list(beliefs) and is_list(tests) do
-    Unifier.unify_list(beliefs, tests, fun) |> prepare_return
+    Unifier.unify_list(beliefs, tests |> ContextBelief.from_beliefs, fun) |> prepare_return
   end
 
   defp do_test_beliefs(beliefs, tests) when is_list(beliefs) and is_list(tests),
-    do: Unifier.unify_list(beliefs, tests, nil) |> prepare_return
+    do: Unifier.unify_list(beliefs, tests |> ContextBelief.from_beliefs, nil) |> prepare_return
 
   defp prepare_return([h| _]), do: h
   defp prepare_return(_), do: :cant_unify

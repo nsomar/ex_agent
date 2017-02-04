@@ -3,7 +3,6 @@ defmodule Rule do
   @type t :: %Rule{head: RuleHead.t, body: RuleBody.t}
 
   def parse(head, body) do
-    # body |> IO.inspect
     %Rule {
       head: RuleHead.parse(head),
       body: RuleBody.parse(body)
