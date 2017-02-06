@@ -5,14 +5,14 @@ defmodule RuleBodyTest do
     # do: +man(:omar)
     bb = [do: {:+, [line: 14], [{:man, [line: 14], [:omar]}]}]
 
-    assert RuleBody.parse(bb) == [%AddBelief{b: {:man, {:omar}}, params: []}]
+    assert RuleBody.parse(bb) == [%AddBelief{name: :man, params: [:omar]}]
   end
 
   test "it can parse 1 belief base from macro even if belief has no params" do
     # do: +man(:omar)
     bb = [do: {:+, [line: 14], [{:man, [line: 14], nil}]}]
 
-    assert RuleBody.parse(bb) == [%AddBelief{b: {:man, {}}, params: []}]
+    assert RuleBody.parse(bb) == [%AddBelief{name: :man, params: []}]
   end
 
   test "it can parse 1 belief base from macro with alias" do
@@ -21,7 +21,7 @@ defmodule RuleBodyTest do
     bb = [do: {:+, [line: 14],
   [{:has_car, [line: 14], [{:__aliases__, [counter: 0, line: 14], [:X]}]}]}]
 
-    assert RuleBody.parse(bb) == [%AddBelief{b: {:has_car, {:X}}, params: [:X]}]
+    assert RuleBody.parse(bb) == [%AddBelief{name: :has_car, params: [%AstFunction{ast: {:__aliases__, [], [:X]}, number_of_params: 1, params: [:X]}]}]
   end
 
   test "it can parse removing a belief" do
@@ -68,9 +68,9 @@ defmodule RuleBodyTest do
    {:+, [line: 16], [{:is, [line: 16], [:man, :omar]}]}]}]
 
     assert RuleBody.parse(bb) ==
-      [%AddBelief{b: {:cost, {:car, 1000}}, params: []},
+      [%AddBelief{name: :cost, params: [:car, 1000]},
        %RemoveBelief{b: {:cost, {:iphone, 1000}}},
-       %AddBelief{b: {:is, {:man, :omar}}, params: []}]
+       %AddBelief{name: :is, params: [:man, :omar]}]
   end
 
   test "can parse goals and beliefs when goals have no parameters" do
@@ -84,7 +84,7 @@ defmodule RuleBodyTest do
   [{:+, [line: 14], [{:money, [line: 14], [:o]}]},
    {:!, [line: 15], [{:buy, [line: 15], nil}]}]}]
 
-    assert RuleBody.parse(bb) == [%AddBelief{b: {:money, {:o}}, params: []}, %AchieveGoal{g: {:buy, {}}}]
+    assert RuleBody.parse(bb) == [%AddBelief{name: :money, params: [:o]}, %AchieveGoal{g: {:buy, {}}}]
   end
 
   test "can parse goals and beliefs when goals have empty parameters" do
@@ -98,7 +98,7 @@ defmodule RuleBodyTest do
   [{:+, [line: 14], [{:money, [line: 14], [:o]}]},
    {:!, [line: 15], [{:buy, [line: 15], []}]}]}]
 
-    assert RuleBody.parse(bb) == [%AddBelief{b: {:money, {:o}}, params: []}, %AchieveGoal{g: {:buy, []}}]
+    assert RuleBody.parse(bb) == [%AddBelief{name: :money, params: [:o]}, %AchieveGoal{g: {:buy, []}}]
   end
 
   test "can parse goals and beliefs when goals have parameters" do
@@ -113,7 +113,7 @@ defmodule RuleBodyTest do
    {:!, [line: 15],
     [{:buy, [line: 15], [{:__aliases__, [counter: 0, line: 15], [:X]}]}]}]}]
 
-    assert RuleBody.parse(bb) == [%AddBelief{b: {:money, {:o}}, params: []}, %AchieveGoal{g: {:buy, [:X]}}]
+    assert RuleBody.parse(bb) == [%AddBelief{name: :money, params: [:o]}, %AchieveGoal{g: {:buy, [:X]}}]
   end
 
 end

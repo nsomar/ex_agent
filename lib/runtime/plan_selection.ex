@@ -26,7 +26,7 @@ defmodule PlanSelection do
    do: true
 
   defp matches_function?([bindings], function),
-   do: ContextFunction.perform(function, bindings)
+   do: AstFunction.perform(function, bindings)
 
   defp matches_function?(_, _),
    do: false

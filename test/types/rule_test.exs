@@ -42,24 +42,16 @@ defmodule RuleTest do
 
     # IO.inspect(Rule.parse(head, body))
     assert Rule.parse(head, body) ==
-      %Rule{body:
-      [
-        %AddBelief{b: {:nice, {:car}}, params: []},
-        %AchieveGoal{g: {:buy, [:X]}},
-        %InternalAction{a: {:send, {:X}}}
-      ],
-       head: %RuleHead{context:
-       %RuleContext{
-          contexts: [
-            %ContextBelief{belief: {:money, {:Z}}, should_pass: true},
-            %ContextBelief{belief: {:cost, {:X, :C}}, should_pass: true}
-          ],
-          function: %ContextFunction{ast: {:&&, [],
+      %Rule{body: [%AddBelief{name: :nice, params: [:car]},
+        %AchieveGoal{g: {:buy, [:X]}}, %InternalAction{a: {:send, {:X}}}],
+       head: %RuleHead{context: %RuleContext{contexts: [%ContextBelief{belief: {:money,
+            {:Z}}, should_pass: true},
+          %ContextBelief{belief: {:cost, {:X, :C}}, should_pass: true}],
+         function: %AstFunction{ast: {:&&, [],
            [{:>, [], [{:__aliases__, [], [:Z]}, {:__aliases__, [], [:X]}]},
             {:==, [], [{:__aliases__, [], [:Z]}, {:__aliases__, [], [:X]}]}]},
           number_of_params: 2, params: [:Z, :X]}},
-        trigger:
-        %RuleTrigger{event_type: :added_goal, content: {:buy, {:X}}}}}
+        trigger: %RuleTrigger{content: {:buy, {:X}}, event_type: :added_goal}}}
   end
 
 end

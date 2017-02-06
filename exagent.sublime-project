@@ -4,7 +4,7 @@
 		{
 			"path": ".",
       "folder_exclude_patterns": ["_build"],
-      "file_exclude_patterns": ["*.sublime-workspace"]
+      "file_exclude_patterns": ["*.sublime-workspace", "*.beam", "*.BEAM"]
 		}
 	],
   "build_systems":

@@ -19,11 +19,11 @@ defmodule MockAgentTest do
     test "it captures beleifs in initialize" do
       assert MockAgentWB.initial ==
         [
-          %AddBelief{b: {:cost, {:car, 10000}}, params: []},
-          %AddBelief{b: {:cost, {:iphone, 500}}, params: []},
-          %AddBelief{b: {:color, {:car, :red}}, params: []},
-          %AddBelief{b: {:color, {:iphone, :black}}, params: []},
-          %AddBelief{b: {:is, {:man, :omar}}, params: []}
+          %AddBelief{name: :cost, params: [:car, 10000]},
+          %AddBelief{name: :cost, params: [:iphone, 500]},
+          %AddBelief{name: :color, params: [:car, :red]},
+          %AddBelief{name: :color, params: [:iphone, :black]},
+          %AddBelief{name: :is, params: [:man, :omar]}
         ]
     end
 
@@ -49,9 +49,15 @@ defmodule MockAgentTest do
     test "it captures beleifs in initialize" do
       assert MockAgentWVars.initial ==
         [
-          %AddBelief{b: {:cost, {:car, :X}}, params: [:X]},
-          %AddBelief{b: {:cost, {:Y, :Z}}, params: [:Y, :Z]},
-        ]
+          %AddBelief{name: :cost,
+          params: [:car,
+           %AstFunction{ast: {:__aliases__, [], [:X]}, number_of_params: 1,
+            params: [:X]}]},
+          %AddBelief{name: :cost,
+          params: [%AstFunction{ast: {:__aliases__, [], [:Y]}, number_of_params: 1,
+            params: [:Y]},
+           %AstFunction{ast: {:__aliases__, [], [:Z]}, number_of_params: 1,
+            params: [:Z]}]}]
     end
 
   end
@@ -72,9 +78,8 @@ defmodule MockAgentTest do
     test "it captures beleifs in initial" do
       assert MockAgentWBG.initial ==
         [
-          %AddBelief{b: {:cost, {:car, 10000}}, params: []},
-          %AddBelief{b: {:money, {111}}, params: []},
-          %AchieveGoal{g: {:buy_stuff, {}}}
+          %AddBelief{name: :cost, params: [:car, 10000]},
+          %AddBelief{name: :money, params: 'o'}, %AchieveGoal{g: {:buy_stuff, {}}}
         ]
     end
 

@@ -2,8 +2,6 @@ defmodule AstFunction do
   defstruct [:number_of_params, :ast, :params]
 
   # Creation
-  def create_from_list(asts), do: Enum.map(asts, &create/1)
-
   def create(ast) do
     params = CommonInstructionParser.parse_vars(ast)
     %AstFunction{
@@ -26,7 +24,7 @@ defmodule AstFunction do
 
   # Performing
   def perform(function, params) do
-    match = CommonInstructionParser.check_all_params_present(function, params)
+    match = CommonInstructionParser.check_all_params_present(function.params, params)
     do_perform(function, params, match)
   end
 

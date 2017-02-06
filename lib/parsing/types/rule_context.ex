@@ -41,6 +41,6 @@ defmodule RuleContext do
   def convert_to_model({{:test, test}, _}), do: ContextFunction.create(test)
   def convert_to_model({item, should_pass}), do: ContextBelief.create(item, should_pass)
 
-  defp function?(%ContextFunction{}), do: true
+  defp function?(%AstFunction{}), do: true
   defp function?(_), do: false
 end

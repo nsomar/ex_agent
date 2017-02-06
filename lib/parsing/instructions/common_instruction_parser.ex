@@ -6,6 +6,14 @@ defmodule CommonInstructionParser do
   defp parse_param({:__aliases__, _, [param]}), do: param
   defp parse_param(param), do: param
 
+  def parse_params2(nil), do: []
+  def parse_params2(params), do: Enum.map(params, &parse_param2/1)
+
+
+  defp parse_param2(param) when is_tuple(param), do: AstFunction.create(param)
+  defp parse_param2(param), do: param
+
+
     # Parsing
   def parse_vars(params) do
     do_parse_vars(params, []) |> List.flatten |> Enum.uniq
@@ -31,9 +39,8 @@ defmodule CommonInstructionParser do
 
   # Prepares the AST
   def prepare_ast(ast, ast_params, params) do
-    IO.inspect(ast)
     :ok = check_all_params_present(ast_params, params)
-    do_prepare_ast(ast, params) |> IO.inspect
+    do_prepare_ast(ast, params)
   end
 
   def do_prepare_ast({:__aliases__, _, [param]}, params_values) when is_atom(param) do
@@ -52,11 +59,10 @@ defmodule CommonInstructionParser do
     any
   end
 
-  def check_all_params_present(function, params) do
-    fp = function.params
+  def check_all_params_present(ast_params, params) do
     unique_params = params |> Enum.map(&elem(&1, 0)) |> Enum.uniq
 
-    if compare_params(fp, unique_params) do
+    if compare_params(ast_params, unique_params) do
       :ok
     else
       {:error, "wrong params passed"}

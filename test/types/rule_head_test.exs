@@ -25,7 +25,7 @@ defmodule RuleHeadTest do
         %ContextBelief{belief: {:cost, {:X, :Y}}, should_pass: true},
         %ContextBelief{belief: {:money, {:Z}}, should_pass: true}
       ],
-      function: %ContextFunction{ast: {:>=, [],
+      function: %AstFunction{ast: {:>=, [],
               [{:__aliases__, [], [:Z]}, {:__aliases__, [], [:Y]}]},
              number_of_params: 2, params: [:Z, :Y]}}
   end
