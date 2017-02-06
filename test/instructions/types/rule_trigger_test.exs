@@ -28,6 +28,18 @@ defmodule RuleTriggerTest do
     TriggerType.added_goal
   end
 
+  test "can get the added_goal trigger type when no params are passed" do
+    # rule (+!cost(:car, X)) do
+    #   cost(:car, 1000)
+    #   !buy(:car, 1)
+    # end
+
+    trigger = {:+, [line: 86], [{:!, [line: 86], [{:cost, [line: 86], nil}]}]}
+
+    assert RuleTrigger.parse(trigger).event_type ==
+    TriggerType.added_goal
+  end
+
   test "can get the removed_belief trigger type" do
     # rule (-cost(:car, X)) do
     #   cost(:car, 1000)

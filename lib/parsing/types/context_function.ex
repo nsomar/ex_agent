@@ -7,7 +7,7 @@ defmodule ContextFunction do
 
   # Creation
   def create({test}) do
-    params = get_params(test)
+    params = CommonInstructionParser.parse_vars(test)
     %ContextFunction{
       number_of_params: Enum.count(params),
       params: params,
@@ -29,25 +29,6 @@ defmodule ContextFunction do
 
   defp flatten_ast(any) do
     any
-  end
-
-  # Parsing
-  def get_params(test) do
-    do_get_params(test, []) |> List.flatten |> Enum.uniq
-  end
-
-  defp do_get_params(param, acc) when is_atom(param) do
-    if ParsingUtils.var?(param), do: acc ++ param, else: acc
-  end
-
-  defp do_get_params({_, _, params}, acc) do
-    params |> Enum.map(fn param ->
-      do_get_params(param, acc)
-    end)
-  end
-
-  defp do_get_params(_, acc)  do
-    acc
   end
 
   # Substitution
@@ -108,16 +89,3 @@ defmodule ContextFunction do
     MapSet.subset?(sp1, sp2)
   end
 end
-
-
-
-
-
-
-
-
-
-
-
-
-

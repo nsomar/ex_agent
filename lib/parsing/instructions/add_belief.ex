@@ -1,9 +1,13 @@
 defmodule AddBelief do
-  defstruct [:b]
+  defstruct [:name, :params]
+  @type t :: %AddBelief{name: String.t, params: [any]}
 
   def parse({:+, _, [{name, _, params}]} = statements) when is_tuple(statements) do
+    # IO.inspect(params)
     %AddBelief{
-      b: {name, params |> CommonInstructionParser.parse_params |> List.to_tuple}
-    }
+      name: name,
+      params: AstFunction.create_from_list(params),
+    } |> IO.inspect
   end
+
 end

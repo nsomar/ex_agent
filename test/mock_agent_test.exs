@@ -19,11 +19,11 @@ defmodule MockAgentTest do
     test "it captures beleifs in initialize" do
       assert MockAgentWB.initial ==
         [
-          %AddBelief{b: {:cost, {:car, 10000}}},
-          %AddBelief{b: {:cost, {:iphone, 500}}},
-          %AddBelief{b: {:color, {:car, :red}}},
-          %AddBelief{b: {:color, {:iphone, :black}}},
-          %AddBelief{b: {:is, {:man, :omar}}}
+          %AddBelief{b: {:cost, {:car, 10000}}, params: []},
+          %AddBelief{b: {:cost, {:iphone, 500}}, params: []},
+          %AddBelief{b: {:color, {:car, :red}}, params: []},
+          %AddBelief{b: {:color, {:iphone, :black}}, params: []},
+          %AddBelief{b: {:is, {:man, :omar}}, params: []}
         ]
     end
 
@@ -32,6 +32,28 @@ defmodule MockAgentTest do
       bb = MockAgentWB.belief_base(ag)
       assert BeliefBase.beliefs(bb) == []
     end
+  end
+
+  describe "Mock Agent With Beleifs with vars" do
+    defmodule MockAgentWVars do
+      use EXAgent
+
+      initialize do
+        +cost(:car, X)
+        +cost(Y, Z)
+      end
+
+      start
+    end
+
+    test "it captures beleifs in initialize" do
+      assert MockAgentWVars.initial ==
+        [
+          %AddBelief{b: {:cost, {:car, :X}}, params: [:X]},
+          %AddBelief{b: {:cost, {:Y, :Z}}, params: [:Y, :Z]},
+        ]
+    end
+
   end
 
   describe "Mock Agent With Beleifs and Goals" do
@@ -50,9 +72,9 @@ defmodule MockAgentTest do
     test "it captures beleifs in initial" do
       assert MockAgentWBG.initial ==
         [
-          %AddBelief{b: {:cost, {:car, 10000}}},
-          %AddBelief{b: {:money, {111}}},
-          %AchieveGoal{g: {:buy_stuff, []}}
+          %AddBelief{b: {:cost, {:car, 10000}}, params: []},
+          %AddBelief{b: {:money, {111}}, params: []},
+          %AchieveGoal{g: {:buy_stuff, {}}}
         ]
     end
 

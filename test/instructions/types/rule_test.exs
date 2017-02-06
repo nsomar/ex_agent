@@ -44,7 +44,7 @@ defmodule RuleTest do
     assert Rule.parse(head, body) ==
       %Rule{body:
       [
-        %AddBelief{b: {:nice, {:car}}},
+        %AddBelief{b: {:nice, {:car}}, params: []},
         %AchieveGoal{g: {:buy, [:X]}},
         %InternalAction{a: {:send, {:X}}}
       ],
