@@ -1,10 +1,12 @@
 defmodule EXAgent do
   use GenServer
+  require Logger
 
   defmacro __using__(_) do
     quote do
 
       import unquote(__MODULE__)
+      require Logger
 
       @initial []
       @started false
@@ -13,7 +15,15 @@ defmodule EXAgent do
       Module.register_attribute __MODULE__, :rules,
       accumulate: true, persist: false
 
-      def create(name), do: EXAgent.create(:"#{__MODULE__}.#{name}")
+      def create(name) do
+        agent = EXAgent.create(:"#{__MODULE__}.#{name}")
+        EXAgent.add_plan_rules(agent, __MODULE__.plan_rules)
+
+        Logger.info fn -> "\nAgent #{name} creates\nRules:\n#{inspect(__MODULE__.plan_rules)}" end
+
+        agent
+      end
+
       def belief_base(ag), do: EXAgent.belief_base(ag)
       def plan_rules(ag), do: EXAgent.plan_rules(ag)
 
@@ -79,6 +89,13 @@ defmodule EXAgent do
 
   def belief_base(agent) do
     GenServer.call(agent, :belief_base)
+  end
+
+  def add_plan_rules(agent, plans) do
+    plans
+    |> Enum.map(fn rule ->
+      EXAgent.add_plan_rule(agent, rule)
+    end)
   end
 
   def add_plan_rule(agent, plan) do

@@ -37,6 +37,12 @@ defmodule BeliefsBaseTest do
     assert res == [{:is, :cool}]
   end
 
+  test "it does not remove a beleif that does not match" do
+    {:ok, pid} = BeliefBase.create([{:car, {:red}}])
+    res = BeliefBase.remove_belief(pid, {:car, {:green}})
+    assert res == [{:car, {:red}}]
+  end
+
   test "it can test beleifs" do
     {:ok, pid} = BeliefBase.create([{:car, {:color, :red}}, {:is, {:cool}}])
     res = BeliefBase.test_belief(pid, {:car, {:X, :Y}})

@@ -77,10 +77,9 @@ defmodule MockAgentTest do
 
     test "it captures beleifs in initial" do
       assert MockAgentWBG.initial ==
-        [
-          %AddBelief{name: :cost, params: [:car, 10000]},
-          %AddBelief{name: :money, params: 'o'}, %AchieveGoal{g: {:buy_stuff, {}}}
-        ]
+        [%AddBelief{name: :cost, params: [:car, 10000]},
+         %AddBelief{name: :money, params: 'o'},
+         %AchieveGoal{name: :buy_stuff, params: []}]
     end
 
     test "it has a belief base with the initial" do

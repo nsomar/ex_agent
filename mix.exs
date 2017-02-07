@@ -32,7 +32,8 @@ defmodule Exagent.Mixfile do
     [
       {:dialyxir, "~> 0.4", only: [:dev], runtime: false},
       {:excoveralls, "~> 0.5", only: :test},
-      {:credo, "~> 0.5", only: [:dev, :test]}
+      {:credo, "~> 0.5", only: [:dev, :test]},
+      {:apex, "~>1.0.0"}
     ]
   end
 end
