@@ -28,8 +28,14 @@ use Mix.Config
 # here (which is why it is important to import them last).
 #
 #     import_config "#{Mix.env}.exs"
-
-config :logger,
-  backends: [:console],
-  level: :info,
-  compile_time_purge_level: :info
+if System.get_env("D") == "1" do
+  config :logger,
+    backends: [:console],
+    level: :info,
+    compile_time_purge_level: :info
+else
+  config :logger,
+    backends: [:console],
+    level: :warn,
+    compile_time_purge_level: :info
+end

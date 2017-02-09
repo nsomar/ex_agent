@@ -7,7 +7,7 @@ defmodule TriggerType do
 end
 
 defmodule Event do
-  defstruct [:event_type, :content]
+  defstruct [:event_type, :content, :intent]
   @type t :: %Event{event_type: atom, content: any}
 
   def added_belief(belief),
@@ -27,4 +27,16 @@ defmodule Event do
 
   def removed_test_goal(goal),
     do: %Event{event_type: :removed_test_goal, content: goal}
+
+  def from_instruction(%AddBelief{}=instruction, binding) do
+    Event.added_belief(instruction |> EventContent.content(binding))
+  end
+
+  def from_instruction(%RemoveBelief{}=instruction, binding) do
+    Event.removed_belief(instruction |> EventContent.content(binding))
+  end
+
+  def from_instruction(%AchieveGoal{}=instruction, binding) do
+    Event.added_goal(instruction |> EventContent.content(binding))
+  end
 end

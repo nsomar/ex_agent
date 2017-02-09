@@ -2,7 +2,7 @@ defmodule Reasoner do
   require Logger
 
   def reason(agent, instruction, binding) do
-    event = event_for_instruction(instruction, binding)
+    event = Event.from_instruction(instruction, binding)
     rules = EXAgent.plan_rules(agent)
 
     beliefs =
@@ -27,17 +27,4 @@ defmodule Reasoner do
 
     selected_plan.body |> IO.inspect
   end
-
-  def event_for_instruction(%AddBelief{}=instruction, binding) do
-    Event.added_belief(instruction |> EventContent.content(binding))
-  end
-
-  def event_for_instruction(%RemoveBelief{}=instruction, binding) do
-    Event.removed_belief(instruction |> EventContent.content(binding))
-  end
-
-  def event_for_instruction(%AchieveGoal{}=instruction, binding) do
-    Event.added_goal(instruction |> EventContent.content(binding))
-  end
-
 end

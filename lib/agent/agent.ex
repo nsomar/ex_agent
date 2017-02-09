@@ -17,7 +17,9 @@ defmodule EXAgent do
 
       def create(name) do
         agent = EXAgent.create(:"#{__MODULE__}.#{name}")
-        EXAgent.add_plan_rules(agent, __MODULE__.plan_rules)
+
+        AgentHelper.add_plan_rules(agent, __MODULE__.plan_rules)
+        AgentHelper.set_initial_as_events(agent, __MODULE__.initial)
 
         Logger.info fn -> "\nAgent #{name} creates\nRules:\n#{inspect(__MODULE__.plan_rules)}" end
 
@@ -81,21 +83,40 @@ defmodule EXAgent do
     {:reply, new_plans, Map.put(state, :plan_rules, new_plans)}
   end
 
+  def handle_call(:events, _from, %{events: events} = state) do
+    {:reply, events, state}
+  end
+
+  def handle_call({:add_event, new_event}, _from, %{events: events} = state) do
+    new_events = events ++ [new_event]
+    {:reply, new_events, Map.put(state, :events, new_events)}
+  end
+
+  def handle_call({:set_events, events}, _from, state) do
+    {:reply, events, Map.put(state, :events, events)}
+  end
+
+  def handle_call(:intents, _from, %{intents: intents} = state) do
+    {:reply, intents, state}
+  end
+
+  def handle_call({:add_intent, new_intent}, _from, %{intents: intents} = state) do
+    new_intents = intents ++ [new_intent]
+    {:reply, new_intents, Map.put(state, :intents, new_intents)}
+  end
+
+  def handle_call({:set_intents, intents}, _from, state) do
+    {:reply, intents, Map.put(state, :intents, intents)}
+  end
+
   def create(name) when is_atom(name) do
     {:ok, bb} = BeliefBase.create([])
-    state = %EXAgentState{beliefs: bb, plan_rules: []}
+    state = %AgentState{beliefs: bb, plan_rules: [], intents: [], events: [], name: name, module: __MODULE__}
     GenServer.start_link(__MODULE__, state, name: name) |> elem(1)
   end
 
   def belief_base(agent) do
     GenServer.call(agent, :belief_base)
-  end
-
-  def add_plan_rules(agent, plans) do
-    plans
-    |> Enum.map(fn rule ->
-      EXAgent.add_plan_rule(agent, rule)
-    end)
   end
 
   def add_plan_rule(agent, plan) do
@@ -106,4 +127,31 @@ defmodule EXAgent do
     GenServer.call(agent, :plan_rules)
   end
 
+  def add_plan_rule(agent, plan) do
+    GenServer.call(agent, {:add_plan, plan})
+  end
+
+  def events(agent) do
+    GenServer.call(agent, :events)
+  end
+
+  def add_event(agent, event) do
+    GenServer.call(agent, {:add_event, event})
+  end
+
+  def set_events(agent, events) do
+    GenServer.call(agent, {:set_event, events})
+  end
+
+  def intents(agent) do
+    GenServer.call(agent, :intents)
+  end
+
+  def add_intent(agent, intent) do
+    GenServer.call(agent, {:add_intent, intent})
+  end
+
+  def set_intents(agent, intents) do
+    GenServer.call(agent, {:set_intents, intents})
+  end
 end
