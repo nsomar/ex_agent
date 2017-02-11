@@ -7,11 +7,14 @@ defmodule TriggerType do
 end
 
 defmodule Event do
-  defstruct [:event_type, :content, :intent]
+  defstruct [:event_type, :content, :intents]
   @type t :: %Event{event_type: atom, content: any}
 
   def added_belief(belief),
     do: %Event{event_type: :added_belief, content: belief}
+
+  def query_belief(belief),
+    do: %Event{event_type: :query_belief, content: belief}
 
   def removed_belief(belief),
     do: %Event{event_type: :removed_belief, content: belief}
@@ -28,6 +31,9 @@ defmodule Event do
   def removed_test_goal(goal),
     do: %Event{event_type: :removed_test_goal, content: goal}
 
+  def internal_action(action),
+    do: %Event{event_type: :internal_action, content: action}
+
   def from_instruction(%AddBelief{}=instruction, binding) do
     Event.added_belief(instruction |> EventContent.content(binding))
   end
@@ -39,4 +45,13 @@ defmodule Event do
   def from_instruction(%AchieveGoal{}=instruction, binding) do
     Event.added_goal(instruction |> EventContent.content(binding))
   end
+
+  def from_instruction(%QueryBelief{}=instruction, binding) do
+    Event.query_belief(instruction)
+  end
+
+  def from_instruction(%InternalAction{}=instruction, binding) do
+    Event.internal_action(instruction)
+  end
+
 end

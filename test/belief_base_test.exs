@@ -5,7 +5,17 @@ defmodule BeliefsBaseTest do
     {:ok, pid} = BeliefBase.create([])
 
     res = BeliefBase.add_belief(pid, {:car, :red})
-    assert res == [{:car, :red}]
+    assert res == :added
+    assert BeliefBase.beliefs(pid) == [{:car, :red}]
+  end
+
+  test "it does not add the belief twice" do
+    {:ok, pid} = BeliefBase.create([])
+
+    BeliefBase.add_belief(pid, {:car, :red})
+    res = BeliefBase.add_belief(pid, {:car, :red})
+    assert res = :already_added
+    assert BeliefBase.beliefs(pid) == [{:car, :red}]
   end
 
    test "it can add 2 beleifs" do
@@ -13,7 +23,9 @@ defmodule BeliefsBaseTest do
 
     BeliefBase.add_belief(pid, {:car, :red})
     res = BeliefBase.add_belief(pid, {:car, :yellow})
-    assert res == [{:car, :red}, {:car, :yellow}]
+
+    assert res == :added
+    assert BeliefBase.beliefs(pid) == [{:car, :red}, {:car, :yellow}]
   end
 
   test "it can get the beliefs" do

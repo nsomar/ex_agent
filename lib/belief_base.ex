@@ -3,8 +3,8 @@ defmodule BeliefBase do
   use GenServer
 
   def handle_call({:add_belief, belief}, _from, beliefs) do
-    new = do_add_belief(beliefs, belief)
-    {:reply, new, new}
+    {result, new} = do_add_belief(beliefs, belief)
+    {:reply, result, new}
   end
 
   def handle_call({:remove_belief, belief}, _from, beliefs) do
@@ -62,17 +62,25 @@ defmodule BeliefBase do
     GenServer.call(pid, {:test_beliefs, beliefs, nil})
   end
 
-  defp do_add_belief(beliefs, belief) when is_list(beliefs) and is_tuple(belief),
-    do: beliefs ++ [belief]
+  def do_add_belief(beliefs, belief) when is_list(beliefs) and is_tuple(belief) do
+    case has_belief(beliefs, belief) do
+      true -> {:aleady_added, beliefs}
+      false -> {:added, beliefs ++ [belief]}
+    end
+  end
 
-  defp do_remove_belief(beliefs, belief) when is_list(beliefs) and is_tuple(belief),
+  def do_remove_belief(beliefs, belief) when is_list(beliefs) and is_tuple(belief),
     do: Enum.filter(beliefs, fn b -> b != belief end)
 
-  defp do_test_belief(beliefs, test) when is_list(beliefs) and is_tuple(test),
+  def do_test_belief(beliefs, test) when is_list(beliefs) and is_tuple(test),
     do: Unifier.unify(beliefs, test |> ContextBelief.from_belief) |> prepare_return
 
-  defp do_test_beliefs(beliefs, tests, fun) when is_list(beliefs) and is_list(tests) do
+  def do_test_beliefs(beliefs, tests, fun) when is_list(beliefs) and is_list(tests) do
     Unifier.unify_list(beliefs, tests |> ContextBelief.from_beliefs, fun) |> prepare_return
+  end
+
+  defp has_belief(beliefs, belief) do
+    Enum.any?(beliefs, fn bel -> bel == belief end)
   end
 
   defp do_test_beliefs(beliefs, tests) when is_list(beliefs) and is_list(tests),

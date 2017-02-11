@@ -1,9 +1,54 @@
 defmodule MockAgentTest do
   use ExUnit.Case
 
+  describe "Mock Agent With Initial Beleifs" do
+
+    test "it has initial beliefs" do
+      defmodule MockAgentWInitialB1 do
+        use ExAgent
+
+        initial_beliefs do
+          cost(:car, System.compiled_endianness())
+          cost(:iphone, 500)
+          color(:car, :red)
+        end
+
+        initialize do end
+        start
+      end
+
+      assert MockAgentWInitialB1.initial_beliefs ==
+        [
+          %Belief{name: :cost, params: [:car, %AstFunction{ast: {{:., [line: 11], [{:__aliases__, [counter: 0, line: 11], [:System]}, :compiled_endianness]}, [], []}, number_of_params: 0, params: []}]},
+          %Belief{name: :cost, params: [:iphone, 500]},
+          %Belief{name: :color, params: [:car, :red]}
+        ]
+    end
+
+    test "it parses initial beliefs" do
+      defmodule MockAgentWInitialB2 do
+        use ExAgent
+
+        initial_beliefs do
+          cost(:car, System.compiled_endianness())
+          cost(:iphone, 500)
+          color(:car, :red)
+        end
+
+        initialize do end
+        start
+      end
+
+      ag = MockAgentWInitialB2.create("ag")
+      beliefs = ag |> MockAgentWInitialB2.belief_base |> BeliefBase.beliefs
+      assert beliefs ==
+      [cost: {:car, :little}, cost: {:iphone, 500}, color: {:car, :red}]
+    end
+  end
+
   describe "Mock Agent With Beleifs" do
     defmodule MockAgentWB do
-      use EXAgent
+      use ExAgent
 
       initialize do
         +cost(:car, 10000)
@@ -36,7 +81,7 @@ defmodule MockAgentTest do
 
   describe "Mock Agent With Beleifs with vars" do
     defmodule MockAgentWVars do
-      use EXAgent
+      use ExAgent
 
       initialize do
         +cost(:car, X)
@@ -64,7 +109,7 @@ defmodule MockAgentTest do
 
   describe "Mock Agent With Beleifs and Goals" do
     defmodule MockAgentWBG do
-      use EXAgent
+      use ExAgent
 
       initialize do
         +cost(:car, 10000)

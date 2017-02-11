@@ -1,5 +1,5 @@
 defmodule ExecutorTestAgent do
-  use EXAgent
+  use ExAgent
 
   initialize do
     +counter(0)
@@ -19,137 +19,99 @@ defmodule ExecutorTest do
 
   describe "Add and Remove a belief" do
     test "it adds a belief" do
-      ag = ExecutorTestAgent.create("agent1")
-      bb = ExecutorTestAgent.belief_base(ag)
-      assert BeliefBase.beliefs(bb) == []
-
       instruction = ExecutorTestAgent.initial |> Enum.at(0)
-      Executor.execute(instruction, ag, [])
-      assert BeliefBase.beliefs(bb) == [counter: {0}]
+      {{_, beliefs}, bindings} = Executor.execute(instruction, [], [])
+
+      assert beliefs == [counter: {0}]
+      assert bindings == []
     end
 
     test "it adds a belief with binding" do
-      ag = ExecutorTestAgent.create("agent1")
-      bb = ExecutorTestAgent.belief_base(ag)
-      assert BeliefBase.beliefs(bb) == []
-
       instruction = ExecutorTestAgent.initial |> Enum.at(1)
-      Executor.execute(instruction, ag, [X: 20])
-      assert BeliefBase.beliefs(bb) == [counter: {20}]
+      {beliefs, bindings} = Executor.execute(instruction, [], [X: 20])
+      assert beliefs == {:added, [counter: {20}]}
+      assert bindings == [X: 20]
     end
 
     test "it removes a belief" do
-      ag = ExecutorTestAgent.create("agent1")
-      bb = ExecutorTestAgent.belief_base(ag)
-      BeliefBase.add_belief(bb, {:counter, {0}})
-      assert BeliefBase.beliefs(bb) == [counter: {0}]
-
       instruction = ExecutorTestAgent.initial |> Enum.at(2)
-      Executor.execute(instruction, ag, [X: 20])
-      assert BeliefBase.beliefs(bb) == []
+      {beliefs, bindings} = Executor.execute(instruction, [counter: {0}], [X: 20])
+
+      assert beliefs == []
+      assert bindings == [X: 20]
     end
 
     test "it removes a belief with binding" do
-      ag = ExecutorTestAgent.create("agent1")
-      bb = ExecutorTestAgent.belief_base(ag)
-      BeliefBase.add_belief(bb, {:counter, {10}})
-      assert BeliefBase.beliefs(bb) == [counter: {10}]
-
       instruction = ExecutorTestAgent.initial |> Enum.at(3)
-      Executor.execute(instruction, ag, [X: 10])
-      assert BeliefBase.beliefs(bb) == []
+      {beliefs, bindings} = Executor.execute(instruction, [counter: {10}], [X: 10])
+
+      assert beliefs == []
+      assert bindings == [X: 10]
     end
 
     test "it add and remove multiple beliefs" do
-      ag = ExecutorTestAgent.create("agent1")
-      bb = ExecutorTestAgent.belief_base(ag)
-      assert BeliefBase.beliefs(bb) == []
-
       instruction = ExecutorTestAgent.initial |> Enum.at(0)
-      Executor.execute(instruction, ag, [X: 10])
-      assert BeliefBase.beliefs(bb) == [counter: {0}]
+      {{:added, beliefs}, bindings} = Executor.execute(instruction, [], [X: 10])
+
+      assert beliefs == [counter: {0}]
+      assert bindings == [X: 10]
 
       instruction = ExecutorTestAgent.initial |> Enum.at(1)
-      Executor.execute(instruction, ag, [X: 20])
-      assert BeliefBase.beliefs(bb) == [counter: {0}, counter: {20}]
+      {{:added, beliefs}, bindings} = Executor.execute(instruction, beliefs, [X: 20])
+
+      assert beliefs == [counter: {0}, counter: {20}]
+      assert bindings == [X: 20]
 
       instruction = ExecutorTestAgent.initial |> Enum.at(2)
-      Executor.execute(instruction, ag, [X: 30])
-      assert BeliefBase.beliefs(bb) == [counter: {20}]
+      {beliefs, bindings} = Executor.execute(instruction, beliefs, [X: 30])
+
+      assert beliefs == [counter: {20}]
+      assert bindings == [X: 30]
 
       instruction = ExecutorTestAgent.initial |> Enum.at(3)
-      Executor.execute(instruction, ag, [X: 40])
-      assert BeliefBase.beliefs(bb) == [counter: {20}]
+      {beliefs, bindings} = Executor.execute(instruction, beliefs, [X: 40])
+
+      assert beliefs == [counter: {20}]
+      assert bindings == [X: 40]
     end
 
   end
 
   describe "Query a belief" do
 
-
     test "it queries a belief" do
-      ag = ExecutorTestAgent.create("agent1")
-      bb = ExecutorTestAgent.belief_base(ag)
-      assert BeliefBase.beliefs(bb) == []
-
-      BeliefBase.add_belief(bb, {:counter, {1}})
       instruction = ExecutorTestAgent.initial |> Enum.at(4)
-      res = Executor.execute(instruction, ag, [])
-      assert res == []
+      {_, bindings} = Executor.execute(instruction, [{:counter, {1}}], [])
+      assert bindings == []
     end
 
     test "it queries a belief without binding" do
-      ag = ExecutorTestAgent.create("agent1")
-      bb = ExecutorTestAgent.belief_base(ag)
-      assert BeliefBase.beliefs(bb) == []
-
-      BeliefBase.add_belief(bb, {:counter, {1}})
       instruction = ExecutorTestAgent.initial |> Enum.at(4)
-      res = Executor.execute(instruction, ag, [X: 123])
+      {_, res} = Executor.execute(instruction, [{:counter, {1}}], [X: 123])
       assert res == [X: 123]
     end
 
     test "it queries a belief with binding" do
-      ag = ExecutorTestAgent.create("agent1")
-      bb = ExecutorTestAgent.belief_base(ag)
-      assert BeliefBase.beliefs(bb) == []
-
-      BeliefBase.add_belief(bb, {:counter, {10}})
       instruction = ExecutorTestAgent.initial |> Enum.at(5)
-      res = Executor.execute(instruction, ag, [X: 123])
+      {_, res} = Executor.execute(instruction, [{:counter, {10}}], [X: 123])
       assert res == [X: 123, Y: 10]
     end
 
     test "it queries a belief with a bound var" do
-      ag = ExecutorTestAgent.create("agent1")
-      bb = ExecutorTestAgent.belief_base(ag)
-      assert BeliefBase.beliefs(bb) == []
-
-      BeliefBase.add_belief(bb, {:counter, {123}})
       instruction = ExecutorTestAgent.initial |> Enum.at(5)
-      res = Executor.execute(instruction, ag, [Y: 123])
+      {_, res} = Executor.execute(instruction, [{:counter, {123}}], [Y: 123])
       assert res == [Y: 123]
     end
 
     test "it queries a belief that does not exist" do
-      ag = ExecutorTestAgent.create("agent1")
-      bb = ExecutorTestAgent.belief_base(ag)
-      assert BeliefBase.beliefs(bb) == []
-
-      BeliefBase.add_belief(bb, {:counter, {123}})
       instruction = ExecutorTestAgent.initial |> Enum.at(4)
-      res = Executor.execute(instruction, ag, [])
+      {_, res} = Executor.execute(instruction, [{:counter, {123}}], [])
       assert res == :stop
     end
 
     test "it queries a belief that does not exist with vars" do
-      ag = ExecutorTestAgent.create("agent1")
-      bb = ExecutorTestAgent.belief_base(ag)
-      assert BeliefBase.beliefs(bb) == []
-
-      BeliefBase.add_belief(bb, {:counter, {123}})
       instruction = ExecutorTestAgent.initial |> Enum.at(5)
-      res = Executor.execute(instruction, ag, [Y: 2])
+      {_, res} = Executor.execute(instruction, [{:counter, {123}}], [Y: 2])
       assert res == :stop
 
       # instruction = ExecutorTestAgent.initial |> Enum.at(6) |> IO.inspect

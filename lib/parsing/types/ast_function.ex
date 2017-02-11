@@ -1,4 +1,5 @@
 defmodule AstFunction do
+  require Logger
   defstruct [:number_of_params, :ast, :params]
 
   # Creation
@@ -52,8 +53,13 @@ defmodule AstFunction do
   end
 
   defp do_perform(function, params, :ok) do
-    function.ast
-    |> prepare_ast(function.params, params)
+    prepared_ast =
+      function.ast
+      |> prepare_ast(function.params, params)
+
+    Logger.info "\nExecuting:\n#{inspect(prepared_ast)}"
+
+    prepared_ast
     |> Code.eval_quoted
     |> elem(0)
   end

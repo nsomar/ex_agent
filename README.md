@@ -61,59 +61,26 @@ agent           -> (initial_beliefs, initial_goals)* plans
 initial_beliefs -> beleifs rules
 
 
-### Plan Rule Example
+## Things to do
+- Initial beliefs ✔︎
+- Dont add a belief if already added ✔︎
+- Adding a belief twice wont laucn the plan rule
+- Goals dont create a new intent, they append a sub intent
+- Create a intent execution wich contains the binding and instructions
+- Beliefs launch a new intent always
+- Intent execution interleaving
+- Message reading at the end of the cycle exec. If no message wait forever, if any message exec
+- Message sending between intents
+- Add a new rule that catch messages
+- create recovery rule
+- Atomic rules
+- query failing action
+- Sleep in reasoning cycle
+- Ruseability of rules and beliefs
+- Gaia
 
-```
-[
-  %Rule{
-    body: [
-      %InternalAction{a: {:print, {"I am really happy man!!!"}}}
-    ],
-    head: %RuleHead{
-      context: 
-        %RuleContext{contexts: [], function: nil},
-      trigger: 
-        %RuleTrigger{event: :added_belief, trigger: {:owns, {:X}}}
-    }
-  },
-  %Rule{
-    body: [
-      %AddBelief{b: {:owns, {:X}}}, 
-      %QueryBelief{b: {:happy, {:N}}},
-      %InternalAction{a: {:print, {:X}}}
-    ],
-    head: %RuleHead{
-      context: 
-        %RuleContext{
-          contexts: [
-            cost: {:X, :Y}, 
-            money: {:Z}
-          ],
-          function: 
-            %ContextFunction{
-              ast: 
-                {:>=, [],
-                [{:__aliases__, [], [:Z]}, {:__aliases__, [], [:Y]}]},
-              number_of_params: 2, 
-              params: [:Z, :Y]}
-        },
-      trigger: 
-        %RuleTrigger{
-          event: :added_goal, 
-          trigger: {:buy, {:X}}
-        }
-    }
-  }
-]
-```
-
-
-Agent:
-  Initial:
-    goal, beliefs
-  PlanRules
-    trigger, context, body
-    body: goal, belief
-
-Each step:
-  
+## Examples to build
+- Counter
+- Ping Pong
+- One shot auction
+- 

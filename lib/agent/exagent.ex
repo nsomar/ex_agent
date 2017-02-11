@@ -1,4 +1,4 @@
-defmodule EXAgent do
+defmodule ExAgent do
   use GenServer
   require Logger
 
@@ -9,6 +9,7 @@ defmodule EXAgent do
       require Logger
 
       @initial []
+      @initial_beliefs []
       @started false
       @after_compile __MODULE__
 
@@ -16,18 +17,19 @@ defmodule EXAgent do
       accumulate: true, persist: false
 
       def create(name) do
-        agent = EXAgent.create(:"#{__MODULE__}.#{name}")
+        agent = ExAgent.create(:"#{__MODULE__}.#{name}")
 
+        AgentHelper.add_initial_beliefs(agent, __MODULE__.initial_beliefs)
         AgentHelper.add_plan_rules(agent, __MODULE__.plan_rules)
-        AgentHelper.set_initial_as_events(agent, __MODULE__.initial)
+        AgentHelper.set_initial_as_intents(agent, __MODULE__.initial)
 
         Logger.info fn -> "\nAgent #{name} creates\nRules:\n#{inspect(__MODULE__.plan_rules)}" end
 
         agent
       end
 
-      def belief_base(ag), do: EXAgent.belief_base(ag)
-      def plan_rules(ag), do: EXAgent.plan_rules(ag)
+      def belief_base(ag), do: ExAgent.belief_base(ag)
+      def plan_rules(ag), do: ExAgent.plan_rules(ag)
 
       defmacro __after_compile__(_, _) do
         quote do
@@ -42,6 +44,12 @@ defmodule EXAgent do
   defmacro initialize(funcs) do
     quote bind_quoted: [funcs: funcs |> Macro.escape] do
       @initial funcs |> RuleBody.parse
+    end
+  end
+
+  defmacro initial_beliefs(funcs) do
+    quote bind_quoted: [funcs: funcs |> Macro.escape] do
+      @initial_beliefs funcs |> InitialBeliefs.parse
     end
   end
 
@@ -66,6 +74,7 @@ defmodule EXAgent do
     quote do
       @started true
       def initial, do: @initial
+      def initial_beliefs, do: @initial_beliefs
       def plan_rules, do: @rules |> Enum.reverse
     end
   end
@@ -107,6 +116,14 @@ defmodule EXAgent do
 
   def handle_call({:set_intents, intents}, _from, state) do
     {:reply, intents, Map.put(state, :intents, intents)}
+  end
+
+  def handle_call(:agent_state, _from, state) do
+    {:reply, state, state}
+  end
+
+  def handle_call({:set_agent_state, new_state}, _from, state) do
+    {:reply, new_state, new_state}
   end
 
   def create(name) when is_atom(name) do
@@ -153,5 +170,13 @@ defmodule EXAgent do
 
   def set_intents(agent, intents) do
     GenServer.call(agent, {:set_intents, intents})
+  end
+
+  def agent_state(agent) do
+    GenServer.call(agent, :agent_state)
+  end
+
+  def set_agent_state(agent, new_state) do
+    GenServer.call(agent, {:set_agent_state, new_state})
   end
 end
