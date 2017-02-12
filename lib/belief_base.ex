@@ -13,6 +13,23 @@ defmodule BeliefBase do
     end
   end
 
+  def replace_belief(beliefs, {name, params}=belief) when is_list(beliefs) do
+    found_beliefs =
+      beliefs
+      |> Enum.filter(
+        fn {c_name, c_params} ->
+          name == c_name && tuple_size(params) == tuple_size(c_params)
+      end)
+
+    new_beliefs = Enum.reduce(found_beliefs, beliefs, fn (bel, beliefs) ->
+      {:removed, new_beliefs} = remove_belief(beliefs, bel)
+      new_beliefs
+    end)
+
+    {:added, new_beliefs} = add_belief(new_beliefs, belief)
+    {[removed: found_beliefs, added: belief], new_beliefs}
+  end
+
   def test_belief(beliefs, test) when is_list(beliefs) and is_tuple(test),
     do: Unifier.unify(beliefs, test |> ContextBelief.from_belief) |> prepare_return
 

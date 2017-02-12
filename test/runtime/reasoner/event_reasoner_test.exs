@@ -16,7 +16,7 @@ defmodule Reasoner.EventTest do
 
   test "it builds new list of events" do
     events = [Event1, Event2]
-    new_events = Reasoner.Event.build_new_events(Event3, events)
+    new_events = Reasoner.Event.build_new_events([Event3], events)
     assert new_events == [Event1, Event2, Event3]
   end
 

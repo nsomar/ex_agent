@@ -11,5 +11,5 @@ defmodule Reasoner.Event do
   def build_new_events(:no_event, rest_events),
     do: rest_events
   def build_new_events(new_event, rest_events),
-    do: rest_events ++ [new_event]
+    do: rest_events ++ new_event
 end

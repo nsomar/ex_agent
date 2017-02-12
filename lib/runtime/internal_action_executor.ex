@@ -7,4 +7,8 @@ defmodule InternalActionExecutor do
     |> printer.print
   end
 
+  def execute(internal_action, binding, printer) do
+    :no_op
+  end
+
 end

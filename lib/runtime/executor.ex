@@ -12,6 +12,12 @@ defmodule Executor do
     {result, binding}
   end
 
+  def execute(%ReplaceBelief{}=remove_belief, beliefs, binding) do
+    belief = AddBelief.belief(remove_belief, binding)
+    result = BeliefBase.replace_belief(beliefs, belief)
+    {result, binding}
+  end
+
   def execute(%QueryBelief{}=query_belief, beliefs, binding) do
     belief = QueryBelief.belief(query_belief, binding)
     {result, binding} =
@@ -24,7 +30,7 @@ defmodule Executor do
 
   def execute(%InternalAction{}=internal_action, beliefs, binding) do
     InternalActionExecutor.execute(internal_action, binding, ConsolePrinter)
-    {{:no_change, beliefs}, binding}
+    {{:action, beliefs}, binding}
   end
 
   def execute(_, beliefs, binding) do
