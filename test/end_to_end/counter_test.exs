@@ -13,8 +13,7 @@ defmodule CounterAgent do
 
   rule (+!count) when counter(X) do
     &print("Current " <> Integer.to_string(X))
-    -counter(X)
-    +counter(X - 1)
+    -+counter(X - 1)
     query(counter(Y))
     &print("New One " <> Integer.to_string(Y))
     !count
@@ -95,7 +94,7 @@ defmodule CounterAgentTest do
     Reasoner.reason_cycle(ag)
 
     %{ExAgent.agent_state(ag)| plan_rules: []}
-    assert ExAgent.beliefs(ag) == []
+    assert ExAgent.beliefs(ag) == [counter: {4}]
   end
 
   test "runs 5 instructions" do
@@ -109,7 +108,7 @@ defmodule CounterAgentTest do
     Reasoner.reason_cycle(ag)
 
     %{ExAgent.agent_state(ag)| plan_rules: []}
-    assert ExAgent.beliefs(ag) == []
+    assert ExAgent.beliefs(ag) == [counter: {4}]
 
     Reasoner.reason_cycle(ag)
     %{ExAgent.agent_state(ag)| plan_rules: []}
@@ -127,16 +126,46 @@ defmodule CounterAgentTest do
     Reasoner.reason_cycle(ag)
 
     %{ExAgent.agent_state(ag)| plan_rules: []}
-    assert ExAgent.beliefs(ag) == []
+    assert ExAgent.beliefs(ag) == [counter: {4}]
 
     Reasoner.reason_cycle(ag)
     %{ExAgent.agent_state(ag)| plan_rules: []}
     assert ExAgent.beliefs(ag) == [counter: {4}]
 
     Reasoner.reason_cycle(ag)
-    # Reasoner.reason_cycle(ag)
-    # Reasoner.reason_cycle(ag)
-    # Reasoner.reason_cycle(ag)
+  end
+
+  test "runs 7 instructions" do
+    ag = CounterAgent.create("ag")
+
+    Reasoner.reason_cycle(ag)
+    assert ExAgent.beliefs(ag) == [counter: {5}]
+
+    Reasoner.reason_cycle(ag)
+    Reasoner.reason_cycle(ag)
+    Reasoner.reason_cycle(ag)
+
+    %{ExAgent.agent_state(ag)| plan_rules: []}
+    assert ExAgent.beliefs(ag) == [counter: {4}]
+
+    Reasoner.reason_cycle(ag)
+    %{ExAgent.agent_state(ag)| plan_rules: []}
+    assert ExAgent.beliefs(ag) == [counter: {4}]
+
+    Reasoner.reason_cycle(ag)
+    Reasoner.reason_cycle(ag)
+    Reasoner.reason_cycle(ag)
+    Reasoner.reason_cycle(ag)
+    Reasoner.reason_cycle(ag)
+    Reasoner.reason_cycle(ag)
+    assert ExAgent.beliefs(ag) == [counter: {3}]
+  end
+
+  test "agent loop" do
+    ag = CounterAgent.create("ag")
+    ExAgent.run_loop(ag)
+    IO.inspect "Sss"
+    Process.sleep(10000)
   end
 
 end

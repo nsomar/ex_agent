@@ -64,7 +64,8 @@ initial_beliefs -> beleifs rules
 ## Things to do
 - Initial beliefs ✔︎
 - Dont add a belief if already added ✔︎
-- Adding a belief twice wont laucn the plan rule
+- Adding a belief twice wont laucn the plan rule ✔︎
+- Sleep in reasoning cycle ✔︎
 - Goals dont create a new intent, they append a sub intent
 - Create a intent execution wich contains the binding and instructions
 - Beliefs launch a new intent always
@@ -75,7 +76,6 @@ initial_beliefs -> beleifs rules
 - create recovery rule
 - Atomic rules
 - query failing action
-- Sleep in reasoning cycle
 - Ruseability of rules and beliefs
 - Gaia
 

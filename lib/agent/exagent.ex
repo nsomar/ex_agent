@@ -144,6 +144,11 @@ defmodule ExAgent do
     {:reply, new_state, new_state}
   end
 
+  def handle_cast(:run_loop, state) do
+    new_state = Reasoner.reason(state)
+    {:noreply, new_state}
+  end
+
   ############################################################################
   # Functions
   ############################################################################
@@ -162,6 +167,11 @@ defmodule ExAgent do
   def create(name) when is_atom(name) do
     state = %AgentState{beliefs: [], plan_rules: [], intents: [], events: [], name: name, module: __MODULE__}
     GenServer.start_link(__MODULE__, state, name: name) |> elem(1)
+  end
+
+  def run_loop(agent) do
+    GenServer.cast(agent, :run_loop)
+    run_loop(agent)
   end
 
   def beliefs(agent) do

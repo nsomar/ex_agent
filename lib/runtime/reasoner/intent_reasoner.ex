@@ -26,8 +26,7 @@ defmodule Reasoner.Intent do
 
 
   def execute_intent(beliefs, :no_intent) do
-    Logger.info "No intents left"
-    {[], :no_intent, beliefs}
+    :no_intent
   end
 
   def execute_intent(beliefs, %{instructions: instructions, bindings: bindings}=intent) do
