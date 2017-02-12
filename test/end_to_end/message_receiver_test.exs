@@ -17,7 +17,7 @@ defmodule MessageReceiverTest do
 
     ActualMessageSender.send_message(name, :inform, :echo, ["Hey"])
     assert ExAgent.messages(ag) == [
-      %Message{name: :echo, params: ["Hey"], performative: :inform}
+      %Message{name: :echo, params: ["Hey"], performative: :inform, from: self()}
     ]
   end
 
@@ -28,8 +28,8 @@ defmodule MessageReceiverTest do
     ActualMessageSender.send_message(name, :inform, :echo, ["Hey1"])
     ActualMessageSender.send_message(name, :inform, :echo, ["Hey2"])
     assert ExAgent.messages(ag) == [
-      %Message{name: :echo, params: ["Hey2"], performative: :inform},
-      %Message{name: :echo, params: ["Hey1"], performative: :inform}
+      %Message{name: :echo, params: ["Hey2"], performative: :inform, from: self()},
+      %Message{name: :echo, params: ["Hey1"], performative: :inform, from: self()}
     ]
   end
 
