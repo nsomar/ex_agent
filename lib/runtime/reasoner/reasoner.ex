@@ -12,10 +12,9 @@ defmodule Reasoner do
   def reason(
              %AgentState{
               events: events,
-              beliefs: belief_base,
+              beliefs: beliefs,
               plan_rules: plan_rules,
               intents: intents}=agent_state) do
-    beliefs = BeliefBase.beliefs(belief_base)
     reason(agent_state, beliefs, plan_rules, events, intents)
   end
 
@@ -25,8 +24,8 @@ defmodule Reasoner do
          {plan, binding} <- Reasoner.Plan.select_plan(plan_rules, beliefs, event),
          {new_intents, new_event} <- Reasoner.Intent.process_intents(intents, event, plan, binding),
          {selected_intent, rest_intents} <- Reasoner.Intent.select_intent(new_intents),
-         {new_event, new_intent} <- Reasoner.Intent.execute_intent(agent_state, selected_intent) do
-    Reasoner.AgentState.update_state(agent_state, new_event, rest_events, new_intent, rest_intents)
+         {new_event, new_intent, new_beliefs} <- Reasoner.Intent.execute_intent(beliefs, selected_intent) do
+    Reasoner.AgentState.update_state(agent_state, new_event, rest_events, new_intent, rest_intents, new_beliefs)
    else
      _ -> 1
    end

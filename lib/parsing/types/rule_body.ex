@@ -23,6 +23,10 @@ defmodule RuleBody do
     AchieveGoal.parse(statements)
   end
 
+  defp do_parse_item({:-, _, [{:+, _, _}]} = statements) when is_tuple(statements) do
+    ReplaceBelief.parse(statements)
+  end
+
   defp do_parse_item({:+, _, _} = statements) when is_tuple(statements) do
     AddBelief.parse(statements)
   end

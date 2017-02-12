@@ -40,7 +40,27 @@ defmodule MockAgentTest do
       end
 
       ag = MockAgentWInitialB2.create("ag")
-      beliefs = ag |> MockAgentWInitialB2.belief_base |> BeliefBase.beliefs
+      beliefs = ag |> ExAgent.beliefs
+      assert beliefs ==
+      [cost: {:car, :little}, cost: {:iphone, 500}, color: {:car, :red}]
+    end
+
+    test "it parses initial beliefs 2" do
+      defmodule MockAgentWInitialB3 do
+        use ExAgent
+
+        initial_beliefs do
+          cost(:car, System.compiled_endianness())
+          cost(:iphone, 500)
+          color(:car, :red)
+        end
+
+        initialize do end
+        start
+      end
+
+      ag = ExAgent.create(MockAgentWInitialB3, "ag")
+      beliefs = ag |> ExAgent.beliefs
       assert beliefs ==
       [cost: {:car, :little}, cost: {:iphone, 500}, color: {:car, :red}]
     end
@@ -74,8 +94,7 @@ defmodule MockAgentTest do
 
     test "it has a belief base with the initial beliefs" do
       ag = MockAgentWB.create("ag1")
-      bb = MockAgentWB.belief_base(ag)
-      assert BeliefBase.beliefs(bb) == []
+      assert ExAgent.beliefs(ag) == []
     end
   end
 
@@ -129,9 +148,30 @@ defmodule MockAgentTest do
 
     test "it has a belief base with the initial" do
       ag = MockAgentWBG.create("ag2")
-      bb = MockAgentWBG.belief_base(ag)
-      assert BeliefBase.beliefs(bb) == []
+      assert ExAgent.beliefs(ag) == []
     end
+  end
+
+  describe "Mock Agent With replace belief" do
+    defmodule MockAgentWBG1 do
+      use ExAgent
+
+      initialize do
+        +cost(:car, 10000)
+        -+cost(:car, 10000)
+      end
+
+      start
+    end
+
+    test "it captures beleifs in initial" do
+      assert MockAgentWBG1.initial ==
+        [
+          %AddBelief{name: :cost, params: [:car, 10000]},
+          %ReplaceBelief{name: :cost, params: [:car, 10000]}
+        ]
+    end
+
   end
 
 end

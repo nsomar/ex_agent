@@ -3,7 +3,7 @@ defmodule Reasoner.EventTest do
 
   test "it selects an event" do
     events = [Event1, Event2]
-    {current, rest} = Reasoner.Event.select_event(events)
+    {current, _} = Reasoner.Event.select_event(events)
     assert current == Event1
   end
 

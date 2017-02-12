@@ -48,20 +48,32 @@ defmodule Reasoner.Intent do
     {selected, rest}
   end
 
-  def execute_intent(agent_state, :no_intent) do
+  def execute_intent(_, :no_intent) do
     Logger.info "No intents left"
     {:no_event, :no_intent}
   end
 
-  def execute_intent(agent_state, %{instructions: instructions, bindings: bindings}=intent) do
+  def execute_intent(beliefs, %{instructions: instructions, bindings: bindings}=intent) do
     [instruction| rest] = instructions
 
-    "ABC\n#{inspect(instruction)}" |> IO.inspect
-    new_bindings = Executor.execute(instruction, agent_state, bindings)
+    Logger.info "Instruction to execute\n#{inspect(instruction)}"
+    result = Executor.execute(instruction, beliefs, bindings)
+    create_new_event_and_intent(intent, instruction, rest, result)
+  end
 
-    event = Event.from_instruction(instruction, new_bindings)
-    new_intent = %{intent | instructions: rest, bindings: new_bindings}
-    {event, new_intent}
+  defp create_new_event_and_intent(intent, instruction, rest_instructions, {{:added, beliefs}, binding}),
+    do: create_new_event_and_intent(intent, instruction, rest_instructions, beliefs, binding)
+  defp create_new_event_and_intent(intent, instruction, rest_instructions, {{:removed, beliefs}, binding}),
+    do: create_new_event_and_intent(intent, instruction, rest_instructions, beliefs, binding)
+  defp create_new_event_and_intent(intent, instruction, rest_instructions, {{:no_change, beliefs}, binding}),
+    do: create_new_event_and_intent(intent, instruction, rest_instructions, beliefs, binding)
+  defp create_new_event_and_intent(intent, instruction, rest_instructions, {{:unified, beliefs}, binding}),
+    do: create_new_event_and_intent(intent, instruction, rest_instructions, beliefs, binding)
+
+  defp create_new_event_and_intent(intent, instruction, rest_instructions, beliefs, binding) do
+    event = Event.from_instruction(instruction, binding)
+    new_intent = %{intent | bindings: binding, instructions: rest_instructions}
+    {event, new_intent, beliefs}
   end
 
   def build_new_intents(:no_intent, rest_intents),

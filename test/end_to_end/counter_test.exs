@@ -54,10 +54,8 @@ defmodule CounterAgentTest do
 
   test "runs 1 instruction" do
     ag = CounterAgent.create("ag")
-    new_state = Reasoner.reason(ag |> ExAgent.agent_state)
-
-    bb = CounterAgent.belief_base(ag)
-    beliefs = BeliefBase.beliefs(bb)
+    Reasoner.reason_cycle(ag)
+    beliefs = ExAgent.beliefs(ag)
 
     assert beliefs == [counter: {5}]
   end
@@ -68,8 +66,7 @@ defmodule CounterAgentTest do
     Reasoner.reason_cycle(ag)
     Reasoner.reason_cycle(ag)
     %{ExAgent.agent_state(ag)| plan_rules: []}
-    bb = CounterAgent.belief_base(ag)
-    beliefs = BeliefBase.beliefs(bb)
+    beliefs = ExAgent.beliefs(ag)
 
     assert beliefs == [counter: {5}]
   end
@@ -82,68 +79,64 @@ defmodule CounterAgentTest do
     Reasoner.reason_cycle(ag)
 
     %{ExAgent.agent_state(ag)| plan_rules: []}
-    bb = CounterAgent.belief_base(ag)
-    beliefs = BeliefBase.beliefs(bb)
+    beliefs = ExAgent.beliefs(ag)
 
     assert beliefs == [counter: {5}]
   end
 
   test "runs 4 instructions" do
     ag = CounterAgent.create("ag")
-    bb = CounterAgent.belief_base(ag)
 
     Reasoner.reason_cycle(ag)
-    assert BeliefBase.beliefs(bb) == [counter: {5}]
+    assert ExAgent.beliefs(ag) == [counter: {5}]
 
     Reasoner.reason_cycle(ag)
     Reasoner.reason_cycle(ag)
     Reasoner.reason_cycle(ag)
 
     %{ExAgent.agent_state(ag)| plan_rules: []}
-    assert BeliefBase.beliefs(bb) == []
+    assert ExAgent.beliefs(ag) == []
   end
 
   test "runs 5 instructions" do
     ag = CounterAgent.create("ag")
-    bb = CounterAgent.belief_base(ag)
 
     Reasoner.reason_cycle(ag)
-    assert BeliefBase.beliefs(bb) == [counter: {5}]
+    assert ExAgent.beliefs(ag) == [counter: {5}]
 
     Reasoner.reason_cycle(ag)
     Reasoner.reason_cycle(ag)
     Reasoner.reason_cycle(ag)
 
     %{ExAgent.agent_state(ag)| plan_rules: []}
-    assert BeliefBase.beliefs(bb) == []
+    assert ExAgent.beliefs(ag) == []
 
     Reasoner.reason_cycle(ag)
     %{ExAgent.agent_state(ag)| plan_rules: []}
-    assert BeliefBase.beliefs(bb) == [counter: {4}]
+    assert ExAgent.beliefs(ag) == [counter: {4}]
   end
 
   test "runs 6 instructions" do
     ag = CounterAgent.create("ag")
-    bb = CounterAgent.belief_base(ag)
 
     Reasoner.reason_cycle(ag)
-    assert BeliefBase.beliefs(bb) == [counter: {5}]
+    assert ExAgent.beliefs(ag) == [counter: {5}]
 
     Reasoner.reason_cycle(ag)
     Reasoner.reason_cycle(ag)
     Reasoner.reason_cycle(ag)
 
     %{ExAgent.agent_state(ag)| plan_rules: []}
-    assert BeliefBase.beliefs(bb) == []
+    assert ExAgent.beliefs(ag) == []
 
     Reasoner.reason_cycle(ag)
     %{ExAgent.agent_state(ag)| plan_rules: []}
-    assert BeliefBase.beliefs(bb) == [counter: {4}]
+    assert ExAgent.beliefs(ag) == [counter: {4}]
 
     Reasoner.reason_cycle(ag)
-    Reasoner.reason_cycle(ag)
-    Reasoner.reason_cycle(ag)
-    Reasoner.reason_cycle(ag)
+    # Reasoner.reason_cycle(ag)
+    # Reasoner.reason_cycle(ag)
+    # Reasoner.reason_cycle(ag)
   end
 
 end

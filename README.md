@@ -83,4 +83,7 @@ initial_beliefs -> beleifs rules
 - Counter
 - Ping Pong
 - One shot auction
-- 
+ 
+
+## Questions
+- Does replace belief fire both add belief and remove belief events?

@@ -2,10 +2,11 @@ defmodule Reasoner.IntentTest do
   use ExUnit.Case
 
   @add_goal_event  %Event{event_type: :added_goal, intents: nil, content: {}}
+  @achieve_goal %AchieveGoal{name: :count, params: []}
 
   describe "process_intents" do
     test "it creates a new intent for the event if there is a plan" do
-      {[new| old], event} = Reasoner.Intent.process_intents([], @add_goal_event, %{body: [B]}, [1])
+      {[new| old], _} = Reasoner.Intent.process_intents([], @add_goal_event, %{body: [B]}, [1])
 
       assert new.bindings == [1]
       assert new.instructions == [B]
@@ -14,9 +15,9 @@ defmodule Reasoner.IntentTest do
 
     test "it returns same intent if there are no plans" do
       event = %Event{event_type: :added_goal, content: {}}
-      {[new| old], event} = Reasoner.Intent.process_intents([I], event, :no_plan, [])
+      {[new| old], _} = Reasoner.Intent.process_intents([I], event, :no_plan, [])
 
-      assert new = I
+      assert new == I
       assert old == []
     end
   end
@@ -46,10 +47,12 @@ defmodule Reasoner.IntentTest do
     end
 
     test "it executes the first instruction in the intent" do
-      intent = %Intention{instructions: [@add_goal_event], bindings: []}
-      {event, intent} = Reasoner.Intent.execute_intent(S, intent)
-      assert event == :no_event
-      assert intent == :no_intent
+      intent = %Intention{instructions: [@achieve_goal], bindings: []}
+      {event, intent, beliefs} = Reasoner.Intent.execute_intent(S, intent)
+
+      assert event == %Event{content: {:count, {}}, event_type: :added_goal, intents: nil}
+      assert intent == %Intention{bindings: [], instructions: [], plan: nil}
+      assert beliefs == S
     end
 
   end

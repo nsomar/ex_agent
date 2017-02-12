@@ -22,7 +22,7 @@ defmodule Reasoner.Plan do
         {selected_plan, binding |> hd}
         _ ->
           Logger.info fn -> "\nNo applicable plans found" end
-          {:no_plans, []}
+          {:no_plan, []}
     end
   end
 

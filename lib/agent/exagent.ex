@@ -2,6 +2,10 @@ defmodule ExAgent do
   use GenServer
   require Logger
 
+  ############################################################################
+  # Using
+  ############################################################################
+
   defmacro __using__(_) do
     quote do
 
@@ -16,18 +20,7 @@ defmodule ExAgent do
       Module.register_attribute __MODULE__, :rules,
       accumulate: true, persist: false
 
-      def create(name) do
-        agent = ExAgent.create(:"#{__MODULE__}.#{name}")
-
-        AgentHelper.add_initial_beliefs(agent, __MODULE__.initial_beliefs)
-        AgentHelper.add_plan_rules(agent, __MODULE__.plan_rules)
-        AgentHelper.set_initial_as_intents(agent, __MODULE__.initial)
-
-        Logger.info fn -> "\nAgent #{name} creates\nRules:\n#{inspect(__MODULE__.plan_rules)}" end
-
-        agent
-      end
-
+      def create(name), do: ExAgent.create(__MODULE__, name)
       def belief_base(ag), do: ExAgent.belief_base(ag)
       def plan_rules(ag), do: ExAgent.plan_rules(ag)
 
@@ -40,6 +33,10 @@ defmodule ExAgent do
       end
     end
   end
+
+  ############################################################################
+  # Macros
+  ############################################################################
 
   defmacro initialize(funcs) do
     quote bind_quoted: [funcs: funcs |> Macro.escape] do
@@ -79,8 +76,29 @@ defmodule ExAgent do
     end
   end
 
-  def handle_call(:belief_base, _from, %{beliefs: beliefs} = state) do
+  ############################################################################
+  # GenServer
+  ############################################################################
+
+  def handle_call(:beliefs, _from, %{beliefs: beliefs} = state) do
     {:reply, beliefs, state}
+  end
+
+  def handle_call({:add_belief, belief}, _from, %{beliefs: beliefs} = state) do
+    {res, new_beliefs} = BeliefBase.add_belief(beliefs, belief)
+    new_state = %{state| beliefs: new_beliefs}
+    {:reply, {res, new_beliefs}, new_state}
+  end
+
+  def handle_call({:remove_belief, belief}, _from, %{beliefs: beliefs} = state) do
+    {res, new_beliefs} = BeliefBase.remove_belief(beliefs, belief)
+    new_state = %{state| beliefs: new_beliefs}
+    {:reply, {res, new_beliefs}, new_state}
+  end
+
+  def handle_call({:set_beliefs, new_beliefs}, _from, state) do
+    new_state = %{state| beliefs: new_beliefs}
+    {:reply, new_state, new_state}
   end
 
   def handle_call(:plan_rules, _from, %{plan_rules: rules} = state) do
@@ -122,18 +140,44 @@ defmodule ExAgent do
     {:reply, state, state}
   end
 
-  def handle_call({:set_agent_state, new_state}, _from, state) do
+  def handle_call({:set_agent_state, new_state}, _from, _state) do
     {:reply, new_state, new_state}
   end
 
+  ############################################################################
+  # Functions
+  ############################################################################
+  def create(module, name) do
+    agent = ExAgent.create(:"#{module}.#{name}")
+
+    AgentHelper.add_initial_beliefs(agent, module.initial_beliefs)
+    AgentHelper.add_plan_rules(agent, module.plan_rules)
+    AgentHelper.set_initial_as_intents(agent, module.initial)
+
+    Logger.info fn -> "\nAgent #{name} creates\nRules:\n#{inspect(module.plan_rules)}" end
+
+    agent
+  end
+
   def create(name) when is_atom(name) do
-    {:ok, bb} = BeliefBase.create([])
-    state = %AgentState{beliefs: bb, plan_rules: [], intents: [], events: [], name: name, module: __MODULE__}
+    state = %AgentState{beliefs: [], plan_rules: [], intents: [], events: [], name: name, module: __MODULE__}
     GenServer.start_link(__MODULE__, state, name: name) |> elem(1)
   end
 
-  def belief_base(agent) do
-    GenServer.call(agent, :belief_base)
+  def beliefs(agent) do
+    GenServer.call(agent, :beliefs)
+  end
+
+  def add_belief(agent, belief) do
+    GenServer.call(agent, {:add_belief, belief})
+  end
+
+  def remove_belief(agent, belief) do
+    GenServer.call(agent, {:remove_belief, belief})
+  end
+
+  def set_beliefs(agent, beliefs) do
+    GenServer.call(agent, {:set_beliefs, beliefs})
   end
 
   def add_plan_rule(agent, plan) do
@@ -142,10 +186,6 @@ defmodule ExAgent do
 
   def plan_rules(agent) do
     GenServer.call(agent, :plan_rules)
-  end
-
-  def add_plan_rule(agent, plan) do
-    GenServer.call(agent, {:add_plan, plan})
   end
 
   def events(agent) do

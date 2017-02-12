@@ -54,4 +54,8 @@ defmodule Event do
     Event.internal_action(instruction)
   end
 
+  # def from_instruction(x, binding) do
+  #   IO.inspect x
+  # end
+
 end

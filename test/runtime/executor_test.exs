@@ -35,17 +35,17 @@ defmodule ExecutorTest do
 
     test "it removes a belief" do
       instruction = ExecutorTestAgent.initial |> Enum.at(2)
-      {beliefs, bindings} = Executor.execute(instruction, [counter: {0}], [X: 20])
+      {res, bindings} = Executor.execute(instruction, [counter: {0}], [X: 20])
 
-      assert beliefs == []
+      assert res == {:removed, []}
       assert bindings == [X: 20]
     end
 
     test "it removes a belief with binding" do
       instruction = ExecutorTestAgent.initial |> Enum.at(3)
-      {beliefs, bindings} = Executor.execute(instruction, [counter: {10}], [X: 10])
+      {res, bindings} = Executor.execute(instruction, [counter: {10}], [X: 10])
 
-      assert beliefs == []
+      assert res == {:removed, []}
       assert bindings == [X: 10]
     end
 
@@ -63,13 +63,13 @@ defmodule ExecutorTest do
       assert bindings == [X: 20]
 
       instruction = ExecutorTestAgent.initial |> Enum.at(2)
-      {beliefs, bindings} = Executor.execute(instruction, beliefs, [X: 30])
+      {{:removed, beliefs}, bindings} = Executor.execute(instruction, beliefs, [X: 30])
 
       assert beliefs == [counter: {20}]
       assert bindings == [X: 30]
 
       instruction = ExecutorTestAgent.initial |> Enum.at(3)
-      {beliefs, bindings} = Executor.execute(instruction, beliefs, [X: 40])
+      {{:not_found, beliefs}, bindings} = Executor.execute(instruction, beliefs, [X: 40])
 
       assert beliefs == [counter: {20}]
       assert bindings == [X: 40]
@@ -105,14 +105,18 @@ defmodule ExecutorTest do
 
     test "it queries a belief that does not exist" do
       instruction = ExecutorTestAgent.initial |> Enum.at(4)
-      {_, res} = Executor.execute(instruction, [{:counter, {123}}], [])
-      assert res == :stop
+      {res, binding} = Executor.execute(instruction, [{:counter, {123}}], [])
+
+      assert res == {:cant_unify, [counter: {123}]}
+      assert binding == []
     end
 
     test "it queries a belief that does not exist with vars" do
       instruction = ExecutorTestAgent.initial |> Enum.at(5)
-      {_, res} = Executor.execute(instruction, [{:counter, {123}}], [Y: 2])
-      assert res == :stop
+      {res, binding} = Executor.execute(instruction, [{:counter, {123}}], [Y: 2])
+
+      assert res == {:cant_unify, [counter: {123}]}
+      assert binding == []
 
       # instruction = ExecutorTestAgent.initial |> Enum.at(6) |> IO.inspect
     end

@@ -11,11 +11,7 @@ defmodule AgentHelper do
   end
 
   defp do_add_initial_beliefs(agent, beliefs) do
-    belief_base = ExAgent.belief_base(agent)
-    beliefs
-    |> Enum.map(fn bel ->
-      BeliefBase.add_belief(belief_base, bel)
-    end)
+    ExAgent.set_beliefs(agent, beliefs)
   end
 
   def prepare_initial_beliefs(beliefs) do
