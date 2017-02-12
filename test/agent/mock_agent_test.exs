@@ -171,7 +171,239 @@ defmodule MockAgentTest do
           %ReplaceBelief{name: :cost, params: [:car, 10000]}
         ]
     end
+  end
 
+  describe "Mock Agent with message handler" do
+    defmodule MockAgentWMH do
+      use ExAgent
+      initialize do end
+      message(:inform, s, echo(X)) do end
+      start
+    end
+
+    test "it captures beleifs in initial" do
+      assert MockAgentWMH.message_handlers ==
+        [
+          %MessageHandler{
+            body: [],
+            head: %MessageHandlerHead{
+              sender: :s,
+              context: %RuleContext{contexts: [], function: nil},
+              trigger: %MessageHandlerTrigger{
+                message: {:echo, {:X}},
+                performative: :inform
+              }
+            }
+          }
+        ]
+    end
+  end
+
+  describe "Mock Agent with message handler and body" do
+    defmodule MockAgentWMHAB do
+      use ExAgent
+      initialize do end
+      message(:inform, s, echo(X)) do
+        &print(X)
+        +received(1)
+      end
+      start
+    end
+
+    test "it captures beleifs in initial" do
+      assert MockAgentWMHAB.message_handlers ==
+        [
+          %MessageHandler{
+            body: [
+              %InternalAction{name: :print, params: [%AstFunction{ast: {:__aliases__, [], [:X]}, number_of_params: 1, params: [:X]}]},
+              %AddBelief{name: :received, params: [1]}
+            ],
+            head: %MessageHandlerHead{
+              sender: :s,
+              context: %RuleContext{contexts: [], function: nil},
+              trigger: %MessageHandlerTrigger{
+                message: {:echo, {:X}},
+                performative: :inform
+              }
+            }
+          }
+        ]
+    end
+  end
+
+  describe "Mock Agent with message handler and body and context" do
+    defmodule MockAgentWMHABC do
+      use ExAgent
+      initialize do end
+
+      message :inform, sender, echo(X) when should_print(X) && is_ok(1) do
+        +received(1)
+      end
+      start
+    end
+
+    test "it captures beleifs in initial" do
+      assert MockAgentWMHABC.message_handlers ==
+        [
+          %MessageHandler{
+            body: [
+              %AddBelief{name: :received, params: [1]}
+            ],
+            head: %MessageHandlerHead{
+              sender: :sender,
+              context: %RuleContext{contexts: [
+                %ContextBelief{belief: {:should_print, {:X}}, should_pass: true},
+                %ContextBelief{belief: {:is_ok, {1}}, should_pass: true}
+                ], function: nil},
+              trigger: %MessageHandlerTrigger{
+                message: {:echo, {:X}},
+                performative: :inform
+              }
+            }
+          }
+        ]
+    end
+  end
+
+  describe "Mock Agent with message handler and body and context and function" do
+    defmodule MockAgentWMHABCAF do
+      use ExAgent
+      initialize do end
+
+      message :inform, s, echo(X) when should_print(X) && is_ok(1) && test 1 == 2 do
+        +received(1)
+      end
+      start
+    end
+
+    test "it captures beleifs in initial" do
+      assert MockAgentWMHABCAF.message_handlers ==
+        [
+          %MessageHandler{
+            body: [
+              %AddBelief{name: :received, params: [1]}
+            ],
+            head: %MessageHandlerHead{
+              sender: :s,
+              context: %RuleContext{contexts: [
+                %ContextBelief{belief: {:should_print, {:X}}, should_pass: true},
+                %ContextBelief{belief: {:is_ok, {1}}, should_pass: true}
+                ],
+                function: %AstFunction{ast: {:==, [], [1, 2]}, number_of_params: 0, params: []}},
+              trigger: %MessageHandlerTrigger{
+                message: {:echo, {:X}},
+                performative: :inform
+              }
+            }
+          }
+        ]
+    end
+  end
+
+  describe "Mock Agent with message handler with constants and body and context" do
+    defmodule MockAgentWMHABCONST do
+      use ExAgent
+      initialize do end
+
+      message :inform, sender, echo("hello") when should_print(X) && is_ok(1) do
+        +received(1)
+      end
+      start
+    end
+
+    test "it captures beleifs in initial" do
+      assert MockAgentWMHABCONST.message_handlers ==
+        [
+          %MessageHandler{
+            body: [
+              %AddBelief{name: :received, params: [1]}
+            ],
+            head: %MessageHandlerHead{
+              sender: :sender,
+              context: %RuleContext{contexts: [
+                %ContextBelief{belief: {:should_print, {:X}}, should_pass: true},
+                %ContextBelief{belief: {:is_ok, {1}}, should_pass: true}
+                ], function: nil},
+              trigger: %MessageHandlerTrigger{
+                message: {:echo, {"hello"}},
+                performative: :inform
+              }
+            }
+          }
+        ]
+    end
+  end
+
+  describe "Mock Agent with multiple message handler" do
+    defmodule MockAgentWMMH do
+      use ExAgent
+      initialize do end
+      message(:inform, sender, echo(X)) do end
+      message(:blabla, s, print(Y, Z)) do end
+
+      start
+    end
+
+    test "it captures beleifs in initial" do
+      assert MockAgentWMMH.message_handlers ==
+        [
+          %MessageHandler{
+            body: [],
+            head: %MessageHandlerHead{
+              sender: :sender,
+              context: %RuleContext{contexts: [], function: nil},
+              trigger: %MessageHandlerTrigger{
+                message: {:echo, {:X}},
+                performative: :inform
+              }
+            }
+          },
+          %MessageHandler{
+            body: [],
+            head: %MessageHandlerHead{
+              sender: :s,
+              context: %RuleContext{contexts: [], function: nil},
+              trigger: %MessageHandlerTrigger{
+                message: {:print, {:Y, :Z}},
+                performative: :blabla
+              }
+            }
+          }
+        ]
+    end
+  end
+
+  describe "Mock Agent with send internal action" do
+    defmodule MockAgentWMMHWIC do
+      use ExAgent
+      initialize do end
+
+      message(:inform, sender, echo(X)) do
+        &send("agent1", :inform, echo(X + Y))
+      end
+
+      start
+    end
+
+    test "it captures beleifs in initial" do
+
+
+
+      assert MockAgentWMMHWIC.message_handlers ==
+        [
+          %MessageHandler{
+            body: [%InternalAction{name: :send, params: ["agent1", :inform, %AstFunction{ast: {:echo, [], [{:+, [], [{:__aliases__, [], [:X]}, {:__aliases__, [], [:Y]}]}]}, number_of_params: 2, params: [:X, :Y]}]}],
+            head: %MessageHandlerHead{
+              sender: :sender,
+              context: %RuleContext{contexts: [], function: nil},
+              trigger: %MessageHandlerTrigger{
+                message: {:echo, {:X}},
+                performative: :inform
+              }
+            }
+          }
+        ]
+    end
   end
 
 end

@@ -29,4 +29,8 @@ defmodule CommonInstructionParser do
   defp get_var(%AstFunction{}=param), do: param.params
   defp get_var(param), do: param
 
+  def get_single_param({name, _, _}) do
+    name
+  end
+
 end

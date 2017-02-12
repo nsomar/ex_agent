@@ -20,9 +20,14 @@ defmodule ExAgent do
       Module.register_attribute __MODULE__, :rules,
       accumulate: true, persist: false
 
+      Module.register_attribute __MODULE__, :message_handlers,
+      accumulate: true, persist: false
+
       def create(name), do: ExAgent.create(__MODULE__, name)
+      def agent_name(name), do: ExAgent.agent_name(__MODULE__, name)
       def belief_base(ag), do: ExAgent.belief_base(ag)
       def plan_rules(ag), do: ExAgent.plan_rules(ag)
+      def message_handlers(ag), do: ExAgent.message_handlers(ag)
 
       defmacro __after_compile__(_, _) do
         quote do
@@ -58,6 +63,15 @@ defmodule ExAgent do
     end
   end
 
+  # message (+!buy(X)) when money(Z) && cost(X, C) && test Z > X && test Z == X do
+  defmacro message(performative, sender, head, body) do
+    r = MessageHandler.parse(performative, sender, head, body) |> Macro.escape
+
+    quote bind_quoted: [r: r] do
+      @message_handlers r
+    end
+  end
+
   # rule (+!buy(X)) when money(Z) && cost(X, C) && test Z > X && test Z == X do
   defmacro rule(head, body) do
     r = Rule.parse(head, body) |> Macro.escape
@@ -73,6 +87,7 @@ defmodule ExAgent do
       def initial, do: @initial
       def initial_beliefs, do: @initial_beliefs
       def plan_rules, do: @rules |> Enum.reverse
+      def message_handlers, do: @message_handlers |> Enum.reverse
     end
   end
 
@@ -110,6 +125,10 @@ defmodule ExAgent do
     {:reply, new_plans, Map.put(state, :plan_rules, new_plans)}
   end
 
+  def handle_call(:message_handlers, _from, %{message_handlers: message_handlers} = state) do
+    {:reply, message_handlers, state}
+  end
+
   def handle_call(:events, _from, %{events: events} = state) do
     {:reply, events, state}
   end
@@ -144,16 +163,31 @@ defmodule ExAgent do
     {:reply, new_state, new_state}
   end
 
+  def handle_call(:messages, _from, %{messages: messages}=state) do
+    {:reply, messages, state}
+  end
+
   def handle_cast(:run_loop, state) do
     new_state = Reasoner.reason(state)
     {:noreply, new_state}
+  end
+
+  def handle_info(msg, %{messages: messages}=state) do
+    case Message.parse(msg) do
+      :not_a_message ->
+        {:noreply, state}
+      msg ->
+        new_state = %{state | messages: [msg| messages]}
+        Logger.info "New message received #{inspect(msg)}"
+        {:noreply, new_state}
+    end
   end
 
   ############################################################################
   # Functions
   ############################################################################
   def create(module, name) do
-    agent = ExAgent.create(:"#{module}.#{name}")
+    agent = ExAgent.create(agent_name(module, name))
 
     AgentHelper.add_initial_beliefs(agent, module.initial_beliefs)
     AgentHelper.add_plan_rules(agent, module.plan_rules)
@@ -165,9 +199,14 @@ defmodule ExAgent do
   end
 
   def create(name) when is_atom(name) do
-    state = %AgentState{beliefs: [], plan_rules: [], intents: [], events: [], name: name, module: __MODULE__}
+    state = %AgentState{
+      beliefs: [], plan_rules: [], intents: [], events: [],
+      name: name, module: __MODULE__, message_handlers: [], messages: []
+    }
     GenServer.start_link(__MODULE__, state, name: name) |> elem(1)
   end
+
+  def agent_name(module, name), do: :"#{module}.#{name}"
 
   def run_loop(agent) do
     GenServer.cast(agent, :run_loop)
@@ -196,6 +235,10 @@ defmodule ExAgent do
 
   def plan_rules(agent) do
     GenServer.call(agent, :plan_rules)
+  end
+
+  def message_handlers(agent) do
+    GenServer.call(agent, :message_handlers)
   end
 
   def events(agent) do
@@ -228,5 +271,9 @@ defmodule ExAgent do
 
   def set_agent_state(agent, new_state) do
     GenServer.call(agent, {:set_agent_state, new_state})
+  end
+
+  def messages(agent) do
+    GenServer.call(agent, :messages)
   end
 end

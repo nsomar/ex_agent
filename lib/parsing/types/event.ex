@@ -4,6 +4,8 @@ defmodule TriggerType do
 
   def removed_belief, do: :removed_belief
   def removed_goal, do: :removed_goal
+
+  def received_message, do: :received_message
 end
 
 defmodule Event do
@@ -34,6 +36,9 @@ defmodule Event do
   def internal_action(action),
     do: %Event{event_type: :internal_action, content: action}
 
+  def received_message(message),
+    do: %Event{event_type: :received_message, content: message}
+
   def from_instruction(%AddBelief{}=instruction, binding) do
     Event.added_belief(instruction |> EventContent.content(binding))
   end
@@ -52,6 +57,10 @@ defmodule Event do
 
   def from_instruction(%InternalAction{}=instruction, binding) do
     Event.internal_action(instruction)
+  end
+
+  def from_instruction(%Message{}=instruction, _) do
+    Event.received_message(instruction)
   end
 
   # def from_instruction(x, binding) do

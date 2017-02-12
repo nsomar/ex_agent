@@ -19,11 +19,6 @@ defmodule CounterAgent do
     !count
   end
 
-
-  # recover (+!count) when counter(X) do
-
-  # end
-
   start
 end
 
@@ -163,9 +158,9 @@ defmodule CounterAgentTest do
 
   test "agent loop" do
     ag = CounterAgent.create("ag")
-    ExAgent.run_loop(ag)
-    IO.inspect "Sss"
-    Process.sleep(10000)
+    # ExAgent.run_loop(ag)
+    # IO.inspect "Sss"
+    # Process.sleep(10000)
   end
 
 end

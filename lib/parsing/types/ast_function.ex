@@ -35,6 +35,8 @@ defmodule AstFunction do
     acc
   end
 
+  defp flatten_ast({op, _, nil}), do: {op, [], []}
+
   defp flatten_ast({op, _, params}) do
     flat_params = params |> Enum.map(fn param ->
       flatten_ast(param)
@@ -48,14 +50,18 @@ defmodule AstFunction do
 
   # Performing
   def perform(function, params) do
-    match = check_all_params_present(function.params, params)
-    do_perform(function, params, match)
+    perform(function.ast, function.params, params)
   end
 
-  defp do_perform(function, params, :ok) do
+  def perform(ast, function_params, params) do
+    match = check_all_params_present(function_params, params)
+    do_perform(ast, function_params, params, match)
+  end
+
+  defp do_perform(ast, function_params, params, :ok) do
     prepared_ast =
-      function.ast
-      |> prepare_ast(function.params, params)
+      ast
+      |> prepare_ast(function_params, params)
 
     Logger.info "\nExecuting:\n#{inspect(prepared_ast)}"
 
@@ -64,7 +70,7 @@ defmodule AstFunction do
     |> elem(0)
   end
 
-  defp do_perform(_, _, _) do
+  defp do_perform(_, _, _, _) do
     false
   end
 
@@ -79,17 +85,6 @@ defmodule AstFunction do
       _ -> perform(function, params)
     end
   end
-
-  # defp perform_or_var(function, params, :ok) do
-  #   function.ast
-  #   |> prepare_ast(function.params, params)
-  #   |> Code.eval_quoted
-  #   |> elem(0)
-  # end
-
-  # defp perform_or_var(_, _, _) do
-  #   false
-  # end
 
   defp single_var?({:__aliases__, _, [var]}), do: {true, var}
   defp single_var?(_), do: false

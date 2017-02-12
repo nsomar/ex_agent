@@ -29,7 +29,7 @@ defmodule Executor do
   end
 
   def execute(%InternalAction{}=internal_action, beliefs, binding) do
-    InternalActionExecutor.execute(internal_action, binding, ConsolePrinter)
+    InternalActionExecutor.execute(internal_action, binding, ConsolePrinter, ActualMessageSender)
     {{:action, beliefs}, binding}
   end
 

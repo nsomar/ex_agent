@@ -44,6 +44,9 @@ Rule Context:
 RuleBody:
   - Instructions
 
+Initial Beliefs
+Message handlers
+
 Instructions:
 - Add belief ✔︎
 - Remove Belief ✔︎

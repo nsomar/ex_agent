@@ -1,9 +1,9 @@
 defmodule Reasoner.Plan do
   require Logger
 
-  def select_plan(_, _, :no_event), do: {:no_plan, []}
-  def select_plan([], _, _), do: {:no_plan, []}
-  def select_plan(plans, beliefs, event) do
+  def select_plan(_, _, _, :no_event), do: {:no_plan, []}
+  def select_plan([], [], _, _), do: {:no_plan, []}
+  def select_plan(plans, message_handlers, beliefs, event) do
     Logger.info fn -> "\nAll plan rules:\n#{inspect(plans)}" end
 
     relavent_plans = PlanSelection.relavent_plans(plans, event)

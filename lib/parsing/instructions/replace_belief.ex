@@ -1,5 +1,5 @@
 defmodule ReplaceBelief do
-  use CommonBeliefParser
+  # use CommonBeliefParser
 
   defstruct [:name, :params]
   @type t :: %ReplaceBelief{name: String.t, params: [any]}
@@ -12,8 +12,8 @@ defmodule ReplaceBelief do
   end
 end
 
-defimpl EventContent, for: ReplaceBelief do
-  def content(belief, binding) do
-    ReplaceBelief.belief(belief, binding)
-  end
-end
+# defimpl EventContent, for: ReplaceBelief do
+#   def content(belief, binding) do
+#     ReplaceBelief.belief(belief, binding)
+#   end
+# end

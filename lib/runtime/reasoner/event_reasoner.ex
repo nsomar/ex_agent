@@ -8,6 +8,12 @@ defmodule Reasoner.Event do
     {selected, rest}
   end
 
+
+  def merge_events(message_events, other_evens) do
+    message_events ++ other_evens
+  end
+
+
   def build_new_events(:no_event, rest_events),
     do: rest_events
   def build_new_events(new_event, rest_events),

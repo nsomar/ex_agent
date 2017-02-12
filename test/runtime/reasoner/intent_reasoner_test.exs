@@ -41,11 +41,9 @@ defmodule Reasoner.IntentTest do
   describe "execute_intent" do
 
     test "it returns no intent, no event if no intents" do
-      {event, intent, beliefs} = Reasoner.Intent.execute_intent([], :no_intent)
+      res = Reasoner.Intent.execute_intent([], :no_intent)
 
-      assert event == []
-      assert intent == :no_intent
-      assert beliefs == []
+      assert res == :no_intent
     end
 
     test "achieve goal creates an event" do
