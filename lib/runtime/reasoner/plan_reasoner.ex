@@ -1,24 +1,24 @@
 defmodule Reasoner.Plan do
   require Logger
 
-    def select_handler(_, message_handlers, beliefs, %{event_type: :received_message}=event) do
-    do_select_handler(message_handlers, beliefs, event)
+  def select_handler(_, message_handlers, beliefs, :no_event), do: {:no_plan, []}
+  def select_handler(_, message_handlers, beliefs, %{event_type: :received_message}=event) do
+    do_select_handler(MessageHandlerSelection, message_handlers, beliefs, event)
   end
 
   def select_handler(plans, _, beliefs, event) do
-    do_select_handler(plans, beliefs, event)
+    do_select_handler(PlanSelection, plans, beliefs, event)
   end
 
-  defp do_select_handler(_, _, :no_event), do: {:no_plan, []}
   defp do_select_handler([], _, _), do: {:no_plan, []}
-  defp do_select_handler(handler, beliefs, event) do
+  defp do_select_handler(selector, handler, beliefs, event) do
     Logger.info fn -> "\nAll plan rules:\n#{inspect(handler)}" end
 
-    relavent_handlers = PlanSelection.relavent_handlers(handler, event)
+    relavent_handlers = selector.relavent_handlers(handler, event)
     Logger.info fn -> "\nRelevant handler:\n#{inspect(relavent_handlers)}" end
 
     Logger.info fn -> "\nBeliefs:\n#{inspect(beliefs)}" end
-    applicable_handlers = PlanSelection.applicable_handlers(relavent_handlers, beliefs)
+    applicable_handlers = selector.applicable_handlers(relavent_handlers, beliefs)
 
     Logger.info fn -> "\nApplicable handler:\n#{inspect(applicable_handlers)}" end
 

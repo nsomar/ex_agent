@@ -13,19 +13,21 @@ defmodule ActualMessageSender do
   require Logger
 
   @behaviour MessageSender
+  def send_message(pid, performative, name, params) when is_pid(pid) do
+    Logger.info """
+    Sending Message
+    pid: #{inspect(pid)}
+    Performative: #{inspect(performative)}
+    Name: #{inspect(name)}
+    Params: #{inspect(params)}
+    """
+    GenServer.cast(pid, {:message, {:message, {performative, name, params, self()}}})
+  end
+
   def send_message(recepient, performative, name, params) do
     case Process.whereis(recepient) do
       pid ->
-        Logger.info """
-        Sending Message
-        To: #{inspect(recepient)}
-        pid: #{inspect(pid)}
-        Performative: #{inspect(performative)}
-        Name: #{inspect(name)}
-        Params: #{inspect(params)}
-        """
-        GenServer.cast(pid, {:message, {:message, {performative, name, params, self()}}})
-        # send(pid, {:message, {performative, name, params, self()}})
+        send_message(pid, performative, name, params)
       nil ->
         Logger.warn "Cannot find process with name #{inspect(recepient)}"
     end

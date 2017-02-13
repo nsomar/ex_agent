@@ -173,7 +173,13 @@ defmodule ExAgent do
   end
 
   def handle_cast(:run_loop, state) do
-    new_state = Reasoner.reason(state)
+    {update, new_state} = Reasoner.reason(state)
+
+    if update == :changed do
+      Logger.info "Agent State Changed"
+      ExAgent.run_loop(self())
+    end
+
     {:noreply, new_state}
   end
 
@@ -184,6 +190,7 @@ defmodule ExAgent do
       msg ->
         new_state = %{state | messages: [msg| messages]}
         Logger.info "New message received #{inspect(msg)}"
+        ExAgent.run_loop(self())
         {:noreply, new_state}
     end
   end
@@ -216,7 +223,6 @@ defmodule ExAgent do
 
   def run_loop(agent) do
     GenServer.cast(agent, :run_loop)
-    run_loop(agent)
   end
 
   def beliefs(agent) do

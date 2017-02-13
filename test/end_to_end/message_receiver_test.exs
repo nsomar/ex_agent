@@ -54,14 +54,16 @@ defmodule MessageReceiverTest do
     ActualMessageSender.send_message(name, :inform, :echo, ["HEYY"])
     assert ExAgent.messages(ag) == [%Message{from: self(), name: :echo, params: ["HEYY"], performative: :inform}]
     GenServer.cast(ag, :run_loop)
-    # Process.sleep(3000)
-    IO.inspect "ABC #{inspect(self())}"
+
+    spawn(fn ->
+      ActualMessageSender.send_message(name, :inform, :echo, ["Message from another process"])
+    end)
     ExAgent.run_loop(ag)
-    # Process.sleep(3000)
-    # GenServer.cast(ag, :run_loop)
-    # GenServer.cast(ag, :run_loop)
-    # GenServer.cast(ag, :run_loop)
-    # assert ExAgent.messages(ag) == [%Message{from: self(), name: :echo, params: ["Hello World"], performative: :inform}]
+
+    Process.sleep(1000)
+    ActualMessageSender.send_message(name, :inform, :echo, ["Last Message"])
+    Process.sleep(2000)
+
   end
 
 end
