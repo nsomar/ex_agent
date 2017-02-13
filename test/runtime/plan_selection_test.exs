@@ -33,7 +33,7 @@ defmodule PlanSelectionTest do
       all_plans = RelPlanAgent1.plan_rules
       event = %Event{event_type: TriggerType.added_belief, content: {:owns, {:bmw}}}
 
-      relevant = PlanSelection.relavent_plans(all_plans, event)
+      relevant = PlanSelection.relavent_handlers(all_plans, event)
       assert length(relevant) == 2
 
       assert relevant |> Enum.at(0) |> elem(1)  == []
@@ -44,7 +44,7 @@ defmodule PlanSelectionTest do
       all_plans = RelPlanAgent1.plan_rules
       event = %Event{event_type: TriggerType.added_belief, content: {:owns, {:opel}}}
 
-      relevant = PlanSelection.relavent_plans(all_plans, event)
+      relevant = PlanSelection.relavent_handlers(all_plans, event)
       assert length(relevant) == 1
 
       assert relevant |> Enum.at(0) |> elem(1)  == [X: :opel]
@@ -54,7 +54,7 @@ defmodule PlanSelectionTest do
       all_plans = RelPlanAgent1.plan_rules
       event = %Event{event_type: TriggerType.added_goal, content: {:has, {:opel, :red}}}
 
-      relevant = PlanSelection.relavent_plans(all_plans, event)
+      relevant = PlanSelection.relavent_handlers(all_plans, event)
       assert length(relevant) == 1
 
       assert relevant |> Enum.at(0) |> elem(1)  == [CAR: :opel, X: :red]
@@ -70,8 +70,8 @@ defmodule PlanSelectionTest do
       all_plans = RelPlanAgent1.plan_rules
       event = %Event{event_type: TriggerType.added_goal, content: {:buy, {:bmw, :red}}}
 
-      relevant = PlanSelection.relavent_plans(all_plans, event)
-      applicable = PlanSelection.applicable_plans(relevant, beliefs)
+      relevant = PlanSelection.relavent_handlers(all_plans, event)
+      applicable = PlanSelection.applicable_handlers(relevant, beliefs)
       assert length(applicable) == 1
       assert applicable |> Enum.at(0) |> elem(1) == [[Car: :bmw, Color: :red]]
     end
@@ -82,8 +82,8 @@ defmodule PlanSelectionTest do
       all_plans = RelPlanAgent1.plan_rules
       event = %Event{event_type: TriggerType.added_goal, content: {:buy, {:bmw, :red}}}
 
-      relevant = PlanSelection.relavent_plans(all_plans, event)
-      applicable = PlanSelection.applicable_plans(relevant, beliefs)
+      relevant = PlanSelection.relavent_handlers(all_plans, event)
+      applicable = PlanSelection.applicable_handlers(relevant, beliefs)
       assert length(applicable) == 1
       assert applicable |> Enum.at(0) |> elem(1) == [[Car: :bmw, Color: :red]]
     end
@@ -99,8 +99,8 @@ defmodule PlanSelectionTest do
       all_plans = RelPlanAgent1.plan_rules
       event = %Event{event_type: TriggerType.added_goal, content: {:buy, {:bmw, :red}}}
 
-      relevant = PlanSelection.relavent_plans(all_plans, event)
-      applicable = PlanSelection.applicable_plans(relevant, beliefs)
+      relevant = PlanSelection.relavent_handlers(all_plans, event)
+      applicable = PlanSelection.applicable_handlers(relevant, beliefs)
       assert length(applicable) == 2
       assert applicable |> Enum.at(0) |> elem(1) == [[Car: :bmw, Color: :red]]
       assert applicable |> Enum.at(1) |> elem(1) == [[Car: :bmw, Color: :red, Alot: true]]
@@ -112,8 +112,8 @@ defmodule PlanSelectionTest do
       all_plans = RelPlanAgent1.plan_rules
       event = %Event{event_type: TriggerType.added_goal, content: {:buy, {:bmw, :red}}}
 
-      relevant = PlanSelection.relavent_plans(all_plans, event)
-      applicable = PlanSelection.applicable_plans(relevant, beliefs)
+      relevant = PlanSelection.relavent_handlers(all_plans, event)
+      applicable = PlanSelection.applicable_handlers(relevant, beliefs)
       assert length(applicable) == 1
       assert applicable |> Enum.at(0) |> elem(1) == [[Car: :bmw, Color: :red]]
     end
@@ -124,8 +124,8 @@ defmodule PlanSelectionTest do
       all_plans = RelPlanAgent1.plan_rules
       event = %Event{event_type: TriggerType.added_goal, content: {:buy, {:bmw, :red}}}
 
-      relevant = PlanSelection.relavent_plans(all_plans, event)
-      applicable = PlanSelection.applicable_plans(relevant, beliefs)
+      relevant = PlanSelection.relavent_handlers(all_plans, event)
+      applicable = PlanSelection.applicable_handlers(relevant, beliefs)
       assert length(applicable) == 0
     end
 
@@ -138,8 +138,8 @@ defmodule PlanSelectionTest do
       all_plans = RelPlanAgent1.plan_rules
       event = %Event{event_type: TriggerType.added_goal, content: {:sell, {:bmw}}}
 
-      relevant = PlanSelection.relavent_plans(all_plans, event)
-      applicable = PlanSelection.applicable_plans(relevant, beliefs)
+      relevant = PlanSelection.relavent_handlers(all_plans, event)
+      applicable = PlanSelection.applicable_handlers(relevant, beliefs)
       assert length(applicable) == 0
     end
 
@@ -152,8 +152,8 @@ defmodule PlanSelectionTest do
       all_plans = RelPlanAgent1.plan_rules
       event = %Event{event_type: TriggerType.added_goal, content: {:sell, {:bmw}}}
 
-      relevant = PlanSelection.relavent_plans(all_plans, event)
-      applicable = PlanSelection.applicable_plans(relevant, beliefs)
+      relevant = PlanSelection.relavent_handlers(all_plans, event)
+      applicable = PlanSelection.applicable_handlers(relevant, beliefs)
       assert length(applicable) == 0
     end
 
@@ -166,8 +166,8 @@ defmodule PlanSelectionTest do
       all_plans = RelPlanAgent1.plan_rules
       event = %Event{event_type: TriggerType.added_goal, content: {:sell, {:bmw}}}
 
-      relevant = PlanSelection.relavent_plans(all_plans, event)
-      applicable = PlanSelection.applicable_plans(relevant, beliefs)
+      relevant = PlanSelection.relavent_handlers(all_plans, event)
+      applicable = PlanSelection.applicable_handlers(relevant, beliefs)
       assert length(applicable) == 1
       assert applicable |> hd |> elem(1) == [[Car: :bmw, Price: 10000]]
     end
@@ -181,8 +181,8 @@ defmodule PlanSelectionTest do
       all_plans = RelPlanAgent1.plan_rules
       event = %Event{event_type: TriggerType.added_goal, content: {:sell, {:bmw}}}
 
-      relevant = PlanSelection.relavent_plans(all_plans, event)
-      applicable = PlanSelection.applicable_plans(relevant, beliefs)
+      relevant = PlanSelection.relavent_handlers(all_plans, event)
+      applicable = PlanSelection.applicable_handlers(relevant, beliefs)
       assert length(applicable) == 1
       assert applicable |> hd |> elem(1) == [[Car: :bmw, Value: :red]]
     end
@@ -202,8 +202,8 @@ defmodule PlanSelectionTest do
       all_plans = RelPlanAgent1.plan_rules
       event = %Event{event_type: TriggerType.added_goal, content: {:buy2, {:bmw, :red}}}
 
-      relevant = PlanSelection.relavent_plans(all_plans, event)
-      applicable = PlanSelection.applicable_plans(relevant, beliefs)
+      relevant = PlanSelection.relavent_handlers(all_plans, event)
+      applicable = PlanSelection.applicable_handlers(relevant, beliefs)
       assert length(applicable) == 0
     end
 
@@ -218,8 +218,8 @@ defmodule PlanSelectionTest do
       all_plans = RelPlanAgent1.plan_rules
       event = %Event{event_type: TriggerType.added_goal, content: {:buy2, {:bmw, :red}}}
 
-      relevant = PlanSelection.relavent_plans(all_plans, event)
-      applicable = PlanSelection.applicable_plans(relevant, beliefs)
+      relevant = PlanSelection.relavent_handlers(all_plans, event)
+      applicable = PlanSelection.applicable_handlers(relevant, beliefs)
       assert length(applicable) == 1
       assert applicable |> hd |> elem(1) == [[Car: :bmw, Color: :red, Money: 1000]]
     end
@@ -239,8 +239,8 @@ defmodule PlanSelectionTest do
       all_plans = RelPlanAgent1.plan_rules
       event = %Event{event_type: TriggerType.added_goal, content: {:buy3, {:bmw, :red}}}
 
-      relevant = PlanSelection.relavent_plans(all_plans, event)
-      applicable = PlanSelection.applicable_plans(relevant, beliefs)
+      relevant = PlanSelection.relavent_handlers(all_plans, event)
+      applicable = PlanSelection.applicable_handlers(relevant, beliefs)
       assert length(applicable) == 1
       assert applicable |> hd |> elem(1) == [[Car: :bmw, Color: :red, Money: 1000, Pocket: 10000]]
     end
@@ -256,8 +256,8 @@ defmodule PlanSelectionTest do
       all_plans = RelPlanAgent1.plan_rules
       event = %Event{event_type: TriggerType.added_goal, content: {:buy3, {:bmw, :red}}}
 
-      relevant = PlanSelection.relavent_plans(all_plans, event)
-      applicable = PlanSelection.applicable_plans(relevant, beliefs)
+      relevant = PlanSelection.relavent_handlers(all_plans, event)
+      applicable = PlanSelection.applicable_handlers(relevant, beliefs)
       assert length(applicable) == 0
     end
 
@@ -276,8 +276,8 @@ defmodule PlanSelectionTest do
       all_plans = RelPlanAgent1.plan_rules
       event = %Event{event_type: TriggerType.added_goal, content: {:buy4, {:bmw, :red}}}
 
-      relevant = PlanSelection.relavent_plans(all_plans, event)
-      applicable = PlanSelection.applicable_plans(relevant, beliefs)
+      relevant = PlanSelection.relavent_handlers(all_plans, event)
+      applicable = PlanSelection.applicable_handlers(relevant, beliefs)
       assert length(applicable) == 1
       assert applicable |> hd |> elem(1) == [[Color: :red, Money: 1000, Pocket: 10000]]
     end
@@ -297,8 +297,8 @@ defmodule PlanSelectionTest do
       all_plans = RelPlanAgent1.plan_rules
       event = %Event{event_type: TriggerType.added_goal, content: {:buy5, {:bmw, :red}}}
 
-      relevant = PlanSelection.relavent_plans(all_plans, event)
-      applicable = PlanSelection.applicable_plans(relevant, beliefs)
+      relevant = PlanSelection.relavent_handlers(all_plans, event)
+      applicable = PlanSelection.applicable_handlers(relevant, beliefs)
       assert length(applicable) == 1
       assert applicable |> hd |> elem(1) == [[Car: :bmw, Color: :red, Money: 1000, Pocket: 2001]]
     end
@@ -314,8 +314,8 @@ defmodule PlanSelectionTest do
       all_plans = RelPlanAgent1.plan_rules
       event = %Event{event_type: TriggerType.added_goal, content: {:buy5, {:bmw, :red}}}
 
-      relevant = PlanSelection.relavent_plans(all_plans, event)
-      applicable = PlanSelection.applicable_plans(relevant, beliefs)
+      relevant = PlanSelection.relavent_handlers(all_plans, event)
+      applicable = PlanSelection.applicable_handlers(relevant, beliefs)
       assert length(applicable) == 0
     end
 
@@ -333,8 +333,8 @@ defmodule PlanSelectionTest do
       all_plans = RelPlanAgent1.plan_rules
       event = %Event{event_type: TriggerType.added_goal, content: {:buy6, {"bmw"}}}
 
-      relevant = PlanSelection.relavent_plans(all_plans, event)
-      applicable = PlanSelection.applicable_plans(relevant, beliefs)
+      relevant = PlanSelection.relavent_handlers(all_plans, event)
+      applicable = PlanSelection.applicable_handlers(relevant, beliefs)
       assert length(applicable) == 1
       assert applicable |> hd |> elem(1) == [[Car: "bmw", Wish: "BMW"]]
     end

@@ -3,6 +3,11 @@ defmodule MessageReceiverAgent do
 
   message(:inform, sender, echo(X)) do
     &print("Received #{inspect(X)}")
+    &send(MessageReceiverAgent.agent_name("agent2"), :inform, echo_again("HEY BAACK"))
+  end
+
+  message(:inform, sender, echo_again(X)) do
+    &print("Received #{inspect(X)}")
   end
 
   start
@@ -31,6 +36,32 @@ defmodule MessageReceiverTest do
       %Message{name: :echo, params: ["Hey2"], performative: :inform, from: self()},
       %Message{name: :echo, params: ["Hey1"], performative: :inform, from: self()}
     ]
+  end
+
+  test "it handle messages" do
+    ag = MessageReceiverAgent.create("agent2")
+    name = MessageReceiverAgent.agent_name("agent2")
+
+    GenServer.cast(ag, :run_loop)
+    assert ExAgent.messages(ag) == []
+
+    ActualMessageSender.send_message(name, :inform, :echo, ["Hello World"])
+
+    assert ExAgent.messages(ag) == [%Message{from: self(), name: :echo, params: ["Hello World"], performative: :inform}]
+    GenServer.cast(ag, :run_loop)
+    assert ExAgent.messages(ag) == []
+
+    ActualMessageSender.send_message(name, :inform, :echo, ["HEYY"])
+    assert ExAgent.messages(ag) == [%Message{from: self(), name: :echo, params: ["HEYY"], performative: :inform}]
+    GenServer.cast(ag, :run_loop)
+    # Process.sleep(3000)
+    IO.inspect "ABC #{inspect(self())}"
+    ExAgent.run_loop(ag)
+    # Process.sleep(3000)
+    # GenServer.cast(ag, :run_loop)
+    # GenServer.cast(ag, :run_loop)
+    # GenServer.cast(ag, :run_loop)
+    # assert ExAgent.messages(ag) == [%Message{from: self(), name: :echo, params: ["Hello World"], performative: :inform}]
   end
 
 end

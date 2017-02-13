@@ -129,6 +129,11 @@ defmodule ExAgent do
     {:reply, message_handlers, state}
   end
 
+  def handle_call({:set_message_handlers, message_handlers}, _from, state) do
+    new_state = %{state | message_handlers: message_handlers}
+    {:reply, message_handlers, new_state}
+  end
+
   def handle_call(:events, _from, %{events: events} = state) do
     {:reply, events, state}
   end
@@ -172,7 +177,7 @@ defmodule ExAgent do
     {:noreply, new_state}
   end
 
-  def handle_info(msg, %{messages: messages}=state) do
+  def handle_cast({:message, msg}, %{messages: messages}=state) do
     case Message.parse(msg) do
       :not_a_message ->
         {:noreply, state}
@@ -191,6 +196,7 @@ defmodule ExAgent do
 
     AgentHelper.add_initial_beliefs(agent, module.initial_beliefs)
     AgentHelper.add_plan_rules(agent, module.plan_rules)
+    AgentHelper.add_message_handlers(agent, module.message_handlers)
     AgentHelper.set_initial_as_intents(agent, module.initial)
 
     Logger.info fn -> "\nAgent #{name} creates\nRules:\n#{inspect(module.plan_rules)}" end
@@ -239,6 +245,10 @@ defmodule ExAgent do
 
   def message_handlers(agent) do
     GenServer.call(agent, :message_handlers)
+  end
+
+  def set_message_handlers(agent, message_handlers) do
+    GenServer.call(agent, {:set_message_handlers, message_handlers})
   end
 
   def events(agent) do

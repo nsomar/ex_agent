@@ -22,19 +22,21 @@ defmodule Reasoner do
               plan_rules: plan_rules,
               message_handlers: message_handlers,
               intents: intents}=agent_state) do
-    reason(agent_state, beliefs, plan_rules, message_handlers, events, messages, intents)
+    Logger.info "Reasoning Cycle Start"
+    res = reason(agent_state, beliefs, plan_rules, message_handlers, events, messages, intents)
+    Logger.info "Reasoning Cycle End"
+    res
   end
 
   def reason(agent_state, beliefs, plan_rules, message_handlers, events, messages, intents) do
-
     with message_event <- Reasoner.Message.process_messages(messages),
          all_events <- Reasoner.Event.merge_events(message_event, events),
          {event, rest_events} <- Reasoner.Event.select_event(all_events),
-         {plan, binding} <- Reasoner.Plan.select_plan(plan_rules, message_handlers, beliefs, event),
+         {plan, binding} <- Reasoner.Plan.select_handler(plan_rules, message_handlers, beliefs, event),
          {new_intents, new_event} <- Reasoner.Intent.process_intents(intents, event, plan, binding),
          {selected_intent, rest_intents} <- Reasoner.Intent.select_intent(new_intents),
          {new_event, new_intent, new_beliefs} <- Reasoner.Intent.execute_intent(beliefs, selected_intent) do
-      Reasoner.AgentState.update_state(agent_state, new_event, rest_events, new_intent, rest_intents, new_beliefs)
+      Reasoner.AgentState.update_state(agent_state, new_event, rest_events, new_intent, rest_intents, new_beliefs, [])
     else
       :no_intent ->
         Logger.info "No intents left"
@@ -46,7 +48,10 @@ defmodule Reasoner do
 
   def sleep_agent() do
     Logger.info "Sleeping for 1000"
-    Process.sleep(1000)
+    receive do
+      message ->
+        IO.inspect "--------------------------------------------------------------- #{inspect(message)}"
+    end
   end
 
 end

@@ -30,6 +30,10 @@ defmodule AgentHelper do
     end
   end
 
+  def set_initial_as_intents(_, []) do
+    Logger.info "\nNo Initial intent created"
+  end
+
   def set_initial_as_intents(agent, initial) do
     intent =
       initial
@@ -45,5 +49,9 @@ defmodule AgentHelper do
     |> Enum.map(fn rule ->
       ExAgent.add_plan_rule(agent, rule)
     end)
+  end
+
+  def add_message_handlers(agent, message_handlers) do
+    ExAgent.set_message_handlers(agent, message_handlers)
   end
 end

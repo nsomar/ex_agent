@@ -16,7 +16,16 @@ defmodule ActualMessageSender do
   def send_message(recepient, performative, name, params) do
     case Process.whereis(recepient) do
       pid ->
-        send(pid, {:message, {performative, name, params, self()}})
+        Logger.info """
+        Sending Message
+        To: #{inspect(recepient)}
+        pid: #{inspect(pid)}
+        Performative: #{inspect(performative)}
+        Name: #{inspect(name)}
+        Params: #{inspect(params)}
+        """
+        GenServer.cast(pid, {:message, {:message, {performative, name, params, self()}}})
+        # send(pid, {:message, {performative, name, params, self()}})
       nil ->
         Logger.warn "Cannot find process with name #{inspect(recepient)}"
     end
