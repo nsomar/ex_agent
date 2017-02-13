@@ -63,8 +63,7 @@ defmodule Event do
     Event.received_message(instruction)
   end
 
-  # def from_instruction(x, binding) do
-  #   IO.inspect x
-  # end
+  def content(%{event_type: :received_message}=event), do: Message.message(event.content)
+  def content(event), do: event.content
 
 end

@@ -8,5 +8,18 @@ defmodule Rule do
       body: RuleBody.parse(body)
     }
   end
+end
 
+defimpl PlanHandler, for: Rule do
+  def trigger_content(rule) do
+    rule.head.trigger.content
+  end
+
+  def contexts(rule) do
+    rule.head.context.contexts
+  end
+
+  def trigger_first_parameter(rule) do
+    rule.head.trigger.event_type
+  end
 end

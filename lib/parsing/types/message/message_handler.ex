@@ -8,5 +8,18 @@ defmodule MessageHandler do
       body: RuleBody.parse(body)
     }
   end
+end
 
+defimpl PlanHandler, for: MessageHandler do
+  def trigger_content(handler) do
+    handler.head.trigger.message
+  end
+
+  def contexts(handler) do
+    handler.head.context.contexts
+  end
+
+  def trigger_first_parameter(handler) do
+    handler.head.trigger.performative
+  end
 end
