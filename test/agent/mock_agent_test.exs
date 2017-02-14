@@ -406,4 +406,21 @@ defmodule MockAgentTest do
     end
   end
 
+  describe "Mock Agent with recovery handler" do
+    defmodule MockAgentWRH do
+      use ExAgent
+      initialize do end
+      recovery (+!count) when counter(0) do end
+      start
+    end
+
+    test "it has recovery handlers" do
+      first = MockAgentWRH.recovery_handlers |> hd
+      assert first.head.trigger.event_type == :added_goal
+      assert first.head.context.contexts ==
+      [%ContextBelief{belief: {:counter, {0}}, should_pass: true}]
+
+    end
+  end
+
 end

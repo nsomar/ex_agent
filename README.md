@@ -69,13 +69,13 @@ initial_beliefs -> beleifs rules
 - Dont add a belief if already added ✔︎
 - Adding a belief twice wont laucn the plan rule ✔︎
 - Sleep in reasoning cycle ✔︎
-- Goals dont create a new intent, they append a sub intent
+- Message reading at the end of the cycle exec. If no message wait forever, if any message exec ✔︎
+- Message sending between intents ✔︎
+- Add a new rule that catch messages ✔︎
+- Goals dont create a new intent, they append a sub intent 
 - Create a intent execution wich contains the binding and instructions
 - Beliefs launch a new intent always
 - Intent execution interleaving
-- Message reading at the end of the cycle exec. If no message wait forever, if any message exec
-- Message sending between intents
-- Add a new rule that catch messages
 - create recovery rule
 - Atomic rules
 - query failing action

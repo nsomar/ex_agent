@@ -21,7 +21,7 @@ defmodule ExagentTest do
 
     res = ExAgent.set_beliefs(agent, [{:abcd}])
     assert res == %AgentState{beliefs: [{:abcd}], events: [], intents: [], messages: [],
-            module: ExAgent, name: :name2, plan_rules: [], message_handlers: []}
+            module: ExAgent, name: :name2, plan_rules: [], message_handlers: [], recovery_handlers: []}
 
     res = ExAgent.remove_belief(agent, {:abcd})
     assert res == {:removed, []}

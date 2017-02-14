@@ -45,10 +45,11 @@ defmodule AgentHelper do
   end
 
   def add_plan_rules(agent, plans) do
-    plans
-    |> Enum.map(fn rule ->
-      ExAgent.add_plan_rule(agent, rule)
-    end)
+    ExAgent.set_plan_rules(agent, plans)
+  end
+
+  def add_recovery_handlers(agent, recovery_handlers) do
+    ExAgent.set_recovery_handlers(agent, recovery_handlers)
   end
 
   def add_message_handlers(agent, message_handlers) do
