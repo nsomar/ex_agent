@@ -2,9 +2,15 @@ defmodule InternalActionExecutor do
 
   def execute(%InternalAction{name: :print}=internal_action, binding, printer, _) do
     params = InternalAction.params(internal_action, binding)
-    params
+    params = params
     |> Enum.join("\n")
     |> printer.print
+
+    {:action, params}
+  end
+
+  def execute(%InternalAction{name: :exit}=internal_action, binding, _, _) do
+    {:halt_agent, false}
   end
 
   def execute(%InternalAction{name: :send, params: params}=internal_action, binding, _, sender) do
@@ -14,7 +20,9 @@ defmodule InternalActionExecutor do
     prepared_performative = CommonInstructionParser.prepared_param(performative, binding)
 
     prepared_params = peform_ast_function_for_params(message_params, [], binding)
-    sender.send_message(prepared_to, prepared_performative, message_name, prepared_params)
+    result = sender.send_message(prepared_to, prepared_performative, message_name, prepared_params)
+
+    {:action, result}
   end
 
   defp peform_ast_function_for_params(message_params, function_params, binding) do
@@ -23,7 +31,7 @@ defmodule InternalActionExecutor do
   end
 
   def execute(_, _, _, _) do
-    :no_op
+    {:no_op, false}
   end
 
 end

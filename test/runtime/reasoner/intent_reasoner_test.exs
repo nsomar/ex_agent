@@ -196,4 +196,40 @@ defmodule Reasoner.IntentTest do
 
   end
 
+  describe "handling errors" do
+    test "handling query not found error" do
+     beliefs = [{:car, {:red}}]
+     instruction = %QueryBelief{name: :car, params: [:blue]}
+     bindings = []
+     event = Event.from_instruction(instruction, bindings)
+     intent = %Intention{instructions: [instruction], bindings: bindings, event: event}
+
+     result = Reasoner.Intent.execute_intent(beliefs, intent)
+
+     assert result == {
+      :execution_error,
+      %Intention{bindings: [], event: %Event{content: %QueryBelief{name: :car, params: [:blue]}, event_type: :query_belief, intents: nil}, instructions: [%QueryBelief{name: :car, params: [:blue]}], plan: nil},
+      %QueryBelief{name: :car, params: [:blue]},
+      %Event{content: %QueryBelief{name: :car, params: [:blue]}, event_type: :query_belief, intents: nil}
+    }
+    end
+
+    test "handling query not found error 2" do
+     beliefs = [{:car, {:red}}]
+     instruction = %QueryBelief{name: :sell, params: [X]}
+     bindings = []
+     event = Event.from_instruction(instruction, bindings)
+     intent = %Intention{instructions: [instruction], bindings: bindings, event: event}
+
+     result = Reasoner.Intent.execute_intent(beliefs, intent)
+
+     assert result == {
+      :execution_error,
+      %Intention{bindings: [], event: %Event{content: %QueryBelief{name: :sell, params: [X]}, event_type: :query_belief, intents: nil}, instructions: [%QueryBelief{name: :sell, params: [X]}], plan: nil},
+      %QueryBelief{name: :sell, params: [X]},
+      %Event{content: %QueryBelief{name: :sell, params: [X]}, event_type: :query_belief, intents: nil}
+    }
+    end
+  end
+
 end

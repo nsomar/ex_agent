@@ -10,6 +10,7 @@ defmodule Reasoner.Event do
 
 
   def merge_events(message_events, other_evens) do
+    Logger.info "Merging events\nmessage_events #{inspect(message_events)}\nother_evens #{inspect(other_evens)}"
     message_events ++ other_evens
   end
 

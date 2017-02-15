@@ -10,6 +10,10 @@ defmodule Reasoner.Plan do
     do_select_handler(PlanSelection, plans, beliefs, event)
   end
 
+  def select_recovery_handler(recovery_handlers, beliefs, event) do
+    do_select_handler(PlanSelection, recovery_handlers, beliefs, event)
+  end
+
   defp do_select_handler([], _, _), do: {:no_plan, []}
   defp do_select_handler(selector, handler, beliefs, event) do
     Logger.info fn -> "\nAll plan rules:\n#{inspect(handler)}" end

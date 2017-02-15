@@ -13,21 +13,21 @@ defmodule Reasoner do
     ExAgent.set_agent_state(agent, new_agent_state)
   end
 
-  def reason(
-             %AgentState{
+  def reason(%AgentState{
               messages: messages,
               events: events,
               beliefs: beliefs,
               plan_rules: plan_rules,
               message_handlers: message_handlers,
+              recovery_handlers: recovery_handlers,
               intents: intents}=agent_state) do
     Logger.info "Reasoning Cycle Start"
-    res = reason(agent_state, beliefs, plan_rules, message_handlers, events, messages, intents)
+    res = reason(agent_state, beliefs, plan_rules, message_handlers, recovery_handlers, events, messages, intents)
     Logger.info "Reasoning Cycle End"
     res
   end
 
-  def reason(agent_state, beliefs, plan_rules, message_handlers, events, messages, intents) do
+  def reason(agent_state, beliefs, plan_rules, message_handlers, recovery_handlers, events, messages, intents) do
     with message_event <- Reasoner.Message.process_messages(messages),
          all_events <- Reasoner.Event.merge_events(message_event, events),
          {event, rest_events} <- Reasoner.Event.select_event(all_events),
@@ -41,7 +41,40 @@ defmodule Reasoner do
       :no_intent ->
         Logger.info "No intents left"
         {:not_changed, agent_state}
-      _ -> 1 |> IO.inspect
+      :halt_agent ->
+        Logger.info "Halting agent received"
+        {:halt_agent, agent_state}
+      {:execution_error, failing_intent, failing_instruction, failing_event} ->
+        Logger.info """
+        Error executing
+        #{inspect(failing_instruction)}
+        For event
+        #{inspect(failing_event)}
+        """
+        select_recovery_plan(agent_state, beliefs, recovery_handlers,
+                             events, failing_event, intents, failing_intent)
+      _ ->
+        1 |> IO.inspect
+    end
+  end
+
+  def select_recovery_plan(agent_state, beliefs, recovery_handlers, events, failing_event, intents, failing_intent) do
+    Logger.info "Selecting recovery plan"
+    new_events = Enum.filter(events, fn event -> event != failing_event end)
+    new_intents = Enum.filter(intents, fn intent -> intent != failing_intent end)
+
+    with {plan, binding} <- Reasoner.Plan.select_recovery_handler(recovery_handlers, beliefs, failing_event),
+         {:ok, new_intent} <- Reasoner.Intent.create_intent(failing_event, plan, binding) do
+          Logger.info "Recovery plan found\n#{inspect(new_intent.plan)}"
+          new_state = Reasoner.AgentState.update_state(agent_state, :no_event, new_events,
+                                                       new_intent, new_intents, beliefs, [])
+          {:recovery_added, new_state}
+    else
+      :no_intent ->
+        Logger.info "No recovery plan found for failing event\n#{inspect(failing_event)}"
+        new_state = Reasoner.AgentState.update_state(agent_state, :no_event, new_events,
+                                                     :no_intent, new_intents, beliefs, [])
+        {:no_recovery, new_state}
     end
   end
 

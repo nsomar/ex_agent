@@ -1,9 +1,10 @@
 defmodule Intention do
-  defstruct [:instructions, :bindings, :plan]
+  defstruct [:instructions, :bindings, :plan, :event]
 
-  def from_events(events) do
+  def from_instruction(instructions, event) do
     %Intention{
-      instructions: events |> Enum.reverse,
+      event: event,
+      instructions: instructions |> Enum.reverse,
       bindings: [],
       plan: nil
     }

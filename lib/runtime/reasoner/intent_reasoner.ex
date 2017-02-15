@@ -6,14 +6,25 @@ defmodule Reasoner.Intent do
   end
 
   def process_intents(intents, event, selected_plan, bindings) do
-    event_intent =
-    %Intention{
-      instructions: selected_plan.body,
-      bindings: bindings,
-      plan: selected_plan
-    }
-
+    {:ok, event_intent} = create_intent(event, selected_plan, bindings)
     {[event_intent| intents], event}
+  end
+
+
+  def create_intent(_, :no_plan, _) do
+    :no_intent
+  end
+
+  def create_intent(event, plan, bindings) do
+    {
+      :ok,
+      %Intention{
+        event: event,
+        instructions: plan.body,
+        bindings: bindings,
+        plan: plan
+      }
+    }
   end
 
 
@@ -46,6 +57,15 @@ defmodule Reasoner.Intent do
   def build_new_intents(new_intent, rest_intents),
     do: [new_intent| rest_intents]
 
+
+  defp create_new_event_and_intent(%{event: event}=intent, instruction, _, {{:cant_unify, _}, _}),
+    do: {:execution_error, intent, instruction, event}
+
+  defp create_new_event_and_intent(intent, instruction, rest_instructions, {{:halt_agent, beliefs}, binding}),
+    do: :halt_agent
+
+  defp create_new_event_and_intent(intent, instruction, rest_instructions, {{:no_op, beliefs}, binding}),
+    do: create_new_intent(intent, instruction, rest_instructions, beliefs, binding)
 
   defp create_new_event_and_intent(intent, instruction, rest_instructions, {{:added, beliefs}, binding}),
     do: create_new_event_and_intent(intent, instruction, rest_instructions, beliefs, binding)

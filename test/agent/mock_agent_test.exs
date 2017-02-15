@@ -59,7 +59,7 @@ defmodule MockAgentTest do
         start
       end
 
-      ag = ExAgent.create(MockAgentWInitialB3, "ag")
+      ag = ExAgent.create_agent(MockAgentWInitialB3, "ag")
       beliefs = ag |> ExAgent.beliefs
       assert beliefs ==
       [cost: {:car, :little}, cost: {:iphone, 500}, color: {:car, :red}]

@@ -26,7 +26,7 @@ defmodule ExAgent do
       Module.register_attribute __MODULE__, :recovery_handlers,
       accumulate: true, persist: false
 
-      def create(name), do: ExAgent.create(__MODULE__, name)
+      def create(name, linked \\ true), do: ExAgent.create_agent(__MODULE__, name, linked)
       def agent_name(name), do: ExAgent.agent_name(__MODULE__, name)
       def belief_base(ag), do: ExAgent.belief_base(ag)
       def plan_rules(ag), do: ExAgent.plan_rules(ag)
@@ -198,12 +198,29 @@ defmodule ExAgent do
   def handle_cast(:run_loop, state) do
     {update, new_state} = Reasoner.reason(state)
 
-    if update == :changed do
-      Logger.info "Agent State Changed"
-      ExAgent.run_loop(self())
-    end
+    case update do
+      :changed ->
+        Logger.info "Agent State Changed"
+        ExAgent.run_loop(self())
+        {:noreply, new_state}
 
-    {:noreply, new_state}
+      :recovery_added ->
+        Logger.info "Agent State Recovered"
+        ExAgent.run_loop(self())
+        {:noreply, new_state}
+
+      :no_recovery ->
+        Logger.info "Agent State Failed. No Recovery Plan Found"
+        {:noreply, new_state}
+
+      :halt_agent ->
+        Logger.info "Halting agent!!!"
+        {:stop, 0, new_state}
+
+       state ->
+        Logger.info "Agent updated with state #{inspect(state)}"
+        {:noreply, new_state}
+    end
   end
 
   def handle_cast({:message, msg}, %{messages: messages}=state) do
@@ -221,8 +238,8 @@ defmodule ExAgent do
   ############################################################################
   # Functions
   ############################################################################
-  def create(module, name) do
-    agent = ExAgent.create(agent_name(module, name))
+  def create_agent(module, name, linked \\ true) do
+    agent = ExAgent.create(agent_name(module, name), linked)
 
     AgentHelper.add_initial_beliefs(agent, module.initial_beliefs)
     AgentHelper.add_plan_rules(agent, module.plan_rules)
@@ -235,13 +252,18 @@ defmodule ExAgent do
     agent
   end
 
-  def create(name) when is_atom(name) do
+  def create(name, linked \\ true) when is_atom(name) do
     state = %AgentState{
       beliefs: [], plan_rules: [], intents: [], events: [],
       name: name, module: __MODULE__, message_handlers: [],
       messages: [], recovery_handlers: []
     }
-    GenServer.start_link(__MODULE__, state, name: name) |> elem(1)
+
+    if linked do
+      GenServer.start_link(__MODULE__, state, name: name) |> elem(1)
+    else
+      GenServer.start(__MODULE__, state, name: name) |> elem(1)
+    end
   end
 
   def agent_name(module, name), do: :"#{module}.#{name}"
