@@ -72,21 +72,22 @@ initial_beliefs -> beleifs rules
 - Message reading at the end of the cycle exec. If no message wait forever, if any message exec ✔︎
 - Message sending between intents ✔︎
 - Add a new rule that catch messages ✔︎
+- query failing action ✔︎
 - Goals dont create a new intent, they append a sub intent 
 - Create a intent execution wich contains the binding and instructions
 - Beliefs launch a new intent always
 - Intent execution interleaving
 - create recovery rule
 - Atomic rules
-- query failing action
 - Ruseability of rules and beliefs
 - Gaia
 
 ## Examples to build
-- Counter
-- Ping Pong
+- Counter ✔︎
+- Ping Pong ✔︎
 - One shot auction
  
 
 ## Questions
 - Does replace belief fire both add belief and remove belief events?
+- YES!

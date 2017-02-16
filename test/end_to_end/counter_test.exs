@@ -158,9 +158,11 @@ defmodule CounterAgentTest do
 
   test "agent loop" do
     ag = CounterAgent.create("ag")
-    # ExAgent.run_loop(ag)
+    ExAgent.run_loop(ag)
     # IO.inspect "Sss"
-    # Process.sleep(10000)
+    Process.sleep(100)
+    assert ExAgent.agent_state(ag).events == []
+    assert ExAgent.agent_state(ag).intents == []
   end
 
 end
