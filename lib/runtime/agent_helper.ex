@@ -37,8 +37,7 @@ defmodule AgentHelper do
   def set_initial_as_intents(agent, initial) do
     intent =
       initial
-      |> Enum.reverse
-      |> Intention.from_instruction(:initialize)
+      |> Intention.create(:initialize)
 
     ExAgent.add_intent(agent, intent)
     Logger.info "\nAdded initial beliefs/goals as intents"

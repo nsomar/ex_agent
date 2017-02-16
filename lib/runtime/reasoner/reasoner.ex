@@ -65,7 +65,7 @@ defmodule Reasoner do
 
     with {plan, binding} <- Reasoner.Plan.select_recovery_handler(recovery_handlers, beliefs, failing_event),
          {:ok, new_intent} <- Reasoner.Intent.create_intent(failing_event, plan, binding) do
-          Logger.info "Recovery plan found\n#{inspect(new_intent.plan)}"
+          Logger.info "Recovery plan found\n#{inspect(Intention.top_plan(new_intent))}"
           new_state = Reasoner.AgentState.update_state(agent_state, :no_event, new_events,
                                                        new_intent, new_intents, beliefs, [])
           {:recovery_added, new_state}

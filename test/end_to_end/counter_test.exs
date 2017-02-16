@@ -40,10 +40,7 @@ defmodule CounterAgentTest do
   test "it gets the initial intents" do
     intents = CounterAgent.create("ag") |> ExAgent.intents
     assert intents ==
-    [%Intention{bindings: [], plan: nil, event: :initialize, instructions: [
-      %AddBelief{name: :counter, params: [5]},
-      %AchieveGoal{name: :count, params: []}]}
-    ]
+    [%Intention{executions: [%IntentionExecution{bindings: [], event: :initialize, plan: nil, instructions: [%AddBelief{name: :counter, params: [5]}, %AchieveGoal{name: :count, params: []}]}]}]
   end
 
   test "runs 1 instruction" do

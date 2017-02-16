@@ -111,8 +111,15 @@ defmodule AgentWithRecoveryTest do
       {update, state} = Reasoner.reason(state)
       assert update == :recovery_added
       assert state.events == []
-      assert state.intents == [%Intention{bindings: [], event: %Event{content: {:bel1, {}}, event_type: :added_belief, intents: nil}, instructions: [%AddBelief{name: :recovered, params: []}], plan: %Rule{body: [%AddBelief{name: :recovered, params: []}], head: %RuleHead{context: %RuleContext{contexts: [], function: nil}, trigger: %RuleTrigger{content: {:bel1, {}}, event_type: :added_belief}}}}]
-
+      assert state.intents == [%Intention{executions: [%IntentionExecution{bindings: [],
+               event: %Event{content: {:bel1, {}}, event_type: :added_belief,
+                intents: nil},
+               instructions: [%AddBelief{name: :recovered, params: []}],
+               plan: %Rule{body: [%AddBelief{name: :recovered, params: []}],
+                head: %RuleHead{context: %RuleContext{contexts: [],
+                  function: nil},
+                 trigger: %RuleTrigger{content: {:bel1, {}},
+                  event_type: :added_belief}}}}]}]
       {update, state} = Reasoner.reason(state)
       assert state.beliefs == [recovered: {}]
     end
@@ -129,8 +136,19 @@ defmodule AgentWithRecoveryTest do
       {update, state} = Reasoner.reason(state)
       assert update == :recovery_added
       assert state.events == []
-      assert state.intents == [%Intention{bindings: [X: "HELLO"], event: %Event{event_type: :added_belief, intents: nil, content: {:bel2, {"HELLO"}}}, instructions: [%AddBelief{name: :recovered, params: [%AstFunction{ast: {:__aliases__, [], [:X]}, number_of_params: 1, params: [:X]}]}], plan: %Rule{body: [%AddBelief{name: :recovered, params: [%AstFunction{ast: {:__aliases__, [], [:X]}, number_of_params: 1, params: [:X]}]}], head: %RuleHead{context: %RuleContext{contexts: [], function: nil}, trigger: %RuleTrigger{event_type: :added_belief, content: {:bel2, {:X}}}}}}]
-
+      assert state.intents ==  [%Intention{executions: [%IntentionExecution{bindings: [X: "HELLO"],
+               event: %Event{content: {:bel2, {"HELLO"}},
+                event_type: :added_belief, intents: nil},
+               instructions: [%AddBelief{name: :recovered,
+                 params: [%AstFunction{ast: {:__aliases__, [], [:X]},
+                   number_of_params: 1, params: [:X]}]}],
+               plan: %Rule{body: [%AddBelief{name: :recovered,
+                  params: [%AstFunction{ast: {:__aliases__, [], [:X]},
+                    number_of_params: 1, params: [:X]}]}],
+                head: %RuleHead{context: %RuleContext{contexts: [],
+                  function: nil},
+                 trigger: %RuleTrigger{content: {:bel2, {:X}},
+                  event_type: :added_belief}}}}]}]
       {update, state} = Reasoner.reason(state)
       assert state.beliefs == [recovered: {"HELLO"}]
     end
@@ -147,8 +165,15 @@ defmodule AgentWithRecoveryTest do
       {update, state} = Reasoner.reason(state)
       assert update == :recovery_added
       assert state.events == []
-      assert state.intents == [%Intention{bindings: [], instructions: [%AddBelief{name: :recovered, params: []}], event: %Event{event_type: :added_belief, intents: nil, content: {:bel3, {}}}, plan: %Rule{body: [%AddBelief{name: :recovered, params: []}], head: %RuleHead{context: %RuleContext{contexts: [], function: nil}, trigger: %RuleTrigger{event_type: :added_belief, content: {:bel3, {}}}}}}]
-
+      assert state.intents == [%Intention{executions: [%IntentionExecution{bindings: [],
+               event: %Event{content: {:bel3, {}}, event_type: :added_belief,
+                intents: nil},
+               instructions: [%AddBelief{name: :recovered, params: []}],
+               plan: %Rule{body: [%AddBelief{name: :recovered, params: []}],
+                head: %RuleHead{context: %RuleContext{contexts: [],
+                  function: nil},
+                 trigger: %RuleTrigger{content: {:bel3, {}},
+                  event_type: :added_belief}}}}]}]
       {update, state} = Reasoner.reason(state)
       assert state.beliefs == [recovered: {}]
     end

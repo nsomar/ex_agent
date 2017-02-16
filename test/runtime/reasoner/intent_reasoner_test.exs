@@ -8,8 +8,7 @@ defmodule Reasoner.IntentTest do
     test "it creates a new intent for the event if there is a plan" do
       {[new| old], _} = Reasoner.Intent.process_intents([], @add_goal_event, %{body: [B]}, [1])
 
-      assert new.bindings == [1]
-      assert new.instructions == [B]
+      assert new == %Intention{executions: [%IntentionExecution{instructions: [B], plan: %{body: [B]}, bindings: [1], event: %Event{content: {}, event_type: :added_goal, intents: nil}}]}
       assert old == []
     end
 
@@ -47,11 +46,11 @@ defmodule Reasoner.IntentTest do
     end
 
     test "achieve goal creates an event" do
-      intent = %Intention{instructions: [@achieve_goal], bindings: []}
+      intent = Intention.create([@achieve_goal])
       {event, intent, beliefs} = Reasoner.Intent.execute_intent([], intent)
 
       assert event == [%Event{content: {:count, {}}, event_type: :added_goal, intents: nil}]
-      assert intent == %Intention{bindings: [], instructions: [], plan: nil}
+      assert intent == %Intention{executions: []}
       assert beliefs == []
     end
 
@@ -59,12 +58,12 @@ defmodule Reasoner.IntentTest do
       beliefs = [{:car, {:red}}]
       instruction = %AddBelief{name: :car, params: [:blue]}
       bindings = []
-      intent = %Intention{instructions: [instruction], bindings: bindings}
+      intent = Intention.create([instruction], nil, bindings)
 
       {event, new_intent, new_beliefs} = Reasoner.Intent.execute_intent(beliefs, intent)
 
       assert event == [%Event{content: {:car, {:blue}}, event_type: :added_belief, intents: nil}]
-      assert new_intent == %Intention{bindings: [], instructions: [], plan: nil}
+      assert new_intent == %Intention{executions: []}
       assert new_beliefs == [car: {:red}, car: {:blue}]
     end
 
@@ -72,12 +71,12 @@ defmodule Reasoner.IntentTest do
       beliefs = [{:car, {:red}}]
       instruction = %AddBelief{name: :car, params: [:red]}
       bindings = []
-      intent = %Intention{instructions: [instruction], bindings: bindings}
+      intent = Intention.create([instruction], nil, bindings)
 
       {event, new_intent, new_beliefs} = Reasoner.Intent.execute_intent(beliefs, intent)
 
       assert event == []
-      assert new_intent == %Intention{bindings: [], instructions: [], plan: nil}
+      assert new_intent == %Intention{executions: []}
       assert new_beliefs == [car: {:red}]
     end
 
@@ -85,12 +84,12 @@ defmodule Reasoner.IntentTest do
       beliefs = [{:car, {:red}}]
       instruction = %RemoveBelief{name: :car, params: [:red]}
       bindings = []
-      intent = %Intention{instructions: [instruction], bindings: bindings}
+      intent = Intention.create([instruction], nil, bindings)
 
       {event, new_intent, new_beliefs} = Reasoner.Intent.execute_intent(beliefs, intent)
 
       assert event == [%Event{intents: nil, content: {:car, {:red}}, event_type: :removed_belief}]
-      assert new_intent == %Intention{bindings: [], instructions: [], plan: nil}
+      assert new_intent == %Intention{executions: []}
       assert new_beliefs == []
     end
 
@@ -98,12 +97,12 @@ defmodule Reasoner.IntentTest do
       beliefs = [{:car, {:blue}}]
       instruction = %RemoveBelief{name: :car, params: [:red]}
       bindings = []
-      intent = %Intention{instructions: [instruction], bindings: bindings}
+      intent = Intention.create([instruction], nil, bindings)
 
       {event, new_intent, new_beliefs} = Reasoner.Intent.execute_intent(beliefs, intent)
 
       assert event == []
-      assert new_intent == %Intention{bindings: [], instructions: [], plan: nil}
+      assert new_intent == %Intention{executions: []}
       assert new_beliefs == [car: {:blue}]
     end
 
@@ -111,12 +110,12 @@ defmodule Reasoner.IntentTest do
       beliefs = [{:car, {:red}}]
       instruction = %InternalAction{name: :car, params: [:red]}
       bindings = []
-      intent = %Intention{instructions: [instruction], bindings: bindings}
+      intent = Intention.create([instruction], nil, bindings)
 
       {event, new_intent, new_beliefs} = Reasoner.Intent.execute_intent(beliefs, intent)
 
       assert event == []
-      assert new_intent == %Intention{bindings: [], instructions: [], plan: nil}
+      assert new_intent == %Intention{executions: []}
       assert new_beliefs == beliefs
     end
 
@@ -124,7 +123,7 @@ defmodule Reasoner.IntentTest do
       beliefs = [{:car, {:red}}]
       instruction = %ReplaceBelief{name: :car, params: [:blue]}
       bindings = []
-      intent = %Intention{instructions: [instruction], bindings: bindings}
+      intent = Intention.create([instruction], nil, bindings)
 
       {event, new_intent, new_beliefs} = Reasoner.Intent.execute_intent(beliefs, intent)
 
@@ -132,7 +131,7 @@ defmodule Reasoner.IntentTest do
         %Event{intents: nil, content: {:car, {:red}}, event_type: :removed_belief},
         %Event{intents: nil, content: {:car, {:blue}}, event_type: :added_belief}
       ]
-      assert new_intent == %Intention{bindings: [], instructions: [], plan: nil}
+      assert new_intent == %Intention{executions: []}
       assert new_beliefs == [{:car, {:blue}}]
     end
 
@@ -140,12 +139,12 @@ defmodule Reasoner.IntentTest do
       beliefs = []
       instruction = %ReplaceBelief{name: :car, params: [:blue]}
       bindings = []
-      intent = %Intention{instructions: [instruction], bindings: bindings}
+      intent = Intention.create([instruction], nil, bindings)
 
       {event, new_intent, new_beliefs} = Reasoner.Intent.execute_intent(beliefs, intent)
 
       assert event == [%Event{intents: nil, content: {:car, {:blue}}, event_type: :added_belief}]
-      assert new_intent == %Intention{bindings: [], instructions: [], plan: nil}
+      assert new_intent == %Intention{executions: []}
       assert new_beliefs == [{:car, {:blue}}]
     end
 
@@ -153,7 +152,7 @@ defmodule Reasoner.IntentTest do
       beliefs = [{:car, {:red}}, {:car, {:pink}}]
       instruction = %ReplaceBelief{name: :car, params: [:blue]}
       bindings = []
-      intent = %Intention{instructions: [instruction], bindings: bindings}
+      intent = Intention.create([instruction], nil, bindings)
 
       {event, new_intent, new_beliefs} = Reasoner.Intent.execute_intent(beliefs, intent)
 
@@ -162,7 +161,7 @@ defmodule Reasoner.IntentTest do
         %Event{content: {:car, {:pink}}, event_type: :removed_belief, intents: nil},
         %Event{content: {:car, {:blue}}, event_type: :added_belief, intents: nil}
       ]
-      assert new_intent == %Intention{bindings: [], instructions: [], plan: nil}
+      assert new_intent == %Intention{executions: []}
       assert new_beliefs == [{:car, {:blue}}]
     end
 
@@ -171,16 +170,16 @@ defmodule Reasoner.IntentTest do
   describe "build_new_intents" do
 
     test "it builds a new intent" do
-      intent = %Intention{instructions: [@achieve_goal], bindings: []}
+      intent = Intention.create([@achieve_goal], nil, [])
       res = Reasoner.Intent.build_new_intents(intent, [X])
       assert res == [
-        %Intention{bindings: [], instructions: [%AchieveGoal{name: :count, params: []}], plan: nil},
+        %Intention{executions: [%IntentionExecution{bindings: [], event: nil, instructions: [%AchieveGoal{name: :count, params: []}], plan: nil}]},
         X
       ]
     end
 
     test "it builds a new intent by removing the one without instructions" do
-      intent = %Intention{instructions: [], bindings: []}
+      intent = Intention.create([], nil, [])
       res = Reasoner.Intent.build_new_intents(intent, [X])
       assert res == [
         X
@@ -202,13 +201,13 @@ defmodule Reasoner.IntentTest do
      instruction = %QueryBelief{name: :car, params: [:blue]}
      bindings = []
      event = Event.from_instruction(instruction, bindings)
-     intent = %Intention{instructions: [instruction], bindings: bindings, event: event}
+     intent = Intention.create([instruction], event, bindings)
 
      result = Reasoner.Intent.execute_intent(beliefs, intent)
 
      assert result == {
       :execution_error,
-      %Intention{bindings: [], event: %Event{content: %QueryBelief{name: :car, params: [:blue]}, event_type: :query_belief, intents: nil}, instructions: [%QueryBelief{name: :car, params: [:blue]}], plan: nil},
+      %Intention{executions: []},
       %QueryBelief{name: :car, params: [:blue]},
       %Event{content: %QueryBelief{name: :car, params: [:blue]}, event_type: :query_belief, intents: nil}
     }
@@ -219,13 +218,13 @@ defmodule Reasoner.IntentTest do
      instruction = %QueryBelief{name: :sell, params: [X]}
      bindings = []
      event = Event.from_instruction(instruction, bindings)
-     intent = %Intention{instructions: [instruction], bindings: bindings, event: event}
+     intent = Intention.create([instruction], event, bindings)
 
      result = Reasoner.Intent.execute_intent(beliefs, intent)
 
      assert result == {
       :execution_error,
-      %Intention{bindings: [], event: %Event{content: %QueryBelief{name: :sell, params: [X]}, event_type: :query_belief, intents: nil}, instructions: [%QueryBelief{name: :sell, params: [X]}], plan: nil},
+      %Intention{executions: []},
       %QueryBelief{name: :sell, params: [X]},
       %Event{content: %QueryBelief{name: :sell, params: [X]}, event_type: :query_belief, intents: nil}
     }
