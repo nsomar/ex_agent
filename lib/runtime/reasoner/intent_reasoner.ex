@@ -43,6 +43,9 @@ defmodule Reasoner.Intent do
     {selected, rest}
   end
 
+  ##########################################################################################
+  # Intent execution
+  ##########################################################################################
 
   def execute_intent(_, :no_intent) do
     :no_intent
@@ -55,16 +58,6 @@ defmodule Reasoner.Intent do
     result = Executor.execute(instruction, beliefs, bindings)
     create_new_event_and_intent(new_intent, instruction, event, result)
   end
-
-
-  def build_new_intents(:no_intent, rest_intents),
-  do: rest_intents
-  def build_new_intents(%Intention{executions: []}, rest_intents),
-    do: rest_intents
-  def build_new_intents(%Intention{executions: [%IntentionExecution{instructions: []}]}, rest_intents),
-    do: rest_intents
-  def build_new_intents(new_intent, rest_intents),
-    do: [new_intent| rest_intents]
 
   defp create_new_event_and_intent(intent, instruction, event, {{:cant_unify, _}, _}),
     do: {:execution_error, intent, instruction, event}
@@ -114,6 +107,19 @@ defmodule Reasoner.Intent do
     new_intent = Intention.update_bindings(intent, binding)
     {[], new_intent, beliefs}
   end
+
+  ##########################################################################################
+  # Building intents
+  ##########################################################################################
+
+  def build_new_intents(:no_intent, rest_intents),
+    do: rest_intents
+  def build_new_intents(%Intention{executions: []}, rest_intents),
+    do: rest_intents
+  def build_new_intents(%Intention{executions: [%IntentionExecution{instructions: []}]}, rest_intents),
+    do: rest_intents
+  def build_new_intents(new_intent, rest_intents),
+    do: rest_intents ++ [new_intent]
 
   ##########################################################################################
   # Logging

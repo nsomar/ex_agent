@@ -209,12 +209,12 @@ defmodule Reasoner.IntentTest do
 
   describe "build_new_intents" do
 
-    test "it builds a new intent" do
+    test "it builds a new intent with interleaving" do
       intent = Intention.create([@achieve_goal], nil, [])
       res = Reasoner.Intent.build_new_intents(intent, [X])
       assert res == [
+        X,
         %Intention{executions: [%IntentionExecution{bindings: [], event: nil, instructions: [%AchieveGoal{name: :count, params: []}], plan: nil}]},
-        X
       ]
     end
 
@@ -231,6 +231,19 @@ defmodule Reasoner.IntentTest do
       assert res == [
         X
       ]
+    end
+
+    test "intent interleaving" do
+      intent1 = Intention.create([I11, I12,], nil, [])
+      intent2 = Intention.create([I21, I22,], nil, [])
+      intents = [intent1, intent2]
+
+      {current, rest} = Reasoner.Intent.select_intent(intents)
+      assert current == intent1
+
+      intents = Reasoner.Intent.build_new_intents(current, rest)
+      {current, rest} = Reasoner.Intent.select_intent(intents)
+      assert current == intent2
     end
 
   end

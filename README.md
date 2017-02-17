@@ -77,8 +77,8 @@ initial_beliefs -> beleifs rules
 - create recovery rule ✔︎
 - Goals dont create a new intent, they append a sub intent ✔︎
 - Beliefs launch a new intent always ✔︎
-- Intent execution interleaving
-- Atomic rules
+- Intent execution interleaving ✔︎
+- Atomic rules 
 - Ruseability of rules and beliefs
 - Gaia
 
