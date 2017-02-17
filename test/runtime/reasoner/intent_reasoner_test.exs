@@ -19,6 +19,46 @@ defmodule Reasoner.IntentTest do
       assert new == I
       assert old == []
     end
+
+    test "it does not create a new intent for goals" do
+      event = %Event{event_type: :added_goal, content: {}}
+      intents = [Intention.create([I1, I2])]
+      plan = %{body: [B1, B2]}
+      {[new| old], _} = Reasoner.Intent.process_intents(intents, event, plan, [X])
+
+      assert new ==
+      %Intention{executions: [%IntentionExecution{bindings: [X],
+                    event: %Event{content: {}, event_type: :added_goal, intents: nil},
+                    instructions: [B1, B2], plan: %{body: [B1, B2]}},
+                   %IntentionExecution{bindings: [], event: nil,
+                    instructions: [I1, I2], plan: nil}]}
+
+      assert old == []
+    end
+
+    test "it creates a new intent for add beliefs" do
+      event = %Event{event_type: :added_belief, content: {}}
+      intents = [Intention.create([I1, I2])]
+      plan = %{body: [B1, B2]}
+      {[new| old], _} = Reasoner.Intent.process_intents(intents, event, plan, [X])
+
+      assert new ==
+      %Intention{executions: [%IntentionExecution{bindings: [X], instructions: [B1, B2], plan: %{body: [B1, B2]}, event: %Event{content: {}, intents: nil, event_type: :added_belief}}]}
+
+      assert old == [%Intention{executions: [%IntentionExecution{bindings: [], event: nil, instructions: [I1, I2], plan: nil}]}]
+    end
+
+    test "it creates a new intent for received message" do
+      event = %Event{event_type: :received_message, content: {}}
+      intents = [Intention.create([I1, I2])]
+      plan = %{body: [B1, B2]}
+      {[new| old], _} = Reasoner.Intent.process_intents(intents, event, plan, [X])
+
+      assert new ==
+      %Intention{executions: [%IntentionExecution{bindings: [X], instructions: [B1, B2], plan: %{body: [B1, B2]}, event: %Event{content: {}, intents: nil, event_type: :received_message}}]}
+
+      assert old == [%Intention{executions: [%IntentionExecution{bindings: [], event: nil, instructions: [I1, I2], plan: nil}]}]
+    end
   end
 
   describe "select_intent" do

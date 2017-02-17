@@ -73,11 +73,11 @@ initial_beliefs -> beleifs rules
 - Message sending between intents ✔︎
 - Add a new rule that catch messages ✔︎
 - query failing action ✔︎
-- Goals dont create a new intent, they append a sub intent 
-- Create a intent execution wich contains the binding and instructions
-- Beliefs launch a new intent always
+- Create a intent execution wich contains the binding and instructions ✔︎
+- create recovery rule ✔︎
+- Goals dont create a new intent, they append a sub intent ✔︎
+- Beliefs launch a new intent always ✔︎
 - Intent execution interleaving
-- create recovery rule
 - Atomic rules
 - Ruseability of rules and beliefs
 - Gaia

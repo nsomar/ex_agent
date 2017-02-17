@@ -45,12 +45,7 @@ defmodule Reasoner do
         Logger.info "Halting agent received"
         {:halt_agent, agent_state}
       {:execution_error, failing_intent, failing_instruction, failing_event} ->
-        Logger.info """
-        Error executing
-        #{inspect(failing_instruction)}
-        For event
-        #{inspect(failing_event)}
-        """
+        log_failing_instruction(failing_instruction, failing_event)
         select_recovery_plan(agent_state, beliefs, recovery_handlers,
                              events, failing_event, intents, failing_intent)
       _ ->
@@ -64,7 +59,7 @@ defmodule Reasoner do
     new_intents = Enum.filter(intents, fn intent -> intent != failing_intent end)
 
     with {plan, binding} <- Reasoner.Plan.select_recovery_handler(recovery_handlers, beliefs, failing_event),
-         {:ok, new_intent} <- Reasoner.Intent.create_intent(failing_event, plan, binding) do
+         {:ok, [new_intent]} <- Reasoner.Intent.create_intent(failing_event, plan, binding, true, []) do
           Logger.info "Recovery plan found\n#{inspect(Intention.top_plan(new_intent))}"
           new_state = Reasoner.AgentState.update_state(agent_state, :no_event, new_events,
                                                        new_intent, new_intents, beliefs, [])
@@ -76,6 +71,18 @@ defmodule Reasoner do
                                                      :no_intent, new_intents, beliefs, [])
         {:no_recovery, new_state}
     end
+  end
+
+  ##########################################################################################
+  # Logging
+  ##########################################################################################
+  defp log_failing_instruction(failing_instruction, failing_event) do
+    Logger.info """
+    Error executing
+    #{inspect(failing_instruction)}
+    For event
+    #{inspect(failing_event)}
+    """
   end
 
 end

@@ -60,6 +60,9 @@ defmodule Intention do
 
   def top_plan(%Intention{executions: [current | rest]}=intent), do: current.plan
 
+  def event_creates_new_intent?(%{event_type: :added_goal}), do: false
+  def event_creates_new_intent?(_), do: true
+
   defp build_new_executions(%IntentionExecution{instructions: []}=current, rest), do: rest
   defp build_new_executions(current, rest), do: [current | rest]
 

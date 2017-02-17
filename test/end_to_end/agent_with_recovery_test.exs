@@ -120,7 +120,7 @@ defmodule AgentWithRecoveryTest do
                   function: nil},
                  trigger: %RuleTrigger{content: {:bel1, {}},
                   event_type: :added_belief}}}}]}]
-      {update, state} = Reasoner.reason(state)
+      {_, state} = Reasoner.reason(state)
       assert state.beliefs == [recovered: {}]
     end
 
@@ -149,7 +149,7 @@ defmodule AgentWithRecoveryTest do
                   function: nil},
                  trigger: %RuleTrigger{content: {:bel2, {:X}},
                   event_type: :added_belief}}}}]}]
-      {update, state} = Reasoner.reason(state)
+      {_, state} = Reasoner.reason(state)
       assert state.beliefs == [recovered: {"HELLO"}]
     end
 
@@ -174,7 +174,7 @@ defmodule AgentWithRecoveryTest do
                   function: nil},
                  trigger: %RuleTrigger{content: {:bel3, {}},
                   event_type: :added_belief}}}}]}]
-      {update, state} = Reasoner.reason(state)
+      {_, state} = Reasoner.reason(state)
       assert state.beliefs == [recovered: {}]
     end
 

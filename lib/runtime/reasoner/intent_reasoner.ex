@@ -6,20 +6,33 @@ defmodule Reasoner.Intent do
   end
 
   def process_intents(intents, event, selected_plan, bindings) do
-    {:ok, event_intent} = create_intent(event, selected_plan, bindings)
-    {[event_intent| intents], event}
+    should_create = Intention.event_creates_new_intent?(event)
+    {:ok, new_intents} = create_intent(event, selected_plan, bindings, should_create, intents)
+    {new_intents, event}
   end
 
 
-  def create_intent(_, :no_plan, _) do
+  def create_intent(event, :no_plan, _, _, _) do
+    Logger.info "Intent was no created since no plan was received for event\n#{inspect(event)}"
     :no_intent
   end
 
-  def create_intent(event, plan, bindings) do
-    {
-      :ok,
-      Intention.create(plan.body, event, bindings, plan)
-    }
+  def create_intent(event, plan, bindings, false, []) do
+    create_intent(event, plan, bindings, true, [])
+  end
+
+  def create_intent(event, plan, bindings, false, [top| rest]) do
+    new_intent = Intention.push(top, plan.body, event, bindings, plan)
+    new_intents = [new_intent | rest]
+    log_intent_creation(new_intent, event, false)
+    {:ok, new_intents}
+  end
+
+  def create_intent(event, plan, bindings, true, intents) do
+    new_intent = Intention.create(plan.body, event, bindings, plan)
+    new_intents = [new_intent | intents]
+    log_intent_creation(new_intent, event, true)
+    {:ok, new_intents}
   end
 
 
@@ -101,4 +114,26 @@ defmodule Reasoner.Intent do
     new_intent = Intention.update_bindings(intent, binding)
     {[], new_intent, beliefs}
   end
+
+  ##########################################################################################
+  # Logging
+  ##########################################################################################
+  defp log_intent_creation(intent, event, false) do
+    Logger.info """
+    Intent execution was pushed on top intent
+    #{inspect(intent)}
+    For event
+    #{inspect(event)}
+    """
+  end
+
+  defp log_intent_creation(intent, event, true) do
+    Logger.info """
+    New intent created
+    #{inspect(intent)}
+    For event
+    #{inspect(event)}
+    """
+  end
+
 end
