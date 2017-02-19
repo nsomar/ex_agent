@@ -103,6 +103,14 @@ defmodule ExAgent do
     end
   end
 
+  defmacro atomic_message(performative, sender, head, body) do
+    r = MessageHandler.parse(performative, sender, head, body, true) |> Macro.escape
+
+    quote bind_quoted: [r: r] do
+      @message_handlers r
+    end
+  end
+
   defmacro start do
     quote do
       @started true

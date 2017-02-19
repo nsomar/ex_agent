@@ -57,20 +57,46 @@ defmodule Reasoner.Intent do
   end
 
   defp do_execute_intent(beliefs, intent, true) do
-    {bindings, instructions} = Intention.all_top_instructions(intent)
+    %{bindings: bindings, instructions: instructions, event: event} =
+    Intention.top_exectuion(intent)
+    new_intents = Intention.remove_top_intent(intent)
+
+    res = do_execute_instructions(:no_op, instructions, beliefs, bindings, [], nil)
+
+    case res do
+      {:execution_error, instruction} ->
+        {:execution_error, new_intents, instruction, event}
+      :halt_agent ->
+        :halt_agent
+      {events, beliefs, _} ->
+        {events, new_intents, beliefs}
+    end
   end
 
   defp do_execute_intent(beliefs, intent, false) do
     {instruction, bindings, event, new_intent} = Intention.next_instruction(intent)
 
     {new_events, status, new_beliefs, new_binding} =
-    execute_instruction(instruction, beliefs, bindings, new_intent, event)
+    execute_instruction(instruction, beliefs, bindings)
 
-    new_intent = Intention.update_bindings(new_intent, bindings)
+    new_intent = Intention.update_bindings(new_intent, new_binding)
     intent_after_execution_result(status, new_events, new_intent, new_beliefs, instruction, event)
   end
 
-  defp execute_instruction(instruction, beliefs, bindings, intent, event) do
+  defp do_execute_instructions(:halt_agent, _, _, _, _, _), do: :halt_agent
+  defp do_execute_instructions(:cant_unify, _, _, _, _, instruction),
+    do: {:execution_error, instruction}
+
+  defp do_execute_instructions(_, [], beliefs, bindings, events, _),
+   do: {events, beliefs, bindings}
+
+  defp do_execute_instructions(status, [instruction| rest], beliefs, bindings, events, _) do
+    {new_events, status, new_beliefs, new_binding} =
+    execute_instruction(instruction, beliefs, bindings)
+    do_execute_instructions(status, rest, new_beliefs, new_binding, events ++ new_events, instruction)
+  end
+
+  defp execute_instruction(instruction, beliefs, bindings) do
     Logger.info "Instruction to execute\n#{inspect(instruction)}"
 
     result = Executor.execute(instruction, beliefs, bindings)
@@ -106,10 +132,8 @@ defmodule Reasoner.Intent do
     case status do
       :cant_unify ->
         {:execution_error, intent, instruction, event}
-
       :halt_agent ->
         :halt_agent
-
       _ ->
         {events, intent, beliefs}
     end

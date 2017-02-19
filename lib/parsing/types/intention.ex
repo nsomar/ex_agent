@@ -41,7 +41,7 @@ defmodule Intention do
     end
   end
 
-  def update_bindings(%Intention{executions: []}=intent, bindings), do: intent
+  def update_bindings(%Intention{executions: []}=intent, _), do: intent
   def update_bindings(%Intention{executions: [top | rest]}=intent, bindings) do
     new_top = %{top | bindings: bindings}
     %{intent | executions: [new_top | rest]}
@@ -56,23 +56,27 @@ defmodule Intention do
     {instruction, binding, event, new_intent}
   end
 
-  def is_top_atomic(%Intention{executions: [%IntentionExecution{plan: nil} | _]}=intent),
+  def is_top_atomic(%Intention{executions: [%IntentionExecution{plan: nil} | _]}),
     do: false
-  def is_top_atomic(%Intention{executions: [%IntentionExecution{plan: plan} | _]}=intent),
+  def is_top_atomic(%Intention{executions: [%IntentionExecution{plan: plan} | _]}),
     do: plan.atomic
 
-  def all_top_instructions(%Intention{executions: [current| rest]}=intent) do
-    {current.bindings, current.instructions}
+  def top_exectuion(%Intention{executions: [current| _]}) do
+    current
   end
 
-  def top_event(%Intention{executions: [current | rest]}=intent), do: current.event
+  def remove_top_intent(%Intention{executions: []}=intent), do: intent
+  def remove_top_intent(%Intention{executions: [_| rest]}=intent),
+    do: %{intent| executions: rest}
 
-  def top_plan(%Intention{executions: [current | rest]}=intent), do: current.plan
+  def top_event(%Intention{executions: [current | _]}), do: current.event
+
+  def top_plan(%Intention{executions: [current | _]}), do: current.plan
 
   def event_creates_new_intent?(%{event_type: :added_goal}), do: false
   def event_creates_new_intent?(_), do: true
 
-  defp build_new_executions(%IntentionExecution{instructions: []}=current, rest), do: rest
+  defp build_new_executions(%IntentionExecution{instructions: []}, rest), do: rest
   defp build_new_executions(current, rest), do: [current | rest]
 
   # defp build_new_intent(intent, []), do: :no_intent
