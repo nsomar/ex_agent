@@ -185,6 +185,7 @@ defmodule MockAgentTest do
       assert MockAgentWMH.message_handlers ==
         [
           %MessageHandler{
+            atomic: false,
             body: [],
             head: %MessageHandlerHead{
               sender: :s,
@@ -214,6 +215,7 @@ defmodule MockAgentTest do
       assert MockAgentWMHAB.message_handlers ==
         [
           %MessageHandler{
+            atomic: false,
             body: [
               %InternalAction{name: :print, params: [%AstFunction{ast: {:__aliases__, [], [:X]}, number_of_params: 1, params: [:X]}]},
               %AddBelief{name: :received, params: [1]}
@@ -246,6 +248,7 @@ defmodule MockAgentTest do
       assert MockAgentWMHABC.message_handlers ==
         [
           %MessageHandler{
+            atomic: false,
             body: [
               %AddBelief{name: :received, params: [1]}
             ],
@@ -280,6 +283,7 @@ defmodule MockAgentTest do
       assert MockAgentWMHABCAF.message_handlers ==
         [
           %MessageHandler{
+            atomic: false,
             body: [
               %AddBelief{name: :received, params: [1]}
             ],
@@ -315,6 +319,7 @@ defmodule MockAgentTest do
       assert MockAgentWMHABCONST.message_handlers ==
         [
           %MessageHandler{
+            atomic: false,
             body: [
               %AddBelief{name: :received, params: [1]}
             ],
@@ -348,6 +353,7 @@ defmodule MockAgentTest do
       assert MockAgentWMMH.message_handlers ==
         [
           %MessageHandler{
+            atomic: false,
             body: [],
             head: %MessageHandlerHead{
               sender: :sender,
@@ -359,6 +365,7 @@ defmodule MockAgentTest do
             }
           },
           %MessageHandler{
+            atomic: false,
             body: [],
             head: %MessageHandlerHead{
               sender: :s,
@@ -392,6 +399,7 @@ defmodule MockAgentTest do
       assert MockAgentWMMHWIC.message_handlers ==
         [
           %MessageHandler{
+            atomic: false,
             body: [%InternalAction{name: :send, params: ["agent1", :inform, %AstFunction{ast: {:echo, [], [{:+, [], [{:__aliases__, [], [:X]}, {:__aliases__, [], [:Y]}]}]}, number_of_params: 2, params: [:X, :Y]}]}],
             head: %MessageHandlerHead{
               sender: :sender,

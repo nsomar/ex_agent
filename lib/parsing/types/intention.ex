@@ -56,6 +56,15 @@ defmodule Intention do
     {instruction, binding, event, new_intent}
   end
 
+  def is_top_atomic(%Intention{executions: [%IntentionExecution{plan: nil} | _]}=intent),
+    do: false
+  def is_top_atomic(%Intention{executions: [%IntentionExecution{plan: plan} | _]}=intent),
+    do: plan.atomic
+
+  def all_top_instructions(%Intention{executions: [current| rest]}=intent) do
+    {current.bindings, current.instructions}
+  end
+
   def top_event(%Intention{executions: [current | rest]}=intent), do: current.event
 
   def top_plan(%Intention{executions: [current | rest]}=intent), do: current.plan

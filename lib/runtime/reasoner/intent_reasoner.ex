@@ -52,60 +52,67 @@ defmodule Reasoner.Intent do
   end
 
   def execute_intent(beliefs, intent) do
+    is_top_atomic = Intention.is_top_atomic(intent)
+    do_execute_intent(beliefs, intent, is_top_atomic)
+  end
+
+  defp do_execute_intent(beliefs, intent, true) do
+    {bindings, instructions} = Intention.all_top_instructions(intent)
+  end
+
+  defp do_execute_intent(beliefs, intent, false) do
     {instruction, bindings, event, new_intent} = Intention.next_instruction(intent)
 
+    {new_events, status, new_beliefs, new_binding} =
+    execute_instruction(instruction, beliefs, bindings, new_intent, event)
+
+    new_intent = Intention.update_bindings(new_intent, bindings)
+    intent_after_execution_result(status, new_events, new_intent, new_beliefs, instruction, event)
+  end
+
+  defp execute_instruction(instruction, beliefs, bindings, intent, event) do
     Logger.info "Instruction to execute\n#{inspect(instruction)}"
+
     result = Executor.execute(instruction, beliefs, bindings)
-    create_new_event_and_intent(new_intent, instruction, event, result)
+    new_events = event_from_execution_result(result, instruction)
+    {{status, new_beliefs}, new_binding} = result
+
+    {new_events, status, new_beliefs, new_binding}
   end
 
-  defp create_new_event_and_intent(intent, instruction, event, {{:cant_unify, _}, _}),
-    do: {:execution_error, intent, instruction, event}
+  defp event_from_execution_result(result, instruction) do
+    case result do
+      {{:cant_unify, _}, _} -> nil
+      {{:halt_agent, _}, _} -> nil
 
-  defp create_new_event_and_intent(_, _, _, {{:halt_agent, _}, _}),
-    do: :halt_agent
+      {{:no_op, _}, _} -> []
+      {{:already_added, _}, _} -> []
+      {{:not_found, _}, _} -> []
+      {{:action, _}, _} -> []
 
-  defp create_new_event_and_intent(intent, instruction, _, {{:no_op, beliefs}, binding}),
-    do: create_new_intent(intent, instruction, beliefs, binding)
+      {{:added, _}, binding} -> [Event.from_instruction(instruction, binding)]
+      {{:removed, _}, binding} -> [Event.from_instruction(instruction, binding)]
+      {{:no_change, _}, binding} -> [Event.from_instruction(instruction, binding)]
+      {{:unified, _}, binding} -> [Event.from_instruction(instruction, binding)]
 
-  defp create_new_event_and_intent(intent, instruction, event, {{:added, beliefs}, binding}),
-    do: create_new_event_and_intent(intent, instruction, event, beliefs, binding)
-
-  defp create_new_event_and_intent(intent, instruction, _, {{:already_added, beliefs}, binding}),
-    do: create_new_intent(intent, instruction, beliefs, binding)
-
-  defp create_new_event_and_intent(intent, instruction, event, {{:removed, beliefs}, binding}),
-    do: create_new_event_and_intent(intent, instruction, event, beliefs, binding)
-
-  defp create_new_event_and_intent(intent, instruction, _, {{:not_found, beliefs}, binding}),
-    do: create_new_intent(intent, instruction, beliefs, binding)
-
-  defp create_new_event_and_intent(intent, instruction, event, {{:no_change, beliefs}, binding}),
-    do: create_new_event_and_intent(intent, instruction, event, beliefs, binding)
-
-  defp create_new_event_and_intent(intent, instruction, event, {{:unified, beliefs}, binding}),
-    do: create_new_event_and_intent(intent, instruction, event, beliefs, binding)
-
-  defp create_new_event_and_intent(intent, instruction, _, {{:action, beliefs}, binding}),
-    do: create_new_intent(intent, instruction, beliefs, binding)
-
-  defp create_new_event_and_intent(intent, instruction, _, {{[removed: removed, added: added], beliefs}, binding}) do
-    removed_events = Enum.map(removed, fn bel -> Event.removed_belief(bel) end)
-    added_events = Event.added_belief(added)
-
-    {_, new_intent, beliefs} = create_new_intent(intent, instruction, beliefs, binding)
-    {removed_events ++ [added_events], new_intent, beliefs}
+      {{[removed: removed, added: added], _}, _} ->
+        removed_events = Enum.map(removed, fn bel -> Event.removed_belief(bel) end)
+        added_events = Event.added_belief(added)
+        removed_events ++ [added_events]
+    end
   end
 
-  defp create_new_event_and_intent(intent, instruction, _, beliefs, binding) do
-    event = Event.from_instruction(instruction, binding)
-    new_intent = Intention.update_bindings(intent, binding)
-    {[event], new_intent, beliefs}
-  end
+  defp intent_after_execution_result(status, events, intent, beliefs, instruction, event) do
+    case status do
+      :cant_unify ->
+        {:execution_error, intent, instruction, event}
 
-  defp create_new_intent(intent, _, beliefs, binding) do
-    new_intent = Intention.update_bindings(intent, binding)
-    {[], new_intent, beliefs}
+      :halt_agent ->
+        :halt_agent
+
+      _ ->
+        {events, intent, beliefs}
+    end
   end
 
   ##########################################################################################

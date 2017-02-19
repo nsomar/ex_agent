@@ -203,8 +203,21 @@ defmodule Reasoner.IntentTest do
       ]
       assert new_intent == %Intention{executions: []}
       assert new_beliefs == [{:car, {:blue}}]
+
     end
 
+    test "if the plan is atomic, execute all of it" do
+      plan = %Rule{atomic: true,
+  body: [%AddBelief{name: :counter, params: [1]},
+   %AddBelief{name: :counter, params: [2]},
+   %AddBelief{name: :counter, params: [2]}],
+  head: %RuleHead{context: %RuleContext{contexts: [], function: nil},
+   trigger: %RuleTrigger{content: {:count, {}}, event_type: :added_goal}}}
+
+      intent = Intention.create(plan.body, E, [], plan)
+      {event, new_intent, new_beliefs} = Reasoner.Intent.execute_intent([], intent)
+      new_beliefs |> IO.inspect
+    end
   end
 
   describe "build_new_intents" do

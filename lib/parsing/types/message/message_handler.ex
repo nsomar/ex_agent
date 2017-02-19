@@ -1,11 +1,12 @@
 defmodule MessageHandler do
-  defstruct [:head, :body]
+  defstruct [:head, :body, :atomic]
   @type t :: %MessageHandler{head: RuleHead.t, body: RuleBody.t}
 
   def parse(performative, sender, head, body) do
     %MessageHandler {
       head: MessageHandlerHead.parse(performative, sender, head),
-      body: RuleBody.parse(body)
+      body: RuleBody.parse(body),
+      atomic: false
     }
   end
 end

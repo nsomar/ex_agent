@@ -1,11 +1,12 @@
 defmodule Rule do
-  defstruct [:head, :body]
+  defstruct [:head, :body, :atomic]
   @type t :: %Rule{head: RuleHead.t, body: RuleBody.t}
 
-  def parse(head, body) do
+  def parse(head, body, atomic \\ false) do
     %Rule {
       head: RuleHead.parse(head),
-      body: RuleBody.parse(body)
+      body: RuleBody.parse(body),
+      atomic: atomic
     }
   end
 end

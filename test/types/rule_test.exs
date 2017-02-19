@@ -42,7 +42,7 @@ defmodule RuleTest do
 
     # IO.inspect(Rule.parse(head, body))
     assert Rule.parse(head, body) ==
-      %Rule{body: [%AddBelief{name: :nice, params: [:car]},
+      %Rule{atomic: false, body: [%AddBelief{name: :nice, params: [:car]},
         %AchieveGoal{name: :buy,
          params: [%AstFunction{ast: {:__aliases__, [], [:X]}, number_of_params: 1,
            params: [:X]}]},

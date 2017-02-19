@@ -69,7 +69,16 @@ defmodule ExAgent do
 
   # rule (+!buy(X)) when money(Z) && cost(X, C) && test Z > X && test Z == X do
   defmacro rule(head, body) do
-    r = Rule.parse(head, body) |> Macro.escape
+    r = Rule.parse(head, body, false) |> Macro.escape
+
+    quote bind_quoted: [r: r] do
+      @rule_handlers r
+    end
+  end
+
+  # atomic_rule (+!buy(X)) when money(Z) && cost(X, C) && test Z > X && test Z == X do
+  defmacro atomic_rule(head, body) do
+    r = Rule.parse(head, body, true) |> Macro.escape
 
     quote bind_quoted: [r: r] do
       @rule_handlers r
