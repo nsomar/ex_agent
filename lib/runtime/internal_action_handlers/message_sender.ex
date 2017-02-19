@@ -26,10 +26,10 @@ defmodule ActualMessageSender do
 
   def send_message(recepient, performative, name, params) do
     case Process.whereis(recepient) do
-      pid ->
-        send_message(pid, performative, name, params)
       nil ->
         Logger.warn "Cannot find process with name #{inspect(recepient)}"
+      pid ->
+        send_message(pid, performative, name, params)
     end
   end
 

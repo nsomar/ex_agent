@@ -10,4 +10,9 @@ defmodule Reasoner.AgentState do
       messages: messages
     }
   end
+
+  def update_agent_events(agent_state, events) do
+    %{agent_state | events: events}
+  end
+
 end

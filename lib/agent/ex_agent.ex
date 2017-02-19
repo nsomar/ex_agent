@@ -218,6 +218,7 @@ defmodule ExAgent do
     case update do
       :changed ->
         Logger.info "Agent State Changed"
+        Logger.info "New State\n#{inspect(new_state)}"
         ExAgent.run_loop(self())
         {:noreply, new_state}
 
@@ -235,7 +236,7 @@ defmodule ExAgent do
         {:stop, 0, new_state}
 
        state ->
-        Logger.info "Agent updated with state #{inspect(state)}"
+        Logger.info "Agent updated with state #{inspect(new_state)} for status #{inspect(state)}"
         {:noreply, new_state}
     end
   end

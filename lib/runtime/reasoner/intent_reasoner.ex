@@ -1,19 +1,18 @@
 defmodule Reasoner.Intent do
   require Logger
 
-  def process_intents(intents, event, :no_plan, _) do
-    {intents, event}
+  def process_intents(intents, _, :no_plan, _) do
+    {:ok, intents}
   end
 
   def process_intents(intents, event, selected_plan, bindings) do
     should_create = Intention.event_creates_new_intent?(event)
-    {:ok, new_intents} = create_intent(event, selected_plan, bindings, should_create, intents)
-    {new_intents, event}
+    create_intent(event, selected_plan, bindings, should_create, intents)
   end
 
 
   def create_intent(event, :no_plan, _, _, _) do
-    Logger.info "Intent was no created since no plan was received for event\n#{inspect(event)}"
+    Logger.info "Intent was not created since no plan was received for event\n#{inspect(event)}"
     :no_intent
   end
 
@@ -36,20 +35,16 @@ defmodule Reasoner.Intent do
   end
 
 
-  def select_intent([]), do: {:no_intent, []}
+  def select_intent([]), do: :no_intent
   def select_intent(intents) do
     [selected| rest] = intents
     Logger.info fn -> "\nSelected intent:\n#{inspect(selected)}" end
-    {selected, rest}
+    {:ok, selected, rest}
   end
 
   ##########################################################################################
   # Intent execution
   ##########################################################################################
-
-  def execute_intent(_, :no_intent) do
-    :no_intent
-  end
 
   def execute_intent(beliefs, intent) do
     is_top_atomic = Intention.is_top_atomic(intent)
@@ -61,6 +56,13 @@ defmodule Reasoner.Intent do
     Intention.top_exectuion(intent)
     new_intents = Intention.remove_top_intent(intent)
 
+    Logger.info """
+    Executing instructions atomically
+    #{inspect(instructions)}
+    Intent
+    #{inspect(intent)}
+    """
+
     res = do_execute_instructions(:no_op, instructions, beliefs, bindings, [], nil)
 
     case res do
@@ -69,7 +71,7 @@ defmodule Reasoner.Intent do
       :halt_agent ->
         :halt_agent
       {events, beliefs, _} ->
-        {events, new_intents, beliefs}
+        {:ok, events, new_intents, beliefs}
     end
   end
 
@@ -80,7 +82,10 @@ defmodule Reasoner.Intent do
     execute_instruction(instruction, beliefs, bindings)
 
     new_intent = Intention.update_bindings(new_intent, new_binding)
-    intent_after_execution_result(status, new_events, new_intent, new_beliefs, instruction, event)
+
+    res = intent_after_execution_result(status, new_events, new_intent, new_beliefs, instruction, event)
+    Logger.info "EXECUTED!!! \n#{inspect(res)}"
+    res
   end
 
   defp do_execute_instructions(:halt_agent, _, _, _, _, _), do: :halt_agent
@@ -90,7 +95,7 @@ defmodule Reasoner.Intent do
   defp do_execute_instructions(_, [], beliefs, bindings, events, _),
    do: {events, beliefs, bindings}
 
-  defp do_execute_instructions(status, [instruction| rest], beliefs, bindings, events, _) do
+  defp do_execute_instructions(_, [instruction| rest], beliefs, bindings, events, _) do
     {new_events, status, new_beliefs, new_binding} =
     execute_instruction(instruction, beliefs, bindings)
     do_execute_instructions(status, rest, new_beliefs, new_binding, events ++ new_events, instruction)
@@ -135,7 +140,7 @@ defmodule Reasoner.Intent do
       :halt_agent ->
         :halt_agent
       _ ->
-        {events, intent, beliefs}
+        {:ok, events, intent, beliefs}
     end
   end
 

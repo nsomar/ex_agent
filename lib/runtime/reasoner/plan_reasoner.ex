@@ -1,7 +1,7 @@
 defmodule Reasoner.Plan do
   require Logger
 
-  def select_handler(_, message_handlers, beliefs, :no_event), do: {:no_plan, []}
+  def select_handler(_, _, _, :no_event), do: {:ok, :no_plan, []}
   def select_handler(_, message_handlers, beliefs, %{event_type: :received_message}=event) do
     do_select_handler(MessageHandlerSelection, message_handlers, beliefs, event)
   end
@@ -14,7 +14,6 @@ defmodule Reasoner.Plan do
     do_select_handler(PlanSelection, recovery_handlers, beliefs, event)
   end
 
-  defp do_select_handler([], _, _), do: {:no_plan, []}
   defp do_select_handler(selector, handler, beliefs, event) do
     Logger.info fn -> "\nAll plan rules:\n#{inspect(handler)}" end
 
@@ -31,10 +30,10 @@ defmodule Reasoner.Plan do
         Logger.info fn -> "\nSelected Plan:\n#{inspect(selected_plan)}" end
         Logger.info fn -> "\nNew Binding: #{inspect(binding)}" end
 
-        {selected_plan, binding |> hd}
+        {:ok, selected_plan, binding |> hd}
         _ ->
           Logger.info fn -> "\nNo applicable handler found" end
-          {:no_plan, []}
+          {:ok, :no_plan, []}
     end
   end
 

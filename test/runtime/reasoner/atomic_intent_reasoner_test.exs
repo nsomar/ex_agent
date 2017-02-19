@@ -19,7 +19,7 @@ defmodule Reasoner.AtomicIntentTest do
       plan = %Rule{atomic: true, body: [@add_bel1, @add_bel2, @add_bel3], head: @rule_head}
 
       intent = Intention.create(plan.body, E, [], plan)
-      {events, new_intents, beliefs} = Reasoner.Intent.execute_intent([], intent)
+      {:ok, events, new_intents, beliefs} = Reasoner.Intent.execute_intent([], intent)
 
       assert events == [@add_ev1, @add_ev2, @add_ev3]
       assert beliefs == [counter: {1}, counter: {2}, counter: {3}]
@@ -43,7 +43,7 @@ defmodule Reasoner.AtomicIntentTest do
       intent = Intention.create([], E, [], P)
       intent = Intention.push(intent, plan.body, E, [], plan)
 
-      {events, new_intents, beliefs} = Reasoner.Intent.execute_intent([], intent)
+      {:ok, events, new_intents, beliefs} = Reasoner.Intent.execute_intent([], intent)
 
       assert events == [@add_ev1, @add_ev2, @add_ev3]
       assert beliefs == [counter: {1}, counter: {2}, counter: {3}]

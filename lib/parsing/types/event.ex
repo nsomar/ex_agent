@@ -51,11 +51,11 @@ defmodule Event do
     Event.added_goal(instruction |> EventContent.content(binding))
   end
 
-  def from_instruction(%QueryBelief{}=instruction, binding) do
+  def from_instruction(%QueryBelief{}=instruction, _) do
     Event.query_belief(instruction)
   end
 
-  def from_instruction(%InternalAction{}=instruction, binding) do
+  def from_instruction(%InternalAction{}=instruction, _) do
     Event.internal_action(instruction)
   end
 

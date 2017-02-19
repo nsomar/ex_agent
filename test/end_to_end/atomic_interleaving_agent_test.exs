@@ -3,9 +3,8 @@ defmodule AtomicInterleavingAgent do
   # use Protocols.only(:asdsa, :aaaa)
 
   initialize do
-    +execute(1)
     +execute(2)
-    !check
+    +execute(1)
   end
 
   atomic_rule (+execute(1)) do
@@ -14,6 +13,7 @@ defmodule AtomicInterleavingAgent do
     &print("execute 1-3")
     &print("execute 1-4")
     +done1
+    !check()
   end
 
   atomic_rule (+execute(2)) do
@@ -22,6 +22,7 @@ defmodule AtomicInterleavingAgent do
     &print("execute 2-3")
     &print("execute 2-4")
     +done2
+    !check()
   end
 
   rule (+!check) when done1 && done2 && !printed do

@@ -13,14 +13,14 @@ defmodule PlanReasonerTest do
   test "it selects message for message event" do
     event = %Event{content: %Message{name: :echo, params: ["hello"], performative: :inform, from: self()}, event_type: :received_message, intents: nil}
 
-    {sel, _} = Reasoner.Plan.select_handler(PlanReasonerTestAgent.plan_rules, PlanReasonerTestAgent.message_handlers, [], event)
+    {:ok, sel, _} = Reasoner.Plan.select_handler(PlanReasonerTestAgent.plan_rules, PlanReasonerTestAgent.message_handlers, [], event)
     assert sel.head.trigger.performative == :inform
   end
 
   test "it selects goal for goal event" do
     event =  %Event{event_type: TriggerType.added_goal, content: {:has, {:opel}}}
 
-    {sel, _} = Reasoner.Plan.select_handler(PlanReasonerTestAgent.plan_rules, PlanReasonerTestAgent.message_handlers, [{:has, {:opel}}], event)
+    {:ok, sel, _} = Reasoner.Plan.select_handler(PlanReasonerTestAgent.plan_rules, PlanReasonerTestAgent.message_handlers, [{:has, {:opel}}], event)
     assert sel.head.trigger.event_type == :added_goal
   end
 end

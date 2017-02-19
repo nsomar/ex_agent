@@ -9,11 +9,11 @@ defmodule InternalActionExecutor do
     {:action, params}
   end
 
-  def execute(%InternalAction{name: :exit}=internal_action, binding, _, _) do
+  def execute(%InternalAction{name: :exit}, _, _, _) do
     {:halt_agent, false}
   end
 
-  def execute(%InternalAction{name: :send, params: params}=internal_action, binding, _, sender) do
+  def execute(%InternalAction{name: :send, params: params}, binding, _, sender) do
     [to, performative, %{ast: {message_name, [], message_params}}] = params
 
     prepared_to = CommonInstructionParser.prepared_param(to, binding)
@@ -25,13 +25,13 @@ defmodule InternalActionExecutor do
     {:action, result}
   end
 
+  def execute(_, _, _, _) do
+    {:no_op, false}
+  end
+
   defp peform_ast_function_for_params(message_params, function_params, binding) do
     message_params
     |> Enum.map(fn ast -> AstFunction.perform(ast, function_params, binding) end)
-  end
-
-  def execute(_, _, _, _) do
-    {:no_op, false}
   end
 
 end
