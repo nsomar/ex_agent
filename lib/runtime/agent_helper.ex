@@ -11,7 +11,7 @@ defmodule AgentHelper do
   end
 
   defp do_add_initial_beliefs(agent, beliefs) do
-    ExAgent.set_beliefs(agent, beliefs)
+    ExAgent.add_beliefs(agent, beliefs)
   end
 
   def prepare_initial_beliefs(beliefs) do
@@ -44,14 +44,22 @@ defmodule AgentHelper do
   end
 
   def add_plan_rules(agent, plans) do
-    ExAgent.set_plan_rules(agent, plans)
+    ExAgent.add_plan_rules(agent, plans)
   end
 
   def add_recovery_handlers(agent, recovery_handlers) do
-    ExAgent.set_recovery_handlers(agent, recovery_handlers)
+    ExAgent.add_recovery_handlers(agent, recovery_handlers)
   end
 
   def add_message_handlers(agent, message_handlers) do
-    ExAgent.set_message_handlers(agent, message_handlers)
+    ExAgent.add_message_handlers(agent, message_handlers)
   end
+
+  def add_responsibilities(agent, responsibilities) do
+    add_initial_beliefs(agent, Responsibility.initial_beliefs(responsibilities))
+    add_plan_rules(agent, Responsibility.plan_rules(responsibilities))
+    add_message_handlers(agent, Responsibility.message_handlers(responsibilities))
+    add_recovery_handlers(agent, Responsibility.recovery_handlers(responsibilities))
+  end
+
 end

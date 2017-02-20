@@ -9,22 +9,12 @@ defmodule ExAgent do
   defmacro __using__(_) do
     quote do
 
-      import unquote(__MODULE__)
+      use ExAgent.Core
+
+      import ExAgent
+      import ExAgent.Core
+
       require Logger
-
-      @initial []
-      @initial_beliefs []
-      @started false
-      @after_compile __MODULE__
-
-      Module.register_attribute __MODULE__, :rule_handlers,
-      accumulate: true, persist: false
-
-      Module.register_attribute __MODULE__, :message_handlers,
-      accumulate: true, persist: false
-
-      Module.register_attribute __MODULE__, :recovery_handlers,
-      accumulate: true, persist: false
 
       def create(name, linked \\ true), do: ExAgent.create_agent(__MODULE__, name, linked)
       def agent_name(name), do: ExAgent.agent_name(__MODULE__, name)
@@ -32,93 +22,6 @@ defmodule ExAgent do
       def plan_rules(ag), do: ExAgent.plan_rules(ag)
       def recovery_handlers(ag), do: ExAgent.recovery_handlers(ag)
       def message_handlers(ag), do: ExAgent.message_handlers(ag)
-
-      defmacro __after_compile__(_, _) do
-        quote do
-          unless @started do
-            CompilerHelpers.print_aget_not_started_message(__MODULE__)
-          end
-        end
-      end
-    end
-  end
-
-  ############################################################################
-  # Macros
-  ############################################################################
-
-  defmacro initialize(funcs) do
-    quote bind_quoted: [funcs: funcs |> Macro.escape] do
-      @initial funcs |> RuleBody.parse
-    end
-  end
-
-  defmacro initial_beliefs(funcs) do
-    quote bind_quoted: [funcs: funcs |> Macro.escape] do
-      @initial_beliefs funcs |> InitialBeliefs.parse
-    end
-  end
-
-  # on(+cost(X, Y), money(Z) && nice(X) && not want_to_buy(X) &&
-  #        fn x, y, z -> x == y end) do
-  defmacro on(_, _, _) do
-    quote do
-      1
-    end
-  end
-
-  # rule (+!buy(X)) when money(Z) && cost(X, C) && test Z > X && test Z == X do
-  defmacro rule(head, body) do
-    r = Rule.parse(head, body, false) |> Macro.escape
-
-    quote bind_quoted: [r: r] do
-      @rule_handlers r
-    end
-  end
-
-  # atomic_rule (+!buy(X)) when money(Z) && cost(X, C) && test Z > X && test Z == X do
-  defmacro atomic_rule(head, body) do
-    r = Rule.parse(head, body, true) |> Macro.escape
-
-    quote bind_quoted: [r: r] do
-      @rule_handlers r
-    end
-  end
-
-  # recover (+!buy(X)) when money(Z) && cost(X, C) && test Z > X && test Z == X do
-  defmacro recovery(head, body) do
-    r = Rule.parse(head, body) |> Macro.escape
-
-    quote bind_quoted: [r: r] do
-      @recovery_handlers r
-    end
-  end
-
-  # message (+!buy(X)) when money(Z) && cost(X, C) && test Z > X && test Z == X do
-  defmacro message(performative, sender, head, body) do
-    r = MessageHandler.parse(performative, sender, head, body) |> Macro.escape
-
-    quote bind_quoted: [r: r] do
-      @message_handlers r
-    end
-  end
-
-  defmacro atomic_message(performative, sender, head, body) do
-    r = MessageHandler.parse(performative, sender, head, body, true) |> Macro.escape
-
-    quote bind_quoted: [r: r] do
-      @message_handlers r
-    end
-  end
-
-  defmacro start do
-    quote do
-      @started true
-      def initial, do: @initial
-      def initial_beliefs, do: @initial_beliefs
-      def plan_rules, do: @rule_handlers |> Enum.reverse
-      def recovery_handlers, do: @recovery_handlers |> Enum.reverse
-      def message_handlers, do: @message_handlers |> Enum.reverse
     end
   end
 
@@ -142,8 +45,8 @@ defmodule ExAgent do
     {:reply, {res, new_beliefs}, new_state}
   end
 
-  def handle_call({:set_beliefs, new_beliefs}, _from, state) do
-    new_state = %{state| beliefs: new_beliefs}
+  def handle_call({:add_beliefs, new_beliefs}, _from, %{beliefs: beliefs} = state) do
+    new_state = %{state| beliefs: beliefs ++ new_beliefs}
     {:reply, new_state, new_state}
   end
 
@@ -151,27 +54,27 @@ defmodule ExAgent do
     {:reply, rules, state}
   end
 
-  def handle_call({:set_plan_rules, plan_rules}, _from, state) do
-    new_state = %{state | plan_rules: plan_rules}
-    {:reply, plan_rules, new_state}
+  def handle_call({:add_plan_rules, new_plan_rules}, _from, %{plan_rules: plan_rules} = state) do
+    new_state = %{state | plan_rules: plan_rules ++ new_plan_rules}
+    {:reply, new_plan_rules, new_state}
   end
 
   def handle_call(:recovery_handlers, _from, %{recovery_handlers: recovery_handlers} = state) do
     {:reply, recovery_handlers, state}
   end
 
-  def handle_call({:set_recovery_handlers, recovery_handlers}, _from, state) do
-    new_state = %{state | recovery_handlers: recovery_handlers}
-    {:reply, recovery_handlers, new_state}
+  def handle_call({:add_recovery_handlers, new_recovery_handlers}, _from, %{recovery_handlers: recovery_handlers} = state) do
+    new_state = %{state | recovery_handlers: recovery_handlers ++ new_recovery_handlers}
+    {:reply, new_recovery_handlers, new_state}
   end
 
   def handle_call(:message_handlers, _from, %{message_handlers: message_handlers} = state) do
     {:reply, message_handlers, state}
   end
 
-  def handle_call({:set_message_handlers, message_handlers}, _from, state) do
-    new_state = %{state | message_handlers: message_handlers}
-    {:reply, message_handlers, new_state}
+  def handle_call({:add_message_handlers, new_message_handlers}, _from, %{message_handlers: message_handlers} = state) do
+    new_state = %{state | message_handlers: message_handlers ++ new_message_handlers}
+    {:reply, new_message_handlers, new_state}
   end
 
   def handle_call(:events, _from, %{events: events} = state) do
@@ -265,6 +168,8 @@ defmodule ExAgent do
     AgentHelper.add_message_handlers(agent, module.message_handlers)
     AgentHelper.set_initial_as_intents(agent, module.initial)
 
+    AgentHelper.add_responsibilities(agent, module.responsibilities)
+
     Logger.info fn -> "\nAgent #{name} creates\nRules:\n#{inspect(module.plan_rules)}" end
 
     agent
@@ -302,32 +207,32 @@ defmodule ExAgent do
     GenServer.call(agent, {:remove_belief, belief})
   end
 
-  def set_beliefs(agent, beliefs) do
-    GenServer.call(agent, {:set_beliefs, beliefs})
+  def add_beliefs(agent, beliefs) do
+    GenServer.call(agent, {:add_beliefs, beliefs})
   end
 
   def plan_rules(agent) do
     GenServer.call(agent, :plan_rules)
   end
 
-  def set_plan_rules(agent, plan_rules) do
-    GenServer.call(agent, {:set_plan_rules, plan_rules})
+  def add_plan_rules(agent, plan_rules) do
+    GenServer.call(agent, {:add_plan_rules, plan_rules})
   end
 
   def recovery_handlers(agent) do
     GenServer.call(agent, :recovery_handlers)
   end
 
-  def set_recovery_handlers(agent, recovery_handlers) do
-    GenServer.call(agent, {:set_recovery_handlers, recovery_handlers})
+  def add_recovery_handlers(agent, recovery_handlers) do
+    GenServer.call(agent, {:add_recovery_handlers, recovery_handlers})
   end
 
   def message_handlers(agent) do
     GenServer.call(agent, :message_handlers)
   end
 
-  def set_message_handlers(agent, message_handlers) do
-    GenServer.call(agent, {:set_message_handlers, message_handlers})
+  def add_message_handlers(agent, message_handlers) do
+    GenServer.call(agent, {:add_message_handlers, message_handlers})
   end
 
   def events(agent) do

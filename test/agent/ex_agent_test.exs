@@ -19,7 +19,7 @@ defmodule ExagentTest do
   test "can get remove a belief" do
     agent = ExAgent.create(:"name2")
 
-    res = ExAgent.set_beliefs(agent, [{:abcd}])
+    res = ExAgent.add_beliefs(agent, [{:abcd}])
     assert res == %AgentState{beliefs: [{:abcd}], events: [], intents: [], messages: [],
             module: ExAgent, name: :name2, plan_rules: [], message_handlers: [], recovery_handlers: []}
 

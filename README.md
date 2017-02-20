@@ -54,6 +54,7 @@ Instructions:
 - Achieve Goal ✔︎
 - Internal Action ✔︎
 - Send message ✔︎
+- Halt agent ✔︎
 
 ## Runtime
 
@@ -78,8 +79,8 @@ initial_beliefs -> beleifs rules
 - Goals dont create a new intent, they append a sub intent ✔︎
 - Beliefs launch a new intent always ✔︎
 - Intent execution interleaving ✔︎
-- Atomic rules 
-- Ruseability of rules and beliefs
+- Atomic rules ✔︎
+- Ruseability of rules and beliefs ✔︎
 - Gaia
 
 ## Examples to build
@@ -91,3 +92,5 @@ initial_beliefs -> beleifs rules
 ## Questions
 - Does replace belief fire both add belief and remove belief events?
 - YES!
+
+- Reusability. Put the reuse before or after the agent initial beliefs
