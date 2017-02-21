@@ -33,6 +33,15 @@ defmodule Executor do
     {{status, beliefs}, binding}
   end
 
+  def execute(%SetBinding{}=set_binding, beliefs, binding) do
+    {_, new_bindings} =
+      SetBinding.execute(set_binding, binding)
+      |> merge_binding(binding)
+
+    {{:binding_changed, beliefs}, new_bindings}
+  end
+
+
   def execute(_, beliefs, binding) do
     {{:no_change, beliefs}, binding}
   end

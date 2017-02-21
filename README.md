@@ -81,11 +81,16 @@ initial_beliefs -> beleifs rules
 - Intent execution interleaving ✔︎
 - Atomic rules ✔︎
 - Ruseability of rules and beliefs ✔︎
-- Gaia
+- Gaia ✔︎
+- Set a new binding ✔︎
 
 ## Examples to build
 - Counter ✔︎
 - Ping Pong ✔︎
+- Counter with responsibilities ✔︎
+- Ping Pong with responsibilities ✔︎
+- Interleaving agent ✔︎
+- Atomic Interleaving ✔︎
 - One shot auction
  
 
@@ -94,3 +99,4 @@ initial_beliefs -> beleifs rules
 - YES!
 
 - Reusability. Put the reuse before or after the agent initial beliefs
+- What do we mean by Gaia?

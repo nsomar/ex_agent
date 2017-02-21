@@ -43,4 +43,8 @@ defmodule RuleBody do
     InternalAction.parse(statements)
   end
 
+  defp do_parse_item({:=, _, _} = statements) when is_tuple(statements) do
+    SetBinding.parse(statements)
+  end
+
 end

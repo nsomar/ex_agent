@@ -121,6 +121,8 @@ defmodule Reasoner.Intent do
       {{:not_found, _}, _} -> []
       {{:action, _}, _} -> []
 
+      {{:binding_changed, _}, _} -> []
+
       {{:added, _}, binding} -> [Event.from_instruction(instruction, binding)]
       {{:removed, _}, binding} -> [Event.from_instruction(instruction, binding)]
       {{:no_change, _}, binding} -> [Event.from_instruction(instruction, binding)]
