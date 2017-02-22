@@ -3,7 +3,7 @@ defmodule AgentWithRecoveryTest do
 
   describe "without recovery" do
     defmodule AgentWithTestRecovery do
-      use ExAgent
+      use ExAgent.Mod
       # use Protocols.only(:asdsa, :aaaa)
 
       rule (+bel1) do
@@ -69,7 +69,7 @@ defmodule AgentWithRecoveryTest do
 
   describe "with recovery" do
     defmodule AgentWithTestRecovery2 do
-      use ExAgent
+      use ExAgent.Mod
       # use Protocols.only(:asdsa, :aaaa)
 
       rule (+bel1) do
@@ -182,7 +182,7 @@ defmodule AgentWithRecoveryTest do
 
   describe "with failed recovery" do
     defmodule AgentWithTestRecovery3 do
-      use ExAgent
+      use ExAgent.Mod
       # use Protocols.only(:asdsa, :aaaa)
 
       rule (+bel1) do

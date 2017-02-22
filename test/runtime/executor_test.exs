@@ -1,5 +1,5 @@
 defmodule ExecutorTestAgent do
-  use ExAgent
+  use ExAgent.Mod
 
   initialize do
     +counter(0)

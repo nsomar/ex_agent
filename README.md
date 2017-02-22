@@ -83,6 +83,7 @@ initial_beliefs -> beleifs rules
 - Ruseability of rules and beliefs ✔︎
 - Gaia ✔︎
 - Set a new binding ✔︎
+- Add defagent and defresp ✔︎
 
 ## Examples to build
 - Counter ✔︎

@@ -1,5 +1,5 @@
 defmodule RelPlanAgent1 do
-  use ExAgent
+  use ExAgent.Mod
 
   initialize do end
 

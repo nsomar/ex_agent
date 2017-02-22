@@ -5,7 +5,7 @@ defmodule MockAgentTest do
 
     test "it has initial beliefs" do
       defmodule MockAgentWInitialB1 do
-        use ExAgent
+        use ExAgent.Mod
 
         initial_beliefs do
           cost(:car, System.compiled_endianness())
@@ -27,7 +27,7 @@ defmodule MockAgentTest do
 
     test "it parses initial beliefs" do
       defmodule MockAgentWInitialB2 do
-        use ExAgent
+        use ExAgent.Mod
 
         initial_beliefs do
           cost(:car, System.compiled_endianness())
@@ -47,7 +47,7 @@ defmodule MockAgentTest do
 
     test "it parses initial beliefs 2" do
       defmodule MockAgentWInitialB3 do
-        use ExAgent
+        use ExAgent.Mod
 
         initial_beliefs do
           cost(:car, System.compiled_endianness())
@@ -68,7 +68,7 @@ defmodule MockAgentTest do
 
   describe "Mock Agent With Beleifs" do
     defmodule MockAgentWB do
-      use ExAgent
+      use ExAgent.Mod
 
       initialize do
         +cost(:car, 10000)
@@ -100,7 +100,7 @@ defmodule MockAgentTest do
 
   describe "Mock Agent With Beleifs with vars" do
     defmodule MockAgentWVars do
-      use ExAgent
+      use ExAgent.Mod
 
       initialize do
         +cost(:car, X)
@@ -128,7 +128,7 @@ defmodule MockAgentTest do
 
   describe "Mock Agent With Beleifs and Goals" do
     defmodule MockAgentWBG do
-      use ExAgent
+      use ExAgent.Mod
 
       initialize do
         +cost(:car, 10000)
@@ -154,7 +154,7 @@ defmodule MockAgentTest do
 
   describe "Mock Agent With replace belief" do
     defmodule MockAgentWBG1 do
-      use ExAgent
+      use ExAgent.Mod
 
       initialize do
         +cost(:car, 10000)
@@ -175,7 +175,7 @@ defmodule MockAgentTest do
 
   describe "Mock Agent with message handler" do
     defmodule MockAgentWMH do
-      use ExAgent
+      use ExAgent.Mod
       initialize do end
       message(:inform, s, echo(X)) do end
       start
@@ -202,7 +202,7 @@ defmodule MockAgentTest do
 
   describe "Mock Agent with message handler and body" do
     defmodule MockAgentWMHAB do
-      use ExAgent
+      use ExAgent.Mod
       initialize do end
       message(:inform, s, echo(X)) do
         &print(X)
@@ -235,7 +235,7 @@ defmodule MockAgentTest do
 
   describe "Mock Agent with message handler and body and context" do
     defmodule MockAgentWMHABC do
-      use ExAgent
+      use ExAgent.Mod
       initialize do end
 
       message :inform, sender, echo(X) when should_print(X) && is_ok(1) do
@@ -270,7 +270,7 @@ defmodule MockAgentTest do
 
   describe "Mock Agent with message handler and body and context and function" do
     defmodule MockAgentWMHABCAF do
-      use ExAgent
+      use ExAgent.Mod
       initialize do end
 
       message :inform, s, echo(X) when should_print(X) && is_ok(1) && test 1 == 2 do
@@ -306,7 +306,7 @@ defmodule MockAgentTest do
 
   describe "Mock Agent with message handler with constants and body and context" do
     defmodule MockAgentWMHABCONST do
-      use ExAgent
+      use ExAgent.Mod
       initialize do end
 
       message :inform, sender, echo("hello") when should_print(X) && is_ok(1) do
@@ -341,7 +341,7 @@ defmodule MockAgentTest do
 
   describe "Mock Agent with multiple message handler" do
     defmodule MockAgentWMMH do
-      use ExAgent
+      use ExAgent.Mod
       initialize do end
       message(:inform, sender, echo(X)) do end
       message(:blabla, s, print(Y, Z)) do end
@@ -382,7 +382,7 @@ defmodule MockAgentTest do
 
   describe "Mock Agent with send internal action" do
     defmodule MockAgentWMMHWIC do
-      use ExAgent
+      use ExAgent.Mod
       initialize do end
 
       message(:inform, sender, echo(X)) do
@@ -416,7 +416,7 @@ defmodule MockAgentTest do
 
   describe "Mock Agent with recovery handler" do
     defmodule MockAgentWRH do
-      use ExAgent
+      use ExAgent.Mod
       initialize do end
       recovery (+!count) when counter(0) do end
       start

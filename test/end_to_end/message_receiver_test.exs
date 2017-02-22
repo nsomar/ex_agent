@@ -1,5 +1,5 @@
 defmodule MessageReceiverAgent do
-  use ExAgent
+  use ExAgent.Mod
 
   message(:inform, sender, echo(X)) do
     &print("Received #{inspect(X)}")

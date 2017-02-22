@@ -1,5 +1,5 @@
 defmodule InterleavingAgent do
-  use ExAgent
+  use ExAgent.Mod
   # use Protocols.only(:asdsa, :aaaa)
 
   initialize do

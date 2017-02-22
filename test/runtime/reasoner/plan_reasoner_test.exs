@@ -1,5 +1,5 @@
 defmodule PlanReasonerTestAgent do
-  use ExAgent
+  use ExAgent.Mod
 
   message :inform, sender, echo(MSG) do end
   rule (+!has(CAR)) do end

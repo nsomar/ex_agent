@@ -1,5 +1,5 @@
 defmodule PingTestAgent do
-  use ExAgent
+  use ExAgent.Mod
 
   message(:inform, Sender, ping) do
     &print("PING")
@@ -10,7 +10,7 @@ defmodule PingTestAgent do
 end
 
 defmodule PongTestAgent do
-  use ExAgent
+  use ExAgent.Mod
 
   initialize do
     &send(PingTestAgent.agent_name("ag1"), :inform, ping)

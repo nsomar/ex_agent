@@ -33,7 +33,7 @@ defmodule ReusablePart3 do
 end
 
 defmodule ReusableAgent do
-  use ExAgent
+  use ExAgent.Mod
   # use Protocols.only(:asdsa, :aaaa)
 
   responsibilities do

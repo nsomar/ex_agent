@@ -17,7 +17,7 @@ defmodule CounterReuse do
 end
 
 defmodule CounterReuseAgent do
-  use ExAgent
+  use ExAgent.Mod
 
   responsibilities do
     CounterReuse

@@ -3,7 +3,7 @@ defmodule EndToEndTest do
 
   test "It can define a full rule with event, context and body" do
     defmodule Test1 do
-      use ExAgent
+      use ExAgent.Mod
 
       initialize do
       end

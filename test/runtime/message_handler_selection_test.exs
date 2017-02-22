@@ -1,5 +1,5 @@
 defmodule RelPlanAgent2 do
-  use ExAgent
+  use ExAgent.Mod
 
   message :inform, s, echo("hello") do end
   message :inform, sender, echo(MSG) do end

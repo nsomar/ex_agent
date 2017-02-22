@@ -1,4 +1,4 @@
-use ExAgent.Mod
+use ExAgent
 
 defagent CounterAgentMac do
   initialize do

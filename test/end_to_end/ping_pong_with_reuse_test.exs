@@ -17,24 +17,28 @@ defmodule PongTestResponsibility do
     &send(Sender, :inform, ping)
   end
 
+  Gens
+
   start
 end
 
 defmodule PingTestRespAgent do
-  use ExAgent
+  use ExAgent.Mod
 
   responsibilities do
     PingTestResponsibility
   end
 
+  GenServer
+
   start
 end
 
 defmodule PongTestRespAgent do
-  use ExAgent
+  use ExAgent.Mod
 
   responsibilities do
-    PongTestResponsibility 
+    PongTestResponsibility
   end
 
   initialize do
