@@ -22,6 +22,12 @@ defmodule ExAgent.Mod do
       def plan_rules(ag), do: ExAgent.Mod.plan_rules(ag)
       def recovery_handlers(ag), do: ExAgent.Mod.recovery_handlers(ag)
       def message_handlers(ag), do: ExAgent.Mod.message_handlers(ag)
+
+      def run_loop(ag), do: ExAgent.Mod.run_loop(ag)
+      def send_message(agent_name, performative, name, params) do
+        agent_full_name = __MODULE__.agent_name(agent_name)
+        ExAgent.send_message(agent_full_name, performative, name, params)
+      end
     end
   end
 
@@ -138,8 +144,12 @@ defmodule ExAgent.Mod do
         Logger.info "Halting agent!!!"
         {:stop, 0, new_state}
 
+      :not_changed ->
+        Logger.info "Agent state has not changed"
+        {:noreply, new_state}
+
        state ->
-        Logger.info "Agent updated with state #{inspect(new_state)} for status #{inspect(state)}"
+        Logger.info "Agent updated with status #{inspect(state)}\nNew state\n#{inspect(new_state)}"
         {:noreply, new_state}
     end
   end

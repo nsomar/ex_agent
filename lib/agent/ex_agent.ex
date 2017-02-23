@@ -35,5 +35,10 @@ defmodule ExAgent do
       end
     end
   end
+
+  @spec send_message(String.t, atom, atom, [any]) :: any
+  def send_message(recepient, performative, name, params) do
+    ActualMessageSender.send_message(recepient, performative, name, params)
+  end
 end
 
