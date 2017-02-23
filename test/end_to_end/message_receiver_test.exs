@@ -21,7 +21,7 @@ defmodule MessageReceiverTest do
     name = MessageReceiverAgent.agent_name("agent1")
 
     ActualMessageSender.send_message(name, :inform, :echo, ["Hey"])
-    assert ExAgent.messages(ag) == [
+    assert ExAgent.Mod.messages(ag) == [
       %Message{name: :echo, params: ["Hey"], performative: :inform, from: self()}
     ]
   end
@@ -32,7 +32,7 @@ defmodule MessageReceiverTest do
 
     ActualMessageSender.send_message(name, :inform, :echo, ["Hey1"])
     ActualMessageSender.send_message(name, :inform, :echo, ["Hey2"])
-    assert ExAgent.messages(ag) == [
+    assert ExAgent.Mod.messages(ag) == [
       %Message{name: :echo, params: ["Hey2"], performative: :inform, from: self()},
       %Message{name: :echo, params: ["Hey1"], performative: :inform, from: self()}
     ]
@@ -43,22 +43,22 @@ defmodule MessageReceiverTest do
     name = MessageReceiverAgent.agent_name("agent2")
 
     GenServer.cast(ag, :run_loop)
-    assert ExAgent.messages(ag) == []
+    assert ExAgent.Mod.messages(ag) == []
 
     ActualMessageSender.send_message(name, :inform, :echo, ["Hello World"])
 
-    assert ExAgent.messages(ag) == [%Message{from: self(), name: :echo, params: ["Hello World"], performative: :inform}]
+    assert ExAgent.Mod.messages(ag) == [%Message{from: self(), name: :echo, params: ["Hello World"], performative: :inform}]
     GenServer.cast(ag, :run_loop)
-    assert ExAgent.messages(ag) == []
+    assert ExAgent.Mod.messages(ag) == []
 
     ActualMessageSender.send_message(name, :inform, :echo, ["HEYY"])
-    assert ExAgent.messages(ag) == [%Message{from: self(), name: :echo, params: ["HEYY"], performative: :inform}]
+    assert ExAgent.Mod.messages(ag) == [%Message{from: self(), name: :echo, params: ["HEYY"], performative: :inform}]
     GenServer.cast(ag, :run_loop)
 
     spawn(fn ->
       ActualMessageSender.send_message(name, :inform, :echo, ["Message from another process"])
     end)
-    ExAgent.run_loop(ag)
+    ExAgent.Mod.run_loop(ag)
 
     Process.sleep(1000)
     ActualMessageSender.send_message(name, :inform, :echo, ["Last Message"])

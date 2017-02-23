@@ -27,7 +27,7 @@ defmodule AgentWithRecoveryTest do
       goal = %AddBelief{name: :bel1, params: []}
       event = Event.from_instruction(goal, [])
 
-      state = ExAgent.agent_state(ag)
+      state = ExAgent.Mod.agent_state(ag)
       state = %{state | events: [event]}
 
       {update, state} = Reasoner.reason(state)
@@ -42,7 +42,7 @@ defmodule AgentWithRecoveryTest do
       goal = %AddBelief{name: :bel2, params: [10]}
       event = Event.from_instruction(goal, [])
 
-      state = ExAgent.agent_state(ag)
+      state = ExAgent.Mod.agent_state(ag)
       state = %{state | events: [event]}
 
       {update, state} = Reasoner.reason(state)
@@ -57,7 +57,7 @@ defmodule AgentWithRecoveryTest do
       goal = %AddBelief{name: :bel3, params: []}
       event = Event.from_instruction(goal, [])
 
-      state = ExAgent.agent_state(ag)
+      state = ExAgent.Mod.agent_state(ag)
       state = %{state | events: [event]}
 
       {update, state} = Reasoner.reason(state)
@@ -105,7 +105,7 @@ defmodule AgentWithRecoveryTest do
       goal = %AddBelief{name: :bel1, params: []}
       event = Event.from_instruction(goal, [])
 
-      state = ExAgent.agent_state(ag)
+      state = ExAgent.Mod.agent_state(ag)
       state = %{state | events: [event]}
 
       {update, state} = Reasoner.reason(state)
@@ -130,7 +130,7 @@ defmodule AgentWithRecoveryTest do
       goal = %AddBelief{name: :bel2, params: ["HELLO"]}
       event = Event.from_instruction(goal, [])
 
-      state = ExAgent.agent_state(ag)
+      state = ExAgent.Mod.agent_state(ag)
       state = %{state | events: [event]}
 
       {update, state} = Reasoner.reason(state)
@@ -159,7 +159,7 @@ defmodule AgentWithRecoveryTest do
       goal = %AddBelief{name: :bel3, params: []}
       event = Event.from_instruction(goal, [])
 
-      state = ExAgent.agent_state(ag)
+      state = ExAgent.Mod.agent_state(ag)
       state = %{state | events: [event]}
 
       {update, state} = Reasoner.reason(state)
@@ -202,7 +202,7 @@ defmodule AgentWithRecoveryTest do
       goal = %AddBelief{name: :bel1, params: []}
       event = Event.from_instruction(goal, [])
 
-      state = ExAgent.agent_state(ag)
+      state = ExAgent.Mod.agent_state(ag)
       state = %{state | events: [event]}
 
       {update, state} = Reasoner.reason(state)
@@ -218,14 +218,14 @@ defmodule AgentWithRecoveryTest do
       goal = %AddBelief{name: :bel1, params: []}
       event = Event.from_instruction(goal, [])
 
-      state = ExAgent.agent_state(ag)
+      state = ExAgent.Mod.agent_state(ag)
       state = %{state | events: [event]}
-      ExAgent.set_agent_state(ag, state)
+      ExAgent.Mod.set_agent_state(ag, state)
 
-      ExAgent.agent_state(ag)
+      ExAgent.Mod.agent_state(ag)
 
       # ExAgent.stop_agent(ag)
-      ExAgent.run_loop(ag)
+      ExAgent.Mod.run_loop(ag)
       Process.sleep(1000)
       assert Process.alive?(ag) == false
     end

@@ -40,7 +40,7 @@ defmodule MockAgentTest do
       end
 
       ag = MockAgentWInitialB2.create("ag")
-      beliefs = ag |> ExAgent.beliefs
+      beliefs = ag |> ExAgent.Mod.beliefs
       assert beliefs ==
       [cost: {:car, :little}, cost: {:iphone, 500}, color: {:car, :red}]
     end
@@ -59,8 +59,8 @@ defmodule MockAgentTest do
         start
       end
 
-      ag = ExAgent.create_agent(MockAgentWInitialB3, "ag")
-      beliefs = ag |> ExAgent.beliefs
+      ag = ExAgent.Mod.create_agent(MockAgentWInitialB3, "ag")
+      beliefs = ag |> ExAgent.Mod.beliefs
       assert beliefs ==
       [cost: {:car, :little}, cost: {:iphone, 500}, color: {:car, :red}]
     end
@@ -94,7 +94,7 @@ defmodule MockAgentTest do
 
     test "it has a belief base with the initial beliefs" do
       ag = MockAgentWB.create("ag1")
-      assert ExAgent.beliefs(ag) == []
+      assert ExAgent.Mod.beliefs(ag) == []
     end
   end
 
@@ -148,7 +148,7 @@ defmodule MockAgentTest do
 
     test "it has a belief base with the initial" do
       ag = MockAgentWBG.create("ag2")
-      assert ExAgent.beliefs(ag) == []
+      assert ExAgent.Mod.beliefs(ag) == []
     end
   end
 

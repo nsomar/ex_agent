@@ -38,9 +38,9 @@ defmodule AtomicInterleavingAgentTest do
 
   test "it parses the plans" do
     ag = AtomicInterleavingAgent.create("ag1")
-    ExAgent.run_loop(ag)
+    ExAgent.Mod.run_loop(ag)
     Process.sleep(300)
-    bels = ExAgent.beliefs(ag) |> Enum.reverse
+    bels = ExAgent.Mod.beliefs(ag) |> Enum.reverse
     assert (hd bels) == {:printed, {}}
   end
 end

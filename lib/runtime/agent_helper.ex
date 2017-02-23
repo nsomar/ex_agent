@@ -11,7 +11,7 @@ defmodule AgentHelper do
   end
 
   defp do_add_initial_beliefs(agent, beliefs) do
-    ExAgent.add_beliefs(agent, beliefs)
+    ExAgent.Mod.add_beliefs(agent, beliefs)
   end
 
   def prepare_initial_beliefs(beliefs) do
@@ -39,20 +39,20 @@ defmodule AgentHelper do
       initial
       |> Intention.create(:initialize)
 
-    ExAgent.add_intent(agent, intent)
+    ExAgent.Mod.add_intent(agent, intent)
     Logger.info "\nAdded initial beliefs/goals as intents"
   end
 
   def add_plan_rules(agent, plans) do
-    ExAgent.add_plan_rules(agent, plans)
+    ExAgent.Mod.add_plan_rules(agent, plans)
   end
 
   def add_recovery_handlers(agent, recovery_handlers) do
-    ExAgent.add_recovery_handlers(agent, recovery_handlers)
+    ExAgent.Mod.add_recovery_handlers(agent, recovery_handlers)
   end
 
   def add_message_handlers(agent, message_handlers) do
-    ExAgent.add_message_handlers(agent, message_handlers)
+    ExAgent.Mod.add_message_handlers(agent, message_handlers)
   end
 
   def add_responsibilities(agent, responsibilities) do

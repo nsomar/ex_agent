@@ -16,12 +16,12 @@ defmodule ExAgent.Mod do
 
       require Logger
 
-      def create(name, linked \\ true), do: ExAgent.create_agent(__MODULE__, name, linked)
-      def agent_name(name), do: ExAgent.agent_name(__MODULE__, name)
-      def belief_base(ag), do: ExAgent.belief_base(ag)
-      def plan_rules(ag), do: ExAgent.plan_rules(ag)
-      def recovery_handlers(ag), do: ExAgent.recovery_handlers(ag)
-      def message_handlers(ag), do: ExAgent.message_handlers(ag)
+      def create(name, linked \\ true), do: ExAgent.Mod.create_agent(__MODULE__, name, linked)
+      def agent_name(name), do: ExAgent.Mod.agent_name(__MODULE__, name)
+      def belief_base(ag), do: ExAgent.Mod.belief_base(ag)
+      def plan_rules(ag), do: ExAgent.Mod.plan_rules(ag)
+      def recovery_handlers(ag), do: ExAgent.Mod.recovery_handlers(ag)
+      def message_handlers(ag), do: ExAgent.Mod.message_handlers(ag)
     end
   end
 
@@ -122,12 +122,12 @@ defmodule ExAgent.Mod do
       :changed ->
         Logger.info "Agent State Changed"
         Logger.info "New State\n#{inspect(new_state)}"
-        ExAgent.run_loop(self())
+        ExAgent.Mod.run_loop(self())
         {:noreply, new_state}
 
       :recovery_added ->
         Logger.info "Agent State Recovered"
-        ExAgent.run_loop(self())
+        ExAgent.Mod.run_loop(self())
         {:noreply, new_state}
 
       :no_recovery ->
@@ -151,9 +151,124 @@ defmodule ExAgent.Mod do
       msg ->
         new_state = %{state | messages: [msg| messages]}
         Logger.info "New message received #{inspect(msg)}"
-        ExAgent.run_loop(self())
+        ExAgent.Mod.run_loop(self())
         {:noreply, new_state}
     end
+  end
+
+   ############################################################################
+  # Functions
+  ############################################################################
+  def create_agent(module, name, linked \\ true) do
+    agent = ExAgent.Mod.create(agent_name(module, name), linked)
+
+    AgentHelper.add_initial_beliefs(agent, module.initial_beliefs)
+    AgentHelper.add_plan_rules(agent, module.plan_rules)
+    AgentHelper.add_recovery_handlers(agent, module.recovery_handlers)
+    AgentHelper.add_message_handlers(agent, module.message_handlers)
+    AgentHelper.set_initial_as_intents(agent, module.initial)
+
+    AgentHelper.add_responsibilities(agent, module.responsibilities)
+
+    Logger.info fn -> "\nAgent #{name} creates\nRules:\n#{inspect(module.plan_rules)}" end
+
+    agent
+  end
+
+  def create(name, linked \\ true) when is_atom(name) do
+    state = %AgentState{
+      beliefs: [], plan_rules: [], intents: [], events: [],
+      name: name, module: __MODULE__, message_handlers: [],
+      messages: [], recovery_handlers: []
+    }
+
+    if linked do
+      GenServer.start_link(ExAgent.Mod, state, name: name) |> elem(1)
+    else
+      GenServer.start(ExAgent.Mod, state, name: name) |> elem(1)
+    end
+  end
+
+  def agent_name(module, name), do: :"#{module}.#{name}"
+
+  def run_loop(agent) do
+    GenServer.cast(agent, :run_loop)
+  end
+
+  def beliefs(agent) do
+    GenServer.call(agent, :beliefs)
+  end
+
+  def add_belief(agent, belief) do
+    GenServer.call(agent, {:add_belief, belief})
+  end
+
+  def remove_belief(agent, belief) do
+    GenServer.call(agent, {:remove_belief, belief})
+  end
+
+  def add_beliefs(agent, beliefs) do
+    GenServer.call(agent, {:add_beliefs, beliefs})
+  end
+
+  def plan_rules(agent) do
+    GenServer.call(agent, :plan_rules)
+  end
+
+  def add_plan_rules(agent, plan_rules) do
+    GenServer.call(agent, {:add_plan_rules, plan_rules})
+  end
+
+  def recovery_handlers(agent) do
+    GenServer.call(agent, :recovery_handlers)
+  end
+
+  def add_recovery_handlers(agent, recovery_handlers) do
+    GenServer.call(agent, {:add_recovery_handlers, recovery_handlers})
+  end
+
+  def message_handlers(agent) do
+    GenServer.call(agent, :message_handlers)
+  end
+
+  def add_message_handlers(agent, message_handlers) do
+    GenServer.call(agent, {:add_message_handlers, message_handlers})
+  end
+
+  def events(agent) do
+    GenServer.call(agent, :events)
+  end
+
+  def add_event(agent, event) do
+    GenServer.call(agent, {:add_event, event})
+  end
+
+  def set_events(agent, events) do
+    GenServer.call(agent, {:set_event, events})
+  end
+
+  def intents(agent) do
+    GenServer.call(agent, :intents)
+  end
+
+  def add_intent(agent, intent) do
+    GenServer.call(agent, {:add_intent, intent})
+  end
+
+  def set_intents(agent, intents) do
+    GenServer.call(agent, {:set_intents, intents})
+  end
+
+  def agent_state(agent) do
+    GenServer.call(agent, :agent_state)
+  end
+
+  def set_agent_state(agent, new_state) do
+    GenServer.call(agent, {:set_agent_state, new_state})
+  end
+
+  def messages(agent) do
+    GenServer.call(agent, :messages)
   end
 
 end

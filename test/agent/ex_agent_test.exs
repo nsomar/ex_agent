@@ -3,30 +3,30 @@ defmodule ExagentTest do
   doctest ExAgent
 
   test "can get the beleif base" do
-    agent = ExAgent.create(:"name1")
-    val = ExAgent.beliefs(agent)
+    agent = ExAgent.Mod.create(:"name1")
+    val = ExAgent.Mod.beliefs(agent)
     assert val != nil
   end
 
   test "can get the beleifs" do
-    agent = ExAgent.create(:"name2")
-    res = ExAgent.add_belief(agent, {:abcd})
+    agent = ExAgent.Mod.create(:"name2")
+    res = ExAgent.Mod.add_belief(agent, {:abcd})
 
     assert res == {:added, [{:abcd}]}
-    assert ExAgent.beliefs(agent) == [{:abcd}]
+    assert ExAgent.Mod.beliefs(agent) == [{:abcd}]
   end
 
   test "can get remove a belief" do
-    agent = ExAgent.create(:"name2")
+    agent = ExAgent.Mod.create(:"name2")
 
-    res = ExAgent.add_beliefs(agent, [{:abcd}])
+    res = ExAgent.Mod.add_beliefs(agent, [{:abcd}])
     assert res == %AgentState{beliefs: [{:abcd}], events: [], intents: [], messages: [],
-            module: ExAgent, name: :name2, plan_rules: [], message_handlers: [], recovery_handlers: []}
+            module: ExAgent.Mod, name: :name2, plan_rules: [], message_handlers: [], recovery_handlers: []}
 
-    res = ExAgent.remove_belief(agent, {:abcd})
+    res = ExAgent.Mod.remove_belief(agent, {:abcd})
     assert res == {:removed, []}
 
-    assert ExAgent.beliefs(agent) == []
+    assert ExAgent.Mod.beliefs(agent) == []
   end
 
 end

@@ -31,8 +31,8 @@ defmodule PingPongTestAgentTest do
     ping = PingTestAgent.create("ag1")
     pong = PongTestAgent.create("ag2")
 
-    ExAgent.run_loop(ping)
-    ExAgent.run_loop(pong)
+    ExAgent.Mod.run_loop(ping)
+    ExAgent.Mod.run_loop(pong)
 
     Process.sleep(200)
     Process.exit(ping, 0)

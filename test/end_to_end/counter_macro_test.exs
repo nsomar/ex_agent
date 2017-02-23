@@ -24,11 +24,10 @@ defmodule CounterAgentMacroTest do
 
   test "agent loop" do
     ag = CounterAgentMac.create("ag")
-    ExAgent.run_loop(ag)
+    ExAgent.Mod.run_loop(ag)
     # IO.inspect "Sss"
     Process.sleep(100)
-    assert ExAgent.agent_state(ag).events == []
-    assert ExAgent.agent_state(ag).intents == []
+    assert ExAgent.Mod.agent_state(ag).events == []
+    assert ExAgent.Mod.agent_state(ag).intents == []
   end
-
 end

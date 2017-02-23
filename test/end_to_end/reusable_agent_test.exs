@@ -63,22 +63,22 @@ defmodule ReusableAgentTest  do
 
   test "it has all the plan rules" do
     ag = ReusableAgent.create("ag")
-    assert ExAgent.plan_rules(ag) |> Enum.count == 2
+    assert ExAgent.Mod.plan_rules(ag) |> Enum.count == 2
   end
 
   test "it has all the initial beliefs" do
     ag = ReusableAgent.create("ag")
-    assert ExAgent.beliefs(ag) == [car: {:red}, car: {:green}, car: {:yellow}]
+    assert ExAgent.Mod.beliefs(ag) == [car: {:red}, car: {:green}, car: {:yellow}]
   end
 
   test "it has all the message handlers" do
     ag = ReusableAgent.create("ag")
-    assert ExAgent.message_handlers(ag) |> Enum.count == 2
+    assert ExAgent.Mod.message_handlers(ag) |> Enum.count == 2
   end
 
   test "it has all the recoveries" do
     ag = ReusableAgent.create("ag")
-    assert ExAgent.recovery_handlers(ag) |> Enum.count == 1
+    assert ExAgent.Mod.recovery_handlers(ag) |> Enum.count == 1
   end
 
 end

@@ -8,9 +8,9 @@ defmodule Reasoner do
   end
 
   def reason_cycle(agent) do
-    agent_state = ExAgent.agent_state(agent)
+    agent_state = ExAgent.Mod.agent_state(agent)
     {_, new_agent_state} = reason(agent_state)
-    ExAgent.set_agent_state(agent, new_agent_state)
+    ExAgent.Mod.set_agent_state(agent, new_agent_state)
   end
 
   def reason(%AgentState{
