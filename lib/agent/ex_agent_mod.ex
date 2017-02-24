@@ -154,6 +154,12 @@ defmodule ExAgent.Mod do
     end
   end
 
+  def handle_cast(:halt_agent, state) do
+    ExAgent.Registry.unregister_agent(self())
+    Logger.info "Halting agent!!!"
+    {:stop, 0, state}
+  end
+
   def handle_cast({:message, msg}, %{messages: messages}=state) do
     case Message.parse(msg) do
       :not_a_message ->
@@ -166,11 +172,16 @@ defmodule ExAgent.Mod do
     end
   end
 
+  def terminate(_, _) do
+    ExAgent.Registry.unregister_agent(self())
+    :ok
+  end
+
    ############################################################################
   # Functions
   ############################################################################
   def create_agent(module, name, linked \\ true) do
-    agent = ExAgent.Mod.create(agent_name(module, name), linked)
+    agent = create(module, name, linked)
 
     AgentHelper.add_initial_beliefs(agent, module.initial_beliefs)
     AgentHelper.add_plan_rules(agent, module.plan_rules)
@@ -185,17 +196,23 @@ defmodule ExAgent.Mod do
     agent
   end
 
-  def create(name, linked \\ true) when is_atom(name) do
+  defp create(module, name, linked \\ true) do
+    full_name = agent_name(module, name)
     state = %AgentState{
       beliefs: [], plan_rules: [], intents: [], events: [],
-      name: name, module: __MODULE__, message_handlers: [],
+      name: full_name, module: __MODULE__, message_handlers: [],
       messages: [], recovery_handlers: []
     }
 
+    ExAgent.Registry.init
     if linked do
-      GenServer.start_link(ExAgent.Mod, state, name: name) |> elem(1)
+      ag = GenServer.start_link(ExAgent.Mod, state, name: full_name) |> elem(1)
+      ExAgent.Registry.register_agent(module, name, ag)
+      ag
     else
-      GenServer.start(ExAgent.Mod, state, name: name) |> elem(1)
+      ag = GenServer.start(ExAgent.Mod, state, name: full_name) |> elem(1)
+      ExAgent.Registry.register_agent(module, name, ag)
+      ag
     end
   end
 

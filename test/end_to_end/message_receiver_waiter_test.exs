@@ -29,4 +29,12 @@ defmodule MessageReceiverWaiterTest do
     assert ExAgent.Mod.beliefs(ag) == [state: {10}]
   end
 
+  test "it can be started from agent creator" do
+    ag = start_agent(MessageReceiverWaitAgent, "agent")
+    Process.sleep(100)
+    send_message(MessageReceiverWaitAgent, "agent", :inform, :add, [10])
+    Process.sleep(100)
+    assert ExAgent.Mod.beliefs(ag) == [state: {10}]
+  end
+
 end
