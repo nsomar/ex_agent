@@ -19,7 +19,7 @@ end
 defmodule CounterReuseAgent do
   use ExAgent.Mod
 
-  responsibilities do
+  roles do
     CounterReuse
   end
 

@@ -22,7 +22,7 @@ defmodule ExAgent do
     end
   end
 
-  defmacro defresp({_, _, [name]}, [do: body]) do
+  defmacro defrole({_, _, [name]}, [do: body]) do
     quote do
 
       defmodule :"Elixir.#{Atom.to_string(unquote(name))}" do

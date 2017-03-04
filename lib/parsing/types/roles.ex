@@ -1,11 +1,11 @@
-defmodule Responsibility do
-  defstruct [:responsibilities]
-  @type t :: %Responsibility{responsibilities: any}
+defmodule Role do
+  defstruct [:roles]
+  @type t :: %Role{roles: any}
 
-  def parse([do: responsibilities]) do
-    responsibilities = do_parse(responsibilities)
+  def parse([do: roles]) do
+    roles = do_parse(roles)
     |> Enum.uniq
-    %Responsibility{responsibilities: responsibilities}
+    %Role{roles: roles}
   end
 
   def initial_beliefs(responsibility) do
@@ -25,8 +25,8 @@ defmodule Responsibility do
   end
 
   defp get_type([], _), do: []
-  defp get_type(%{responsibilities: responsibilities}, type) do
-    responsibilities
+  defp get_type(%{roles: roles}, type) do
+    roles
     |> Enum.map(fn item ->
       module_name(item) |> apply(type, [])
     end)

@@ -12,7 +12,7 @@ defmodule ExAgent.Core do
       require Logger
 
       @initial []
-      @responsibilities []
+      @roles []
       @initial_beliefs []
       @started false
 
@@ -105,9 +105,9 @@ defmodule ExAgent.Core do
     end
   end
 
-  defmacro responsibilities(r) do
+  defmacro roles(r) do
     quote bind_quoted: [r: r |> Macro.escape] do
-      @responsibilities r |> Responsibility.parse
+      @roles r |> Role.parse
     end
   end
 
@@ -119,7 +119,7 @@ defmodule ExAgent.Core do
       def plan_rules, do: @rule_handlers |> Enum.reverse
       def recovery_handlers, do: @recovery_handlers |> Enum.reverse
       def message_handlers, do: @message_handlers |> Enum.reverse
-      def responsibilities, do: @responsibilities
+      def roles, do: @roles
     end
   end
 end

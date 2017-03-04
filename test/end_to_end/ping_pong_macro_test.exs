@@ -1,13 +1,13 @@
 use ExAgent
 
-defresp PingTestMacroResponsibility do
+defrole PingTestMacroRole do
   message(:inform, Sender, ping) do
     &print("PING")
     &send(Sender, :inform, pong)
   end
 end
 
-defresp PongTestMacroResponsibility do
+defrole PongTestMacroRole do
   message(:inform, Sender, pong) do
     &print("PONG")
     &send(Sender, :inform, ping)
@@ -15,14 +15,14 @@ defresp PongTestMacroResponsibility do
 end
 
 defagent PingTestRespMacroAgent do
-  responsibilities do
-    PingTestMacroResponsibility
+  roles do
+    PingTestMacroRole
   end
 end
 
 defagent PongTestRespMacroAgent do
-  responsibilities do
-    PongTestMacroResponsibility
+  roles do
+    PongTestMacroRole
   end
 
   initialize do

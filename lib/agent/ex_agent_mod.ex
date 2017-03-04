@@ -189,7 +189,7 @@ defmodule ExAgent.Mod do
     AgentHelper.add_message_handlers(agent, module.message_handlers)
     AgentHelper.set_initial_as_intents(agent, module.initial)
 
-    AgentHelper.add_responsibilities(agent, module.responsibilities)
+    AgentHelper.add_roles(agent, module.roles)
 
     Logger.info fn -> "\nAgent #{name} creates\nRules:\n#{inspect(module.plan_rules)}" end
 

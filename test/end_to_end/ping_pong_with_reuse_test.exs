@@ -1,4 +1,4 @@
-defmodule PingTestResponsibility do
+defmodule PingTestRole do
   use ExAgent.Core
 
   message(:inform, Sender, ping) do
@@ -9,7 +9,7 @@ defmodule PingTestResponsibility do
   start
 end
 
-defmodule PongTestResponsibility do
+defmodule PongTestRole do
   use ExAgent.Core
 
   message(:inform, Sender, pong) do
@@ -25,8 +25,8 @@ end
 defmodule PingTestRespAgent do
   use ExAgent.Mod
 
-  responsibilities do
-    PingTestResponsibility
+  roles do
+    PingTestRole
   end
 
   GenServer
@@ -37,8 +37,8 @@ end
 defmodule PongTestRespAgent do
   use ExAgent.Mod
 
-  responsibilities do
-    PongTestResponsibility
+  roles do
+    PongTestRole
   end
 
   initialize do

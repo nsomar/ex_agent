@@ -36,7 +36,7 @@ defmodule ReusableAgent do
   use ExAgent.Mod
   # use Protocols.only(:asdsa, :aaaa)
 
-  responsibilities do
+  roles do
     ReusablePart1
     ReusablePart2
     ReusablePart3
@@ -57,8 +57,8 @@ defmodule ReusableAgentTest  do
   use ExUnit.Case
 
   test "it parses reusabilities" do
-    assert ReusableAgent.responsibilities ==
-    %Responsibility{responsibilities: [:ReusablePart1, :ReusablePart2, :ReusablePart3]}
+    assert ReusableAgent.roles ==
+    %Role{roles: [:ReusablePart1, :ReusablePart2, :ReusablePart3]}
   end
 
   test "it has all the plan rules" do

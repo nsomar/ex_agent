@@ -84,6 +84,21 @@ initial_beliefs -> beleifs rules
 - Gaia ✔︎
 - Set a new binding ✔︎
 - Add defagent and defresp ✔︎
+- Add `foreach`
+
+```
+
+foreach do
+  query(participant(X))
+  !send_elect(X)
+end
+[a1, a2, a3]
+!send_elect(1)
+!send_elect(2)
+!send_elect("car")
+!send_elect("red")
+for_each(participant(Part), !send_elect(Y))
+```
 
 ## Examples to build
 - Counter ✔︎
@@ -92,7 +107,8 @@ initial_beliefs -> beleifs rules
 - Ping Pong with responsibilities ✔︎
 - Interleaving agent ✔︎
 - Atomic Interleaving ✔︎
-- One shot auction
+- Token ring agent that sends to each other
+- Bully election algorithm
  
 
 ## Questions
@@ -101,3 +117,99 @@ initial_beliefs -> beleifs rules
 
 - Reusability. Put the reuse before or after the agent initial beliefs
 - What do we mean by Gaia?
+
+- Modularity
+- defrole, roles
+
+- foreach
+
+## BNF
+
+`<Constant>` is an identifier starting with a uppercase letter. Such as; `CounterAgent`
+`<Var>` is an identifier starting with a uppercase letter. Such as; `X`, `Y`, `Car`
+`<Name>` is snake cased identifier that starts with a lower case letter. Such as `print`
+`<ElixirEx>` is any valid elixir expression, function, argument, etc...
+`<String>` is any valid elixir string and `<Atom>` is an elixir atom.
+
+```
+agent -> "defagent" agent_name "do"
+            [responsibilities]
+            [initial_beliefs] 
+            [initial_actions] 
+            (plans)
+         "end"
+
+agent_name -> <Constant>
+
+roles -> "roles" "do"
+            (role_name "\n")*
+          "end"
+role_name -> <Constant>
+
+initial_beliefs -> "initial_beliefs" "do"
+                      (initial_belief)*
+                    "end"
+
+initial_actions -> "initialize" "do"
+                      plan_body
+                    "end"
+
+plans -> ( plan )*
+plan -> rule
+        | atomic_rule
+        | message
+        | atomic_message
+        | recovery
+
+rule -> "rule" plan_trigger [ plan_context ] "do"
+          plan_body
+        "end"
+atomic_rule -> "atomic_rule" plan_trigger [ plan_context ] "do"
+                  plan_body
+               "end"
+message -> "message" plan_trigger [ plan_context ] "do"
+              plan_body
+           "end"
+atomic_message -> "atomic_message" plan_trigger [ plan_context ] "do"
+                    plan_body
+                  "end"
+recovery -> "recovery" plan_trigger [ plan_context ] "do"
+              plan_body
+            "end"
+
+plan_trigger -> "(" goal | belief ")"
+
+plan_context -> "when" [ "~" ] literal (  "&&" [ "~" ] literal )* [ "&&" test_func]
+
+test_func -> "test" <ElixirEx>
+
+plan_body -> ( plan_body_item "\n" )*
+plan_body_item -> goal 
+                  | belief 
+                  | query
+                  | internal_action
+
+goal -> "!" literal
+belief -> ("+" | "-" | "-+") literal
+query -> "query" "(" literal ")"
+internal_action -> "&" literal
+
+initial_belief -> literal
+literal -> <Name> [ "(" list _of_terms ")" ]
+
+list _of_terms -> term ( "," term )*
+term -> list
+        | arithmatic_expression 
+        | <Var> 
+        | <String> 
+        | <Atom> 
+        | <ElixirEx>
+list -> "[" [ term ("," term)* ]  "]"
+
+arithmatic_expression -> arithmatic_term [ ( "+" | "-" ) arithmatic_expr ]
+arithmatic_term -> arithmatic_simple [ ( "*" | "/" | "div" | "mod" ) arithmatic_term ]
+arithmatic_simple -> <NUMBER> 
+                    | <Var> 
+                    | "-" arithmatic_simple 
+                    | "(" arithmatic_expression ")"
+```

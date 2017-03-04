@@ -49,6 +49,9 @@ defmodule Intention do
 
   def next_instruction(%Intention{executions: [current | rest]}=intent) do
     {instruction, binding, event, execution} = IntentionExecution.next_instruction(current)
+    # is it for_each
+    # update the execution to add the new goals
+    # return the first of them
 
     new_executions = build_new_executions(execution, rest)
     new_intent = build_new_intent(intent, new_executions)

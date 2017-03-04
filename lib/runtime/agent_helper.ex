@@ -55,11 +55,11 @@ defmodule AgentHelper do
     ExAgent.Mod.add_message_handlers(agent, message_handlers)
   end
 
-  def add_responsibilities(agent, responsibilities) do
-    add_initial_beliefs(agent, Responsibility.initial_beliefs(responsibilities))
-    add_plan_rules(agent, Responsibility.plan_rules(responsibilities))
-    add_message_handlers(agent, Responsibility.message_handlers(responsibilities))
-    add_recovery_handlers(agent, Responsibility.recovery_handlers(responsibilities))
+  def add_roles(agent, roles) do
+    add_initial_beliefs(agent, Role.initial_beliefs(roles))
+    add_plan_rules(agent, Role.plan_rules(roles))
+    add_message_handlers(agent, Role.message_handlers(roles))
+    add_recovery_handlers(agent, Role.recovery_handlers(roles))
   end
 
 end
