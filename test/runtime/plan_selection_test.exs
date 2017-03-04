@@ -13,13 +13,13 @@ defmodule RelPlanAgent1 do
   rule (+!buy(Car, Color)) when has(Car) && likes(Color) do end
   rule (+!buy(Car, Color)) when has(Car) && likes(Color, Alot) do end
 
-  rule (+!buy2(Car, Color)) when !has(Car) && cost(Car, Money) && money(Money) do end
-  rule (+!buy3(Car, Color)) when !has(Car) && cost(Car, Money) && money(Pocket) && test Pocket > Money do end
-  rule (+!buy4(:bmw, Color)) when !has(:bmw) && cost(:bmw, Money) && money(Pocket) && test Pocket > Money do end
+  rule (+!buy2(Car, Color)) when not has(Car) && cost(Car, Money) && money(Money) do end
+  rule (+!buy3(Car, Color)) when not has(Car) && cost(Car, Money) && money(Pocket) && test Pocket > Money do end
+  rule (+!buy4(:bmw, Color)) when not has(:bmw) && cost(:bmw, Money) && money(Pocket) && test Pocket > Money do end
 
-  rule (+!buy5(Car, Color)) when cost(Car, Money) && money(Pocket)  && !has(Car) && test Pocket > Money * 2 do end
+  rule (+!buy5(Car, Color)) when cost(Car, Money) && money(Pocket)  && not has(Car) && test Pocket > Money * 2 do end
 
-  rule (+!buy6(Car)) when wishlist(Wish) && !has(Car) && test String.upcase(Car) == String.upcase(Wish) do end
+  rule (+!buy6(Car)) when wishlist(Wish) && not has(Car) && test String.upcase(Car) == String.upcase(Wish) do end
 
   start
 end

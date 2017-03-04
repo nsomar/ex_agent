@@ -25,7 +25,7 @@ defmodule InterleavingAgent do
     !check()
   end
 
-  rule (+!check) when done1 && done2 && !printed do
+  rule (+!check) when done1 && done2 && not printed do
     &print("Done All")
     +printed
   end

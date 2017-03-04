@@ -4,7 +4,7 @@ defmodule CommonRuleParsers do
     Enum.map(tests, &parse_event_test/1)
   end
 
-  def parse_event_test({:!, _, [{statement, _, params}]}) do
+  def parse_event_test({:not, _, [{statement, _, params}]}) do
     {parse_event_test(statement, params), false}
   end
 

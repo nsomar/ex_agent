@@ -103,8 +103,8 @@ for_each(participant(Part), !send_elect(Y))
 ## Examples to build
 - Counter ✔︎
 - Ping Pong ✔︎
-- Counter with responsibilities ✔︎
-- Ping Pong with responsibilities ✔︎
+- Counter with roles ✔︎
+- Ping Pong with roles ✔︎
 - Interleaving agent ✔︎
 - Atomic Interleaving ✔︎
 - Token ring agent that sends to each other
@@ -133,7 +133,7 @@ for_each(participant(Part), !send_elect(Y))
 
 ```
 agent -> "defagent" agent_name "do"
-            [responsibilities]
+            [roles]
             [initial_beliefs] 
             [initial_actions] 
             (plans)
@@ -167,7 +167,7 @@ rule -> "rule" plan_trigger [ plan_context ] "do"
 atomic_rule -> "atomic_rule" plan_trigger [ plan_context ] "do"
                   plan_body
                "end"
-message -> "message" plan_trigger [ plan_context ] "do"
+message -> "message" message_trigger [ plan_context ] "do"
               plan_body
            "end"
 atomic_message -> "atomic_message" plan_trigger [ plan_context ] "do"
@@ -179,7 +179,12 @@ recovery -> "recovery" plan_trigger [ plan_context ] "do"
 
 plan_trigger -> "(" goal | belief ")"
 
-plan_context -> "when" [ "~" ] literal (  "&&" [ "~" ] literal )* [ "&&" test_func]
+message_trigger -> performative "," sender_name ","" message_content
+performative -> <Atom>
+sender_name -> <Name>
+message_content -> literal
+
+plan_context -> "when" [ "not" ] literal (  "&&" [ "not" ] literal )* [ "&&" test_func]
 
 test_func -> "test" <ElixirEx>
 

@@ -6,20 +6,20 @@ defmodule RelPlanAgent2 do
 
   message :inform, sender, print_this(A, B) do end
 
-  message :inform, sender1, !buy(Car, Color) when wants(Car) do end
-  message :inform, sender2, !buy(Car, Color) when has(Car) && likes(Color) do end
-  message :inform, sender3, !buy(Car, Color) when has(Car) && likes(Color, Alot) do end
+  message :inform, sender1, buy(Car, Color) when wants(Car) do end
+  message :inform, sender2, buy(Car, Color) when has(Car) && likes(Color) do end
+  message :inform, sender3, buy(Car, Color) when has(Car) && likes(Color, Alot) do end
 
   message :inform, s, sell(Car) when has(Car) && cost(Car, Price) && test Price > 1000 do end
   message :inform, s, sell(Car) when has(Car) && color(Car, Value) && test Value == :red do end
 
-  message :request, s, buy2(Car, Color) when !has(Car) && cost(Car, Money) && money(Money) do end
+  message :request, s, buy2(Car, Color) when not has(Car) && cost(Car, Money) && money(Money) do end
 
-  message :request, s, buy3(Car, Color) when !has(Car) && cost(Car, Money) && money(Pocket) && test Pocket > Money do end
+  message :request, s, buy3(Car, Color) when not has(Car) && cost(Car, Money) && money(Pocket) && test Pocket > Money do end
 
-  message :request, s, buy4(:bmw, Color) when !has(:bmw) && cost(:bmw, Money) && money(Pocket) && test Pocket > Money do end
-  message :request, s, buy5(Car, Color) when cost(Car, Money) && money(Pocket)  && !has(Car) && test Pocket > Money * 2 do end
-  message :request, s, buy6(Car) when wishlist(Wish) && !has(Car) && test String.upcase(Car) == String.upcase(Wish) do end
+  message :request, s, buy4(:bmw, Color) when not has(:bmw) && cost(:bmw, Money) && money(Pocket) && test Pocket > Money do end
+  message :request, s, buy5(Car, Color) when cost(Car, Money) && money(Pocket)  && not has(Car) && test Pocket > Money * 2 do end
+  message :request, s, buy6(Car) when wishlist(Wish) && not has(Car) && test String.upcase(Car) == String.upcase(Wish) do end
 
   start
 end
