@@ -159,7 +159,7 @@ defmodule MessageHandlerSelectionTest do
     test "it gets applicable plans for rule with a function when the function passes" do
       beliefs = [
         {:has, {:bmw}},
-        {:cost, {:bmw, 10000}},
+        {:cost, {:bmw, 10_000}},
       ]
 
       all_handlers = RelPlanAgent2.message_handlers
@@ -168,7 +168,7 @@ defmodule MessageHandlerSelectionTest do
       relevant = MessageHandlerSelection.relavent_handlers(all_handlers, event)
       applicable = MessageHandlerSelection.applicable_handlers(relevant, beliefs)
       assert length(applicable) == 1
-      assert applicable |> hd |> elem(1) == [[Car: :bmw, s: self(), Price: 10000]]
+      assert applicable |> hd |> elem(1) == [[Car: :bmw, s: self(), Price: 10_000]]
     end
 
     test "it gets applicable plans for rule with a function when the function passes 2" do
@@ -229,7 +229,7 @@ defmodule MessageHandlerSelectionTest do
     test "it gets the car if has enough money" do
       # rule (+!buy3(Car, Color)) when !has(Car) && cost(Car, Money) && money(Pocket) && test Pocket > Money do end
       beliefs = [
-        {:money, {10000}},
+        {:money, {10_000}},
         {:cost, {:bmw, 1000}},
         {:has, {:opel}}
       ]
@@ -240,7 +240,7 @@ defmodule MessageHandlerSelectionTest do
       relevant = MessageHandlerSelection.relavent_handlers(all_handlers, event)
       applicable = MessageHandlerSelection.applicable_handlers(relevant, beliefs)
       assert length(applicable) == 1
-      assert applicable |> hd |> elem(1) == [[Car: :bmw, Color: :red, s: self(), Money: 1000, Pocket: 10000]]
+      assert applicable |> hd |> elem(1) == [[Car: :bmw, Color: :red, s: self(), Money: 1000, Pocket: 10_000]]
     end
 
     test "it does not get car if does not have enough money" do
@@ -266,7 +266,7 @@ defmodule MessageHandlerSelectionTest do
     test "it gets the car if has enough money" do
       # rule (+!buy4(:bmw, Color)) when !has(Car) && cost(Car, Money) && money(Pocket) && test Pocket > Money do end
       beliefs = [
-        {:money, {10000}},
+        {:money, {10_000}},
         {:cost, {:bmw, 1000}},
         {:has, {:opel}}
       ]
@@ -277,7 +277,7 @@ defmodule MessageHandlerSelectionTest do
       relevant = MessageHandlerSelection.relavent_handlers(all_handlers, event)
       applicable = MessageHandlerSelection.applicable_handlers(relevant, beliefs)
       assert length(applicable) == 1
-      assert applicable |> hd |> elem(1) == [[Color: :red, s: self(), Money: 1000, Pocket: 10000]]
+      assert applicable |> hd |> elem(1) == [[Color: :red, s: self(), Money: 1000, Pocket: 10_000]]
     end
 
   end

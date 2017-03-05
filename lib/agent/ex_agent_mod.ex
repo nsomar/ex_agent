@@ -117,7 +117,7 @@ defmodule ExAgent.Mod do
     {:reply, new_state, new_state}
   end
 
-  def handle_call(:messages, _from, %{messages: messages}=state) do
+  def handle_call(:messages, _from, %{messages: messages} = state) do
     {:reply, messages, state}
   end
 
@@ -160,7 +160,7 @@ defmodule ExAgent.Mod do
     {:stop, 0, state}
   end
 
-  def handle_cast({:message, msg}, %{messages: messages}=state) do
+  def handle_cast({:message, msg}, %{messages: messages} = state) do
     case Message.parse(msg) do
       :not_a_message ->
         {:noreply, state}
@@ -206,11 +206,11 @@ defmodule ExAgent.Mod do
 
     ExAgent.Registry.init
     if linked do
-      ag = GenServer.start_link(ExAgent.Mod, state, name: full_name) |> elem(1)
+      ag = ExAgent.Mod |> GenServer.start_link(state, name: full_name) |> elem(1)
       ExAgent.Registry.register_agent(module, name, ag)
       ag
     else
-      ag = GenServer.start(ExAgent.Mod, state, name: full_name) |> elem(1)
+      ag = ExAgent.Mod |> GenServer.start(state, name: full_name) |> elem(1)
       ExAgent.Registry.register_agent(module, name, ag)
       ag
     end

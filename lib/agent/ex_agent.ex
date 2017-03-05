@@ -1,4 +1,8 @@
 defmodule ExAgent do
+  @moduledoc """
+  TODO: Fill it with data
+  """
+
   require Logger
 
   defmacro __using__(_) do
@@ -52,6 +56,7 @@ defmodule ExAgent do
     ExAgent.Creator.start_agent(module, name, linked)
   end
 
+  @spec stop_agent(atom, String.t) :: any
   def stop_agent(module, name) do
     case ExAgent.Registry.find(module, name) do
       :not_found -> true

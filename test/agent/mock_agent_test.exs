@@ -71,7 +71,7 @@ defmodule MockAgentTest do
       use ExAgent.Mod
 
       initialize do
-        +cost(:car, 10000)
+        +cost(:car, 10_000)
         +cost(:iphone, 500)
         +color(:car, :red)
         +color(:iphone, :black)
@@ -84,7 +84,7 @@ defmodule MockAgentTest do
     test "it captures beleifs in initialize" do
       assert MockAgentWB.initial ==
         [
-          %AddBelief{name: :cost, params: [:car, 10000]},
+          %AddBelief{name: :cost, params: [:car, 10_000]},
           %AddBelief{name: :cost, params: [:iphone, 500]},
           %AddBelief{name: :color, params: [:car, :red]},
           %AddBelief{name: :color, params: [:iphone, :black]},
@@ -131,7 +131,7 @@ defmodule MockAgentTest do
       use ExAgent.Mod
 
       initialize do
-        +cost(:car, 10000)
+        +cost(:car, 10_000)
         +money(111)
         !buy_stuff
       end
@@ -141,7 +141,7 @@ defmodule MockAgentTest do
 
     test "it captures beleifs in initial" do
       assert MockAgentWBG.initial ==
-        [%AddBelief{name: :cost, params: [:car, 10000]},
+        [%AddBelief{name: :cost, params: [:car, 10_000]},
          %AddBelief{name: :money, params: 'o'},
          %AchieveGoal{name: :buy_stuff, params: []}]
     end
@@ -157,8 +157,8 @@ defmodule MockAgentTest do
       use ExAgent.Mod
 
       initialize do
-        +cost(:car, 10000)
-        -+cost(:car, 10000)
+        +cost(:car, 10_000)
+        -+cost(:car, 10_000)
       end
 
       start()
@@ -167,8 +167,8 @@ defmodule MockAgentTest do
     test "it captures beleifs in initial" do
       assert MockAgentWBG1.initial ==
         [
-          %AddBelief{name: :cost, params: [:car, 10000]},
-          %ReplaceBelief{name: :cost, params: [:car, 10000]}
+          %AddBelief{name: :cost, params: [:car, 10_000]},
+          %ReplaceBelief{name: :cost, params: [:car, 10_000]}
         ]
     end
   end

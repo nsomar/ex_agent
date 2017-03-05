@@ -7,35 +7,41 @@ defmodule ExAgent.Registry do
   end
 
   def handle_call({:register, module, name, pid}, _from, state) do
-    res = :ets.insert(ExAgent.Registry, {"full", module, name, pid})
+    res = ExAgent.Registry
+    |> :ets.insert({"full", module, name, pid})
     {:reply, res, state}
   end
 
   def handle_call({:un_register, module, name}, _from, state) do
-    res = :ets.match_object(ExAgent.Registry, {"full", module, name, :"_"})
+    res = ExAgent.Registry 
+    |> :ets.match_object({"full", module, name, :"_"})
     |> Enum.map(fn obj -> :ets.delete_object(ExAgent.Registry, obj) end)
     {:reply, res, state}
   end
 
   def handle_call({:un_register, pid}, _from, state) do
-    res = :ets.match_object(ExAgent.Registry, {"full", :"_", :"_", pid})
+    res = ExAgent.Registry
+    |> :ets.match_object({"full", :"_", :"_", pid})
     |> Enum.map(fn obj -> :ets.delete_object(ExAgent.Registry, obj) end)
     {:reply, res, state}
   end
 
   def handle_call({:find, module, name}, _from, state) do
-    res = :ets.match(ExAgent.Registry, {"full", module, name, :"$1"}) |> prepare_return
+    res = ExAgent.Registry
+    |> :ets.match({"full", module, name, :"$1"}) |> prepare_return
     {:reply, res, state}
   end
 
   def handle_call({:find_by_name, name}, _from, state) do
-    res = :ets.match(ExAgent.Registry, {"full", :"$1", name, :"$3"})
+    res = ExAgent.Registry
+    |> :ets.match({"full", :"$1", name, :"$3"})
     |> Enum.map(fn [module, pid] -> {module, name, pid} end)
     {:reply, res, state}
   end
 
   def handle_call({:find_by_module, module}, _from, state) do
-    res = :ets.match(ExAgent.Registry, {"full", module, :"$1", :"$2"})
+    res = ExAgent.Registry
+    |> :ets.match({"full", module, :"$1", :"$2"})
     |> Enum.map(fn [name, pid] -> {module, name, pid} end)
     {:reply, res, state}
   end
