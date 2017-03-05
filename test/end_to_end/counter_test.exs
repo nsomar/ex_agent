@@ -19,7 +19,7 @@ defmodule CounterAgent do
     !count
   end
 
-  start
+  start()
 end
 
 defmodule CounterAgentTest do

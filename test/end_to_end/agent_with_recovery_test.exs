@@ -18,7 +18,7 @@ defmodule AgentWithRecoveryTest do
         query(price)
       end
 
-      start
+      start()
     end
 
     test "it errors with constant query" do
@@ -96,7 +96,7 @@ defmodule AgentWithRecoveryTest do
         +recovered
       end
 
-      start
+      start()
     end
 
     test "it errors with constant query" do
@@ -193,7 +193,7 @@ defmodule AgentWithRecoveryTest do
         &exit
       end
 
-      start
+      start()
     end
 
     test "it does not recover a failed recovery" do

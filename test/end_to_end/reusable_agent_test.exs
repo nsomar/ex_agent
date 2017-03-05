@@ -7,7 +7,7 @@ defmodule ReusablePart1 do
     car(:green)
   end
 
-  start
+  start()
 end
 
 defmodule ReusablePart2 do
@@ -19,7 +19,7 @@ defmodule ReusablePart2 do
     car(:yellow)
   end
 
-  start
+  start()
 end
 
 defmodule ReusablePart3 do
@@ -29,7 +29,7 @@ defmodule ReusablePart3 do
 
   recovery (+bel1) do end
 
-  start
+  start()
 end
 
 defmodule ReusableAgent do
@@ -50,7 +50,7 @@ defmodule ReusableAgent do
 
   rule (+!count1) when counter(0) do end
 
-  start
+  start()
 end
 
 defmodule ReusableAgentTest  do

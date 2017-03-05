@@ -10,7 +10,7 @@ defmodule MessageReceiverAgent do
     &print("Received #{inspect(X)}")
   end
 
-  start
+  start()
 end
 
 defmodule MessageReceiverTest do

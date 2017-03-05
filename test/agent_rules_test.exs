@@ -18,7 +18,7 @@ defmodule EndToEndTest do
         &print("I am really happy man!!!")
       end
 
-      start
+      start()
     end
 
     events = Test1.plan_rules |> Enum.map(fn item -> item.head.trigger.event_type end)

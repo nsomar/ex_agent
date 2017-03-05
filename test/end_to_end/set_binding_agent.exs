@@ -19,7 +19,7 @@ defmodule SetBindingAgent do
     +result(X)
   end
 
-  start
+  start()
 end
 
 defmodule SetBindingAgentTest do

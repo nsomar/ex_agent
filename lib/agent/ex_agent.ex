@@ -17,7 +17,7 @@ defmodule ExAgent do
 
         unquote(body)
 
-        start
+        start()
       end
     end
   end
@@ -31,7 +31,7 @@ defmodule ExAgent do
 
         unquote(body)
 
-        start
+        start()
       end
     end
   end
@@ -47,7 +47,7 @@ defmodule ExAgent do
     ActualMessageSender.send_message(recepient, performative, name, params)
   end
 
-  @spec start_agent(atom, string, bool) :: any
+  @spec start_agent(atom, String.t, boolean) :: any
   def start_agent(module, name, linked \\ true) do
     ExAgent.Creator.start_agent(module, name, linked)
   end

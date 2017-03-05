@@ -30,7 +30,7 @@ defmodule AtomicInterleavingAgent do
     +printed
   end
 
-  start
+  start()
 end
 
 defmodule AtomicInterleavingAgentTest do

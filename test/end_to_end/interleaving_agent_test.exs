@@ -30,7 +30,7 @@ defmodule InterleavingAgent do
     +printed
   end
 
-  start
+  start()
 end
 
 defmodule InterleavingAgentTest do

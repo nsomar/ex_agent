@@ -14,7 +14,7 @@ defmodule MockAgentTest do
         end
 
         initialize do end
-        start
+        start()
       end
 
       assert MockAgentWInitialB1.initial_beliefs ==
@@ -36,7 +36,7 @@ defmodule MockAgentTest do
         end
 
         initialize do end
-        start
+        start()
       end
 
       ag = MockAgentWInitialB2.create("ag")
@@ -56,7 +56,7 @@ defmodule MockAgentTest do
         end
 
         initialize do end
-        start
+        start()
       end
 
       ag = ExAgent.Mod.create_agent(MockAgentWInitialB3, "ag")
@@ -78,7 +78,7 @@ defmodule MockAgentTest do
         +is(:man, :omar)
       end
 
-      start
+      start()
     end
 
     test "it captures beleifs in initialize" do
@@ -107,7 +107,7 @@ defmodule MockAgentTest do
         +cost(Y, Z)
       end
 
-      start
+      start()
     end
 
     test "it captures beleifs in initialize" do
@@ -136,7 +136,7 @@ defmodule MockAgentTest do
         !buy_stuff
       end
 
-      start
+      start()
     end
 
     test "it captures beleifs in initial" do
@@ -161,7 +161,7 @@ defmodule MockAgentTest do
         -+cost(:car, 10000)
       end
 
-      start
+      start()
     end
 
     test "it captures beleifs in initial" do
@@ -178,7 +178,7 @@ defmodule MockAgentTest do
       use ExAgent.Mod
       initialize do end
       message(:inform, s, echo(X)) do end
-      start
+      start()
     end
 
     test "it captures beleifs in initial" do
@@ -208,7 +208,7 @@ defmodule MockAgentTest do
         &print(X)
         +received(1)
       end
-      start
+      start()
     end
 
     test "it captures beleifs in initial" do
@@ -241,7 +241,7 @@ defmodule MockAgentTest do
       message :inform, sender, echo(X) when should_print(X) && is_ok(1) do
         +received(1)
       end
-      start
+      start()
     end
 
     test "it captures beleifs in initial" do
@@ -276,7 +276,7 @@ defmodule MockAgentTest do
       message :inform, s, echo(X) when should_print(X) && is_ok(1) && test 1 == 2 do
         +received(1)
       end
-      start
+      start()
     end
 
     test "it captures beleifs in initial" do
@@ -312,7 +312,7 @@ defmodule MockAgentTest do
       message :inform, sender, echo("hello") when should_print(X) && is_ok(1) do
         +received(1)
       end
-      start
+      start()
     end
 
     test "it captures beleifs in initial" do
@@ -346,7 +346,7 @@ defmodule MockAgentTest do
       message(:inform, sender, echo(X)) do end
       message(:blabla, s, print(Y, Z)) do end
 
-      start
+      start()
     end
 
     test "it captures beleifs in initial" do
@@ -389,7 +389,7 @@ defmodule MockAgentTest do
         &send("agent1", :inform, echo(X + Y))
       end
 
-      start
+      start()
     end
 
     test "it captures beleifs in initial" do
@@ -419,7 +419,7 @@ defmodule MockAgentTest do
       use ExAgent.Mod
       initialize do end
       recovery (+!count) when counter(0) do end
-      start
+      start()
     end
 
     test "it has recovery handlers" do

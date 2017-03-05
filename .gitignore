@@ -4,4 +4,6 @@
 erl_crash.dump
 *.ez
 
+.DS_STORE
+
 /node_modules

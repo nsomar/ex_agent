@@ -6,7 +6,7 @@ defmodule PingTestRole do
     &send(Sender, :inform, pong)
   end
 
-  start
+  start()
 end
 
 defmodule PongTestRole do
@@ -19,7 +19,7 @@ defmodule PongTestRole do
 
   Gens
 
-  start
+  start()
 end
 
 defmodule PingTestRespAgent do
@@ -31,7 +31,7 @@ defmodule PingTestRespAgent do
 
   GenServer
 
-  start
+  start()
 end
 
 defmodule PongTestRespAgent do
@@ -45,7 +45,7 @@ defmodule PongTestRespAgent do
     &send(PingTestRespAgent.agent_name("ag1"), :inform, ping)
   end
 
-  start
+  start()
 end
 
 defmodule PingPongTestUseAgentTest do

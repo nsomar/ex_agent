@@ -6,7 +6,7 @@ defmodule PingTestAgent do
     &send(Sender, :inform, pong)
   end
 
-  start
+  start()
 end
 
 defmodule PongTestAgent do
@@ -21,7 +21,7 @@ defmodule PongTestAgent do
     &send(Sender, :inform, ping)
   end
 
-  start
+  start()
 end
 
 defmodule PingPongTestAgentTest do

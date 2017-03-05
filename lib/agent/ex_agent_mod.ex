@@ -196,7 +196,7 @@ defmodule ExAgent.Mod do
     agent
   end
 
-  defp create(module, name, linked \\ true) do
+  defp create(module, name, linked) do
     full_name = agent_name(module, name)
     state = %AgentState{
       beliefs: [], plan_rules: [], intents: [], events: [],

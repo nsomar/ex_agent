@@ -13,7 +13,7 @@ defmodule CounterReuse do
     !count
   end
 
-  start
+  start()
 end
 
 defmodule CounterReuseAgent do
@@ -28,7 +28,7 @@ defmodule CounterReuseAgent do
     !count
   end
 
-  start
+  start()
 end
 
 defmodule CounterReuseAgentTest do

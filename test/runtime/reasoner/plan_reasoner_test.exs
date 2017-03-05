@@ -4,7 +4,7 @@ defmodule PlanReasonerTestAgent do
   message :inform, sender, echo(MSG) do end
   rule (+!has(CAR)) do end
 
-  start
+  start()
 end
 
 defmodule PlanReasonerTest do

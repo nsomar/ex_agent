@@ -21,7 +21,7 @@ defmodule RelPlanAgent2 do
   message :request, s, buy5(Car, Color) when cost(Car, Money) && money(Pocket)  && not has(Car) && test Pocket > Money * 2 do end
   message :request, s, buy6(Car) when wishlist(Wish) && not has(Car) && test String.upcase(Car) == String.upcase(Wish) do end
 
-  start
+  start()
 end
 
 defmodule MessageHandlerSelectionTest do
@@ -84,7 +84,7 @@ defmodule MessageHandlerSelectionTest do
       applicable = MessageHandlerSelection.applicable_handlers(relevant, beliefs)
 
       assert length(applicable) == 1
-      assert applicable |> Enum.at(0) |> elem(1) == [[Car: :bmw, Color: :red, sender1: self]]
+      assert applicable |> Enum.at(0) |> elem(1) == [[Car: :bmw, Color: :red, sender1: self()]]
     end
 
     test "it gets applicable handlers for simple rule without a function when multiple beliefs match 2" do
@@ -101,8 +101,8 @@ defmodule MessageHandlerSelectionTest do
       relevant = MessageHandlerSelection.relavent_handlers(all_handlers, event)
       applicable = MessageHandlerSelection.applicable_handlers(relevant, beliefs)
       assert length(applicable) == 2
-      assert applicable |> Enum.at(0) |> elem(1) == [[Car: :bmw, Color: :red, sender1: self]]
-      assert applicable |> Enum.at(1) |> elem(1) == [[Car: :bmw, Color: :red, sender3: self, Alot: true]]
+      assert applicable |> Enum.at(0) |> elem(1) == [[Car: :bmw, Color: :red, sender1: self()]]
+      assert applicable |> Enum.at(1) |> elem(1) == [[Car: :bmw, Color: :red, sender3: self(), Alot: true]]
     end
 
     test "it gets applicable plans for simple rule without a function 2" do
@@ -114,7 +114,7 @@ defmodule MessageHandlerSelectionTest do
       relevant = MessageHandlerSelection.relavent_handlers(all_handlers, event)
       applicable = MessageHandlerSelection.applicable_handlers(relevant, beliefs)
       assert length(applicable) == 1
-      assert applicable |> Enum.at(0) |> elem(1) == [[Car: :bmw, Color: :red, sender2: self]]
+      assert applicable |> Enum.at(0) |> elem(1) == [[Car: :bmw, Color: :red, sender2: self()]]
     end
 
     test "it does not get plans that dont match the beliefs" do
@@ -168,7 +168,7 @@ defmodule MessageHandlerSelectionTest do
       relevant = MessageHandlerSelection.relavent_handlers(all_handlers, event)
       applicable = MessageHandlerSelection.applicable_handlers(relevant, beliefs)
       assert length(applicable) == 1
-      assert applicable |> hd |> elem(1) == [[Car: :bmw, s: self, Price: 10000]]
+      assert applicable |> hd |> elem(1) == [[Car: :bmw, s: self(), Price: 10000]]
     end
 
     test "it gets applicable plans for rule with a function when the function passes 2" do
@@ -183,7 +183,7 @@ defmodule MessageHandlerSelectionTest do
       relevant = MessageHandlerSelection.relavent_handlers(all_handlers, event)
       applicable = MessageHandlerSelection.applicable_handlers(relevant, beliefs)
       assert length(applicable) == 1
-      assert applicable |> hd |> elem(1) == [[Car: :bmw, s: self, Value: :red]]
+      assert applicable |> hd |> elem(1) == [[Car: :bmw, s: self(), Value: :red]]
     end
   end
 
@@ -219,7 +219,7 @@ defmodule MessageHandlerSelectionTest do
       relevant = MessageHandlerSelection.relavent_handlers(all_handlers, event)
       applicable = MessageHandlerSelection.applicable_handlers(relevant, beliefs)
       assert length(applicable) == 1
-      assert applicable |> hd |> elem(1) == [[Car: :bmw, Color: :red, s: self, Money: 1000]]
+      assert applicable |> hd |> elem(1) == [[Car: :bmw, Color: :red, s: self(), Money: 1000]]
     end
 
   end
@@ -240,7 +240,7 @@ defmodule MessageHandlerSelectionTest do
       relevant = MessageHandlerSelection.relavent_handlers(all_handlers, event)
       applicable = MessageHandlerSelection.applicable_handlers(relevant, beliefs)
       assert length(applicable) == 1
-      assert applicable |> hd |> elem(1) == [[Car: :bmw, Color: :red, s: self, Money: 1000, Pocket: 10000]]
+      assert applicable |> hd |> elem(1) == [[Car: :bmw, Color: :red, s: self(), Money: 1000, Pocket: 10000]]
     end
 
     test "it does not get car if does not have enough money" do
@@ -277,7 +277,7 @@ defmodule MessageHandlerSelectionTest do
       relevant = MessageHandlerSelection.relavent_handlers(all_handlers, event)
       applicable = MessageHandlerSelection.applicable_handlers(relevant, beliefs)
       assert length(applicable) == 1
-      assert applicable |> hd |> elem(1) == [[Color: :red, s: self, Money: 1000, Pocket: 10000]]
+      assert applicable |> hd |> elem(1) == [[Color: :red, s: self(), Money: 1000, Pocket: 10000]]
     end
 
   end
@@ -298,7 +298,7 @@ defmodule MessageHandlerSelectionTest do
       relevant = MessageHandlerSelection.relavent_handlers(all_handlers, event)
       applicable = MessageHandlerSelection.applicable_handlers(relevant, beliefs)
       assert length(applicable) == 1
-      assert applicable |> hd |> elem(1) == [[Car: :bmw, Color: :red, s: self, Money: 1000, Pocket: 2001]]
+      assert applicable |> hd |> elem(1) == [[Car: :bmw, Color: :red, s: self(), Money: 1000, Pocket: 2001]]
     end
 
     test "it does not get the car if has more less than double the price" do
@@ -334,7 +334,7 @@ defmodule MessageHandlerSelectionTest do
       relevant = MessageHandlerSelection.relavent_handlers(all_handlers, event)
       applicable = MessageHandlerSelection.applicable_handlers(relevant, beliefs)
       assert length(applicable) == 1
-      assert applicable |> hd |> elem(1) == [[Car: "bmw", s: self, Wish: "BMW"]]
+      assert applicable |> hd |> elem(1) == [[Car: "bmw", s: self(), Wish: "BMW"]]
     end
 
   end

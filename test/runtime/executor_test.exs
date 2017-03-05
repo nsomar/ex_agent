@@ -11,7 +11,7 @@ defmodule ExecutorTestAgent do
     &print(Word1 <> String.upcase(Word2))
   end
 
-  start
+  start()
 end
 
 defmodule ExecutorTest do

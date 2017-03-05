@@ -14,5 +14,5 @@ defmodule RelPlanAgent1 do
     &print("I am really happy man!!!")
   end
 
-  start
+  start()
 end

@@ -21,7 +21,7 @@ defmodule RelPlanAgent1 do
 
   rule (+!buy6(Car)) when wishlist(Wish) && not has(Car) && test String.upcase(Car) == String.upcase(Wish) do end
 
-  start
+  start()
 end
 
 defmodule PlanSelectionTest do
