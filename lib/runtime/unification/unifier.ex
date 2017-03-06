@@ -20,14 +20,14 @@ defmodule Unifier do
       [[X: :color, Y: :red]]
   """
   def unify_list(beleifs, tests, func) do
-    do_unify_list(beleifs, tests, [[]]) |> prepare_list_for_return(func)
+    beleifs |> do_unify_list(tests, [[]]) |> prepare_list_for_return(func)
   end
 
   @doc """
   Same as the above method, but without func
   """
   def unify_list(beleifs, tests) do
-    do_unify_list(beleifs, tests, [[]]) |> prepare_list_for_return(nil)
+    beleifs |> do_unify_list(tests, [[]]) |> prepare_list_for_return(nil)
   end
 
   @doc """
@@ -87,8 +87,9 @@ defmodule Unifier do
   """
   def unify(list, %ContextBelief{belief: {term, statement}})
    when is_list(list) do
-    ParsingUtils.get_statements_matching_term(list, term)
-    |> Enum.map(fn bel -> unify_tuples(bel, statement) end)
+      list
+      |> ParsingUtils.get_statements_matching_term(term)
+      |> Enum.map(fn bel -> unify_tuples(bel, statement) end)
   end
 
   @doc """
@@ -208,7 +209,8 @@ defmodule Unifier do
       # IO.inspect "Mergings"
       # IO.inspect "binding #{inspect(binding)}"
       # IO.inspect "new binding #{inspect(new_bindings)}"
-      Enum.map(new_bindings, fn new_binding ->
+      new_bindings
+      |> Enum.map(fn new_binding ->
         binding ++ new_binding
       end)
       |> List.flatten
