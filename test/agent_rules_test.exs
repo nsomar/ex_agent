@@ -8,7 +8,7 @@ defmodule EndToEndTest do
       initialize do
       end
 
-      rule (+!buy(X)) when cost(X, Y) && not money(Z) && something(true) && test Z >= Y do
+      rule(+!buy(X) when cost(X, Y) && not money(Z) && something(true) && test Z >= Y) do
         +owns(X)
         query(happy(N))
         &print(X)

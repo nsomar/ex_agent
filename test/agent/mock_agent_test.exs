@@ -238,7 +238,7 @@ defmodule MockAgentTest do
       use ExAgent.Mod
       initialize do end
 
-      message :inform, sender, echo(X) when should_print(X) && is_ok(1) do
+      message(:inform, sender, echo(X) when should_print(X) && is_ok(1)) do
         +received(1)
       end
       start()

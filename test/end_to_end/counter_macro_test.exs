@@ -6,11 +6,11 @@ defagent CounterAgentMac do
     !count
   end
 
-  rule (+!count) when counter(0) do
+  rule(+!count when counter(0)) do
     &print("DONE")
   end
 
-  rule (+!count) when counter(X) do
+  rule(+!count when counter(X)) do
     &print("Current " <> Integer.to_string(X))
     -+counter(X - 1)
     query(counter(Y))
