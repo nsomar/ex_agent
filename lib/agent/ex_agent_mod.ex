@@ -18,7 +18,6 @@ defmodule ExAgent.Mod do
 
       def create(name, linked \\ true), do: ExAgent.Mod.create_agent(__MODULE__, name, linked)
       def agent_name(name), do: ExAgent.Mod.agent_name(__MODULE__, name)
-      def belief_base(ag), do: ExAgent.Mod.belief_base(ag)
       def plan_rules(ag), do: ExAgent.Mod.plan_rules(ag)
       def recovery_handlers(ag), do: ExAgent.Mod.recovery_handlers(ag)
       def message_handlers(ag), do: ExAgent.Mod.message_handlers(ag)
