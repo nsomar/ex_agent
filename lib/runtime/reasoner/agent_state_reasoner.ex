@@ -12,7 +12,7 @@ defmodule Reasoner.AgentState do
   end
 
   def update_agent_events(agent_state, events) do
-    %{agent_state | events: events}
+    %{agent_state | events: events, messages: []}
   end
 
 end
