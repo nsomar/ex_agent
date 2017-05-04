@@ -36,6 +36,9 @@ defmodule Event do
   def internal_action(action),
     do: %Event{event_type: :internal_action, content: action}
 
+  def all_beliefs(action),
+    do: %Event{event_type: :all_beliefs, content: action}
+
   def received_message(message),
     do: %Event{event_type: :received_message, content: message}
 
@@ -53,6 +56,10 @@ defmodule Event do
 
   def from_instruction(%QueryBelief{}=instruction, _) do
     Event.query_belief(instruction)
+  end
+
+  def from_instruction(%AllBeliefs{}=instruction, _) do
+    Event.all_beliefs(instruction)
   end
 
   def from_instruction(%InternalAction{}=instruction, _) do

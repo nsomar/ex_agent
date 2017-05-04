@@ -39,6 +39,10 @@ defmodule RuleBody do
     QueryBelief.parse(statements)
   end
 
+  defp do_parse_item({:all, _, _} = statements) when is_tuple(statements) do
+    AllBeliefs.parse(statements)
+  end
+
   defp do_parse_item({:&, _, _} = statements) when is_tuple(statements) do
     InternalAction.parse(statements)
   end

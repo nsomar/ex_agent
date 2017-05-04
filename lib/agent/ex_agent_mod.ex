@@ -22,6 +22,8 @@ defmodule ExAgent.Mod do
       def recovery_handlers(ag), do: ExAgent.Mod.recovery_handlers(ag)
       def message_handlers(ag), do: ExAgent.Mod.message_handlers(ag)
 
+      def beliefs(ag), do: ExAgent.Mod.beliefs(ag)
+
       def run_loop(ag), do: ExAgent.Mod.run_loop(ag)
       def send_message(agent_name, performative, name, params) do
         agent_full_name = __MODULE__.agent_name(agent_name)

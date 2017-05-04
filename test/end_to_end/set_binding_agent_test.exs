@@ -27,14 +27,14 @@ defmodule SetBindingAgentTest do
 
   test "it parses the plans" do
     ag = SetBindingAgent.create("ag")
-    rules = ExAgent.plan_rules(ag)
+    rules = SetBindingAgent.plan_rules(ag)
     assert rules |> Enum.count == 1
   end
 
   test "it executes the set binding" do
     ag = SetBindingAgent.create("ag")
-    ExAgent.run_loop(ag)
+    SetBindingAgent.run_loop(ag)
     Process.sleep(300)
-    assert ExAgent.beliefs(ag) == [getZ: {10}, getY: {20}, result: {30}]
+    assert SetBindingAgent.beliefs(ag) == [getZ: {10}, getY: {20}, result: {30}]
   end
 end

@@ -28,6 +28,17 @@ defmodule Executor do
     {{result, beliefs}, binding}
   end
 
+  def execute(%AllBeliefs{}=all_belief, beliefs, binding) do
+    belief = AllBeliefs.belief(all_belief, binding)
+    
+    {result, binding} =
+      beliefs
+      |> BeliefBase.all_beliefs(belief, all_belief.result)
+      |> merge_binding(binding)
+
+    {{result, beliefs}, binding}
+  end
+
   def execute(%InternalAction{}=internal_action, beliefs, binding) do
     {status, _} = InternalActionExecutor.execute(internal_action, binding, ConsolePrinter, ActualMessageSender)
     {{status, beliefs}, binding}

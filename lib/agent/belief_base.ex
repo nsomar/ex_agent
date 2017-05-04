@@ -30,21 +30,40 @@ defmodule BeliefBase do
     {[removed: found_beliefs, added: belief], new_beliefs}
   end
 
+  def all_beliefs(beliefs, {name, params}=belief, result) when is_list(beliefs) do
+    found_beliefs =
+      beliefs
+      |> Enum.filter(
+        fn {c_name, c_params} ->
+          name == c_name && tuple_size(params) == tuple_size(c_params)
+      end)
+      |> Enum.map( fn {bel, params} ->
+        params
+      end)
+      |> Enum.map(fn found ->
+        list_found = Tuple.to_list(found)
+        list_params = Tuple.to_list(params)
+        Enum.zip(list_params, list_found)
+      end)
+
+      [{result, found_beliefs}]
+  end
+
   def test_belief(beliefs, test) when is_list(beliefs) and is_tuple(test),
-    do: Unifier.unify(beliefs, test |> ContextBelief.from_belief) |> prepare_return
+    do: Unifier.unify(beliefs, test |> ContextBelief.from_belief) |> prepare_return |> IO.inspect
 
   def test_beliefs(beliefs, %Context{tests: tests}) when is_list(beliefs) and is_list(tests),
-    do: Unifier.unify_list(beliefs, tests |> ContextBelief.from_beliefs, nil) |> prepare_return
+    do: Unifier.unify_list(beliefs, tests |> ContextBelief.from_beliefs, nil) |> prepare_return |> IO.inspect
 
   def test_beliefs(beliefs, tests) when is_list(beliefs) and is_list(tests),
-    do: Unifier.unify_list(beliefs, tests |> ContextBelief.from_beliefs, nil) |> prepare_return
+    do: Unifier.unify_list(beliefs, tests |> ContextBelief.from_beliefs, nil) |> prepare_return |> IO.inspect
 
   def test_beliefs(beliefs, tests, %Context{tests: tests, function: fun}) when is_list(beliefs) and is_list(tests) do
-    Unifier.unify_list(beliefs, tests |> ContextBelief.from_beliefs, fun) |> prepare_return
+    Unifier.unify_list(beliefs, tests |> ContextBelief.from_beliefs, fun) |> prepare_return |> IO.inspect
   end
 
   def test_beliefs(beliefs, tests, fun) when is_list(beliefs) and is_list(tests) do
-    Unifier.unify_list(beliefs, tests |> ContextBelief.from_beliefs, fun) |> prepare_return
+    Unifier.unify_list(beliefs, tests |> ContextBelief.from_beliefs, fun) |> prepare_return |> IO.inspect
   end
 
   defp has_belief(beliefs, belief) do
