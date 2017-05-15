@@ -1,4 +1,4 @@
-# Exagent
+# ExAgent
 
 ExAgent agent oriented programming language.
 
